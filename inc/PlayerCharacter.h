@@ -11,6 +11,7 @@ private:
 public:
     PlayerCharacter(float);
     void enterNegotiation();
+    void checkInventory();
 
 };
 

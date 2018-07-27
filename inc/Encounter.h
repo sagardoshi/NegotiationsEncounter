@@ -26,9 +26,9 @@ public:
     ~Encounter();
 
     // Only to be used at initial loading time
-        void loadFloatIssue(Issue<float>);
-        void loadBoolIssue(Issue<bool>);
-        void loadIntIssue(Issue<int>);
+    void loadFloatIssue(Issue<float>);
+    void loadBoolIssue(Issue<bool>);
+    void loadIntIssue(Issue<int>);
 
     bool validateOffer();
     int countIssuesInEncounter();

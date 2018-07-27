@@ -247,6 +247,19 @@ void l1Start() {
     cout << "The door has a chalkboard taped to it. On the chalkboard, ";
     cout << "you can see the name \"Porridge\" scribbled with childish, ";
     cout << "messy handwriting. You open the door.\n\n";
+
+    cout << "Within, you see a young gorilla, wearing a baseball cap and ";
+    cout << "throwing a ball against the wall. When you walk in, he pauses.\n\n";
+
+    cout << "--Hi! You must be here for a negotiation! Grandma said someone ";
+    cout << "would come knocking this morning. If you want me to give you my ";
+    cout << "key, though, I'll warn you that I drive a hard bargain...--\n\n";
+
+    cout << "He points to a chair and gestures you to sit down. You do.\n\n";
+
+    cout << "His eyes are bright. --Okay, friend! The way this works is that ";
+    cout << "we lay out all the issues on the table, and we each decide ";
+    cout << "how much each matters to us.";
 }
 
 void interact() {
