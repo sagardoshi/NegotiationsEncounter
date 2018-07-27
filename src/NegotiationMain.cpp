@@ -12,6 +12,7 @@ University: Imperial College London
 #include "../inc/Negotiator.h"
 #include "../inc/Encounter.h"
 #include "../inc/PlayerCharacter.h"
+#include "../inc/Inventory.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -22,13 +23,17 @@ University: Imperial College London
 
 using namespace std;
 
+
+const float FRIENDLY = 0.8;
+const float GRUFF = 0.2;
+const float MODERATE = 0.5;
+
 enum dir {up, down, left, right};
 enum stage {intro, l1, l2, l3, end};
 string uInput = "";
 stage current = intro;
-vector<string> inventory;
 
-
+PlayerCharacter player(MODERATE);
 
 // A trivial 0-1 random generator engine from time-based seed
 float getRandWeight() {
@@ -47,6 +52,24 @@ void printGorilla() {
     cout << "      | \\_____/ |  " << endl;
     cout << "      '. `---' .`  " << endl;
     cout << "        `-...-'    " << endl;
+}
+
+void printInventory() {
+    cout << "\n***************** INVENTORY *****************\n\n";
+    if (!player.inventory.hasPomegranate && !player.inventory.hasKnucklePads &&
+        !player.inventory.hasSilverbackPerfume && !player.inventory.hasBasket &&
+        player.inventory.numGingerCookies == 0) {
+        cout << "You have nothing in your inventory.\n\n";
+        return;
+    }
+
+    cout << "In your inventory, you have: \n";
+    if (player.inventory.hasPomegranate) cout << "--A pomegranate\n";
+    if (player.inventory.hasKnucklePads) cout << "--Knuckle pads\n";
+    if (player.inventory.hasSilverbackPerfume) cout << "--Silverback perfume\n";
+    cout << "--" << player.inventory.numGingerCookies << " ginger cookies\n";
+    if (player.inventory.hasBasket) cout << "All in a lovely basket.\n\n";
+
 }
 
 // Prints instructions
@@ -90,6 +113,8 @@ vector<string> commands() {
     acceptableCommands.push_back("right");
     acceptableCommands.push_back("quit");
     acceptableCommands.push_back("help");
+    acceptableCommands.push_back("inventory");
+
     // acceptableCommands.push_back("play");
 
     return acceptableCommands;
@@ -131,6 +156,12 @@ string getUserInput() {
     // If asking for help, allow a loop before returning
     if (uInput == "help") {
         printHelp();
+        uInput = getUserInput();
+    }
+
+    // If asking for help, allow a loop before returning
+    if (uInput == "inventory") {
+        printInventory();
         uInput = getUserInput();
     }
 
@@ -220,17 +251,41 @@ void dialogueIntro() {
     uInput = "";
     //
 
-    cout << "--Don't worry, you can start by negotiating with my young ";
+    cout << "She throws up her hands and starts rummaging on the far side of ";
+    cout << "her armchair. She emerges shortly thereafter with a basket.\n\n";
+
+    cout << "--Here is your one and only tool. You may use these as you wish ";
+    cout << "for your negotiations. Ook. However, this is all you have. It ";
+    cout << "must last you all three negotiations. Understand? Good.--\n\n";
+
+    cout << "She hands over the basket. You take it.\n\n";
+
+    player.inventory.hasPomegranate = true;
+    player.inventory.hasKnucklePads = true;
+    player.inventory.hasSilverbackPerfume = true;
+    player.inventory.hasBasket = true;
+    player.inventory.numGingerCookies = 12;
+
+    cout << "You have an inventory! At any time, type \"inventory\" in a ";
+    cout << "command prompt to see what you have.\n\n";
+
+    cout << "--You look worried!-- She laughs. --Don't look worried! What's ";
+    cout << "the worst that can happen?-- Suddenly, Gori takes on a wild, ";
+    cout << "terrifying aspect. --After all,-- she says, --It's not like ";
+    cout << "you're negotiating for your life...--\n\n";
+
+    cout << "She brightens, and the smile takes over her face once more.\n\n";
+
+    cout << "--And you'll start easy, by negotiating with my young ";
     cout << "grandson, Porridge. He's still learning the family game, ";
     cout << "so it will be good practice for him too.--\n\n";
 
     cout << "She pauses for a moment and considers.\n\n";
 
     cout << "--Since you're new to this, why don't I give you a little boost ";
-    cout << "of luck? Ook. Take this pomegranate. It's one of Porridge's ";
+    cout << "to help you? I'll give you a basket of goodies. It? Ook.  Take this pomegranate. It's one of Porridge's ";
     cout << "favourites! Perhaps it will help you be more convincing.--\n\n";
 
-    inventory.push_back("Pomegranate");
     cout << "You've gained a Pomegranate!\n\n";
 
     cout << "--Alright, then! He's just down the hall. Go left here, and then ";
@@ -248,14 +303,15 @@ void l1Start() {
     cout << "you can see the name \"Porridge\" scribbled with childish, ";
     cout << "messy handwriting. You open the door.\n\n";
 
-    cout << "Within, you see a young gorilla, wearing a baseball cap and ";
+    cout << "Within, you see a tiny gorilla, wearing a baseball cap and ";
     cout << "throwing a ball against the wall. When you walk in, he pauses.\n\n";
 
     cout << "--Hi! You must be here for a negotiation! Grandma said someone ";
     cout << "would come knocking this morning. If you want me to give you my ";
     cout << "key, though, I'll warn you that I drive a hard bargain...--\n\n";
 
-    cout << "He points to a chair and gestures you to sit down. You do.\n\n";
+    cout << "He strikes a fierce pose, but the effect is just too cute. ";
+    cout << " He points to a chair and gestures you to sit down. You do.\n\n";
 
     cout << "His eyes are bright. --Okay, friend! The way this works is that ";
     cout << "we lay out all the issues on the table, and we each decide ";
@@ -295,16 +351,12 @@ int main() {
     cout << "===============================" << endl;
     cout << endl;
 
-    const float FRIENDLY = 0.8;
-    const float GRUFF = 0.2;
-    const float MODERATE = 0.5;
 
     Encounter* currentLevel = nullptr;
 
     Negotiator* friendlyNegotiator = new Negotiator(FRIENDLY);
     Negotiator* gruffNegotiator = new Negotiator(GRUFF);
 
-    PlayerCharacter player(MODERATE);
 
     ////////// Level 1 //////////
     // Encounter, made up of two issues

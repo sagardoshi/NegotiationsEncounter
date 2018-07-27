@@ -14,3 +14,7 @@ void Negotiator::setAmiability(float newAmiability) {
 }
 
 void Negotiator::walkAway() {}
+
+void proposeOffer() {
+    
+}
