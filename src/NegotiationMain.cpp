@@ -22,6 +22,14 @@ University: Imperial College London
 
 using namespace std;
 
+enum dir {up, down, left, right};
+enum stage {intro, l1, l2, l3, end};
+string uInput = "";
+stage current = intro;
+vector<string> inventory;
+
+
+
 // A trivial 0-1 random generator engine from time-based seed
 float getRandWeight() {
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();
@@ -30,11 +38,20 @@ float getRandWeight() {
     return distribution(generator)/100.0;
 }
 
+// Prints ASCII art
+void printGorilla() {
+    cout << "          .-.      " << endl;
+    cout << "        c(O_O)c    " << endl;
+    cout << "       ,'.---.`,   " << endl;
+    cout << "      / /|_|_|\\ \\ " << endl;
+    cout << "      | \\_____/ |  " << endl;
+    cout << "      '. `---' .`  " << endl;
+    cout << "        `-...-'    " << endl;
+}
+
 // Prints instructions
 void printHelp() {
-    cout << "********************************************\n";
-    cout << "******************* MENU *******************\n";
-    cout << "********************************************\n\n";
+    cout << "\n******************* MENU *******************\n\n";
     cout << "[Type 'view' and hit return to read what you ";
     cout << "can see in front of you.]" << endl;
 
@@ -48,7 +65,17 @@ void printHelp() {
 
     cout << "[Type 'help' to see these instructions.]" << endl;
 
-    cout << "[Type 'play' to return back to the game.]" << endl;
+    cout << "[Type 'play' to return back to the game.]" << endl << endl;
+
+    cout << "********************************************\n\n";
+}
+
+void handleMovement(string uInput) {
+    string movement = uInput;
+    if (uInput == "up") movement = "forward";
+    if (uInput == "down") movement = "backward";
+
+    cout << "You have moved " << movement << ".\n\n";
 }
 
 // Holds a vector of acceptable verb commands
@@ -66,17 +93,6 @@ vector<string> commands() {
     acceptableCommands.push_back("play");
 
     return acceptableCommands;
-}
-
-// Prints ASCII art
-void printGorilla() {
-    cout << "          .-.      " << endl;
-    cout << "        c(O_O)c    " << endl;
-    cout << "       ,'.---.`,   " << endl;
-    cout << "      / /|_|_|\\ \\ " << endl;
-    cout << "      | \\_____/ |  " << endl;
-    cout << "      '. `---' .`  " << endl;
-    cout << "        `-...-'    " << endl;
 }
 
 // Rejects input not in list of acceptable verbs
@@ -109,42 +125,139 @@ string getUserInput() {
     }
 
     if (uInput == "help") printHelp();
+
+    if (uInput == "up" || uInput == "down" ||
+        uInput == "left" || uInput == "right") handleMovement(uInput);
+
+    // Advance level if moved left
+    if (current == intro && uInput == "left") {
+        current = l1;
+        cout << "You turn left and go down a hallway for a while. It's ";
+        cout << "brightly lit, with colourful flowers everywhere. ";
+        cout << "You see framed photos of the large Gorilla family everywhere.\n\n";
+        cout << "You keep moving down the hallway until you get to a door.\n\n";
+    }
+
+    if (current == l1 && uInput == "open") {
+        cout << "The door has a chalkboard taped to it. On the chalkboard, ";
+        cout << "you can see the name \"Porridge\" scribbled with childish, ";
+        cout << "messy handwriting. You open the door.\n\n";
+    }
+
+    if (uInput == "quit") exit(0);
+
     while (uInput != "play") uInput = getUserInput();
 
     return uInput;
 }
 
-void interact() {
-    string uInput = "";
+void dialogueIntro() {
+    cout << "CRASH!! You fall through a roof and land in a soft pile of ";
+    cout << "of blankets. Ow. You shake your head as the dust settles and ";
+    cout << "look up to see a large gorilla standing before you.\n\n";
 
     printGorilla();
-    cout << "--Welcome to the world of negotiations! My name is Illa. ";
-    cout << "Ook ook.--\n\n";
-    cout << "--You may not return to your normal life until you gain the keys ";
-    cout << "you need to escape.--\n\n";
 
-    cout << "--How to escape, you ask? Oooooook.--\n\n";
+    cout << "She has a long, rounded face, has a pair of thing glasses ";
+    cout << "perched on her short nose, and is wearing a plain t-shirt and ";
+    cout << "trousers. Her fur seems to be graying and fading a little around ";
+    cout << "the edges. As the dust clears, it seems she was reading a ";
+    cout << "magazine while sitting on her living room armchair.\n\n";
 
-    cout << "--Simple! See that door in front of you? All you have to do is ";
-    cout << "go and open it. Go on. Try! OOOOOOOOOK OOOOK.--\n\n";
+    cout << "She looks you over silently and purses her lips in confusion. ";
+    cout << "You both freeze there for a few moments, considering the ";
+    cout << "the situation. Suddenly, her lips widen into ";
+    cout << "a broad, free smile.\n\n";
 
-    cout << "(p.s. if you're stuck, type 'menu')\n\n";
+    cout << "--Hello there, young human! How did you get in our house?––\n\n";
+
+    // TODO: Abstract this away later
+    cout << "[Type \"1\" for \"Uh, I'm not really sure...\"]\n";
+    cout << "[Type \"2\" for \"To meet you!\"]\n\n";
+    //
+
+    // TODO: Abstract this away later
+    cout << ">> ";
+    while (uInput != "1" && uInput != "2") cin >> uInput;
+    uInput = "";
+    //
+
+    cout << "\n--Huh! Weird! Well, no matter. Welcome to the House of ";
+    cout << "Negotiations! My name is Gori the Gorilla. Ook ook.--\n\n";
+
+    cout << "She stands up, holding her bulk back on two powerful legs. She ";
+    cout << "extends a muscular arm to you for a handshake and holds your ";
+    cout << "hand ever so daintily and protectively. She steps back again.\n\n";
+
+    cout << "--Well, friend, the rules of the House are simple. You may not ";
+    cout << "leave and return to ";
+    cout << "your normal life until you gain keys from at least three members ";
+    cout << "of my family.--\n\n";
+
+    cout << "--How to gain the keys, you ask? Oooooook.--\n\n";
+
+    cout << "--Simple! Follow our favourite pastime! Haggle with us! ";
+    cout << "If you can convince three of us to give you a key, you can head ";
+    cout << "back to your normal life, no harm, no foul. Ooook.--\n\n";
+
+    cout << "--What do you say? Sounds like fun, right?--\n\n";
+
+    // TODO: Abstract this away later
+    cout << "[Type \"1\" for \"Yeah, sure, sounds fun!\"]\n";
+    cout << "[Type \"2\" for \"You're a bunch of weirdos! No way!\"]\n\n";
+
+    cout << ">> ";
+    while (uInput != "1" && uInput != "2") cin >> uInput;
+    if (uInput == "1") {
+        cout << "\nGori rubs her palms together in anticipation.\n\n";
+        cout << "--Excellent!! This will be great fun. Ook ook!--\n\n";
+    }
+    if (uInput == "2") {
+        cout << "\nGori rubs her chin thoughtfully.\n\n";
+        cout << "--Okay, if you say so!-- she says, shrugging her shoulders. ";
+        cout << "She reaches one powerful arm back, and swings it rapidly ";
+        cout << "towards your face. The last thing you see is her sorrowful ";
+        cout << "expression.\n\n";
+        cout << "You have been killed by Gori the Gorilla.\n\n";
+        exit(0);
+    }
+    uInput = "";
+    //
+
+    cout << "--Don't worry, you can start by negotiating with my young ";
+    cout << "grandson, Porridge. He's still learning the family game, ";
+    cout << "so it will be good practice for him too.--\n\n";
+
+    cout << "She pauses for a moment and considers.\n\n";
+
+    cout << "--Since you're new to this, why don't I give you a little boost ";
+    cout << "of luck? Ook. Take this pomegranate. It's one of Porridge's ";
+    cout << "favourites! Perhaps it will help you be more convincing.--\n\n";
+
+    inventory.push_back("Pomegranate");
+    cout << "You've gained a Pomegranate!\n\n";
+
+    cout << "--Alright, then! He's just down the hall. Go left here, and then ";
+    cout << "just open his door. Good luck! Ook ook!--";
+
+    cout << "Gori settles back onto her chair, opens her magazine, and pays ";
+    cout << "you no heed.\n\n";
+
+    cout << "(p.s. if you're stuck, type 'help')\n\n";
+
+}
+
+void interact() {
+
+    dialogueIntro();
 
     uInput = getUserInput();
 
-    cout << "[you typed: " << uInput << "]\n\n";;
 
 
-
-    cout << "Follow our favourite pasttime! ";
-    cout << "Haggle with us! If you can pass the three ";
-    cout << "challenges, you'll get the keys to take you ";
-    cout << "back home. Don't forget! ";
-    cout << "Three keys... (ook)" << endl;
 }
 
 int main() {
-
     // getRandWeight();
 
     interact();
