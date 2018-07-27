@@ -65,7 +65,7 @@ void printHelp() {
 
     cout << "[Type 'help' to see these instructions.]" << endl;
 
-    cout << "[Type 'play' to return back to the game.]" << endl << endl;
+    // cout << "[Type 'play' to return back to the game.]" << endl << endl;
 
     cout << "********************************************\n\n";
 }
@@ -90,7 +90,7 @@ vector<string> commands() {
     acceptableCommands.push_back("right");
     acceptableCommands.push_back("quit");
     acceptableCommands.push_back("help");
-    acceptableCommands.push_back("play");
+    // acceptableCommands.push_back("play");
 
     return acceptableCommands;
 }
@@ -119,34 +119,30 @@ string getLowerCaseInput() {
 string getUserInput() {
     string uInput = getLowerCaseInput();
 
+    // Force fresh input until one of the valid options
     while(!isValidInput(uInput)) {
         cout << "Invalid input. Try again. Type 'help' for instructions.\n\n";
         uInput = getLowerCaseInput();
     }
 
-    if (uInput == "help") printHelp();
-
-    if (uInput == "up" || uInput == "down" ||
-        uInput == "left" || uInput == "right") handleMovement(uInput);
-
-    // Advance level if moved left
-    if (current == intro && uInput == "left") {
-        current = l1;
-        cout << "You turn left and go down a hallway for a while. It's ";
-        cout << "brightly lit, with colourful flowers everywhere. ";
-        cout << "You see framed photos of the large Gorilla family everywhere.\n\n";
-        cout << "You keep moving down the hallway until you get to a door.\n\n";
-    }
-
-    if (current == l1 && uInput == "open") {
-        cout << "The door has a chalkboard taped to it. On the chalkboard, ";
-        cout << "you can see the name \"Porridge\" scribbled with childish, ";
-        cout << "messy handwriting. You open the door.\n\n";
-    }
-
+    // If ever user input is quit, end game immediately
     if (uInput == "quit") exit(0);
 
-    while (uInput != "play") uInput = getUserInput();
+    // If asking for help, allow a loop before returning
+    if (uInput == "help") {
+        printHelp();
+        uInput = getUserInput();
+    }
+
+    // If making a direction, note the movement, and return back
+    if (uInput == "up" || uInput == "down" ||
+        uInput == "left" || uInput == "right") {
+        handleMovement(uInput);
+        return uInput;
+    }
+
+    //
+    // while (uInput != "play") uInput = getUserInput();
 
     return uInput;
 }
@@ -247,11 +243,30 @@ void dialogueIntro() {
 
 }
 
+void l1Start() {
+    cout << "The door has a chalkboard taped to it. On the chalkboard, ";
+    cout << "you can see the name \"Porridge\" scribbled with childish, ";
+    cout << "messy handwriting. You open the door.\n\n";
+}
+
 void interact() {
 
     dialogueIntro();
 
+
+    // Get user input and advance level if moved left
     uInput = getUserInput();
+    if (current == intro && uInput == "left") {
+        current = l1;
+        cout << "You turn left and go down a hallway for a while. It's ";
+        cout << "brightly lit, with colourful flowers everywhere. ";
+        cout << "You see framed photos of the large Gorilla family everywhere.\n\n";
+        cout << "You keep moving down the hallway until you get to a door.\n\n";
+    }
+
+    // Get user input and see if level 1 is ready to begin
+    uInput = getUserInput();
+    if (current == l1 && uInput == "open") l1Start();
 
 
 
