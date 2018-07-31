@@ -10,8 +10,10 @@ using namespace std;
 
 class Offer {
 private:
+    int requiredFloatIssues;
+    int requiredIntIssues;
+
     vector< Issue<float> > floatIssues;
-    vector< Issue<bool> > boolIssues;
     vector< Issue<int> > intIssues;
 
 public:
@@ -20,9 +22,10 @@ public:
     int countIssuesInOffer();
     void printOffer();
 
+    int getReqdFloatIssueCount();
+    int getReqdIntIssueCount();
 
     void loadFloatIssue(Issue<float>);
-    void loadBoolIssue(Issue<bool>);
     void loadIntIssue(Issue<int>);
 };
 

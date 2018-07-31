@@ -5,16 +5,11 @@
 
 using namespace std;
 
-Negotiator::Negotiator(float a) : amiability(a) {}
+Negotiator::Negotiator(string n, float a) : name(n), amiability(a) {}
 
-float Negotiator::getAmiability() { return amiability; }
+string Negotiator::getName()                { return name;        }
+float Negotiator::getAmiability()           { return amiability;  }
+void Negotiator::setAmiability(float newAm) { amiability = newAm; }
 
-void Negotiator::setAmiability(float newAmiability) {
-    amiability = newAmiability;
-}
 
 void Negotiator::walkAway() {}
-
-void proposeOffer() {
-    
-}

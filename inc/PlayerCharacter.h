@@ -4,17 +4,33 @@
 #include "Negotiator.h"
 #include "Inventory.h"
 
+#include <string>
+#include <utility>
+#include <map>
+
 class PlayerCharacter: public Negotiator {
 
 private:
     int levelReached;
 
-public:
-    PlayerCharacter(float);
-    void enterNegotiation();
-    void checkInventory();
+    // name: [default price, how many owned]
 
-    struct Inventory inventory;
+
+
+public:
+    PlayerCharacter(string, float);
+
+    map< string, pair<int, int> > inventory;
+
+    void enterNegotiation();
+
+    // struct Inventory inventory;
+
+    void fillInventory();
+    void checkInventory();
+    void printInventory();
+
+
 
 };
 

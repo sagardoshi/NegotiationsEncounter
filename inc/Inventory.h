@@ -5,8 +5,11 @@ struct Inventory {
     bool hasPomegranate;
     bool hasKnucklePads;
     bool hasSilverbackPerfume;
+    bool hasGingerCookie;
+    bool hasMoneySack;
+    int money;
+
     bool hasBasket;
-    int numGingerCookies;
 };
 
 #endif

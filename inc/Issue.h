@@ -12,18 +12,26 @@ class Issue {
 private:
     string issueName;
     T value;
+    T minValue;
+    T maxValue;
 
 public:
-    Issue(string iN, T val) : issueName(iN), value(val) {}
+    Issue(string iN, T val, T min, T max) : issueName(iN), value(val),
+                                            minValue(min), maxValue(max) {}
 
     string getName()       { return issueName; }
 
     void setValue(T newValue)   { value = newValue; }
     T getValue()                { return value;     }
+    T getMin()                  { return minValue;  }
+    T getMax()                  { return maxValue;  }
 
     void printIssue() {
-        cout << "Issue: " << this->getName() << endl;
-        cout << "Value: " << this->getValue() << endl;
+        cout << "Issue: " << getName() << endl;
+        cout << "Min Value: " << getMin() << endl;
+        cout << "Current Value: " << getValue() << endl;
+        cout << "Max Value: " << getMax() << endl << endl;
+
     }
 };
 

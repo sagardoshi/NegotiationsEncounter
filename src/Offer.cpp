@@ -6,37 +6,31 @@
 
 using namespace std;
 
-Offer::Offer() {}
+// Init required issue numbers to 0
+Offer::Offer() : requiredFloatIssues(0), requiredIntIssues(0) {}
+
 
 int Offer::countIssuesInOffer() {
-    return (floatIssues.size() + boolIssues.size() + intIssues.size());
+    return (floatIssues.size() + intIssues.size());
 }
 
 
 void Offer::printOffer() {
-    for (int i = 0; i < this->floatIssues.size(); i++) {
-        this->floatIssues[i].printIssue();
-    }
-
-    for (int i = 0; i < this->boolIssues.size(); i++) {
-        this->boolIssues[i].printIssue();
-    }
-
-    for (int i = 0; i < this->intIssues.size(); i++) {
-        this->intIssues[i].printIssue();
-    }
-
-
+    for (int i = 0; i < floatIssues.size(); i++) floatIssues[i].printIssue();
+    for (int i = 0; i < intIssues.size(); i++) intIssues[i].printIssue();
 }
 
-
+// Bump required issue number for each new issue
 void Offer::loadFloatIssue(Issue<float> issueToAdd) {
     floatIssues.push_back(issueToAdd);
+    requiredFloatIssues++;
 }
 
-void Offer::loadBoolIssue(Issue<bool> issueToAdd) {
-    boolIssues.push_back(issueToAdd);
-}
+// Bump required issue number for each new issue
 void Offer::loadIntIssue(Issue<int> issueToAdd) {
     intIssues.push_back(issueToAdd);
+    requiredIntIssues++;
 }
+
+int Offer::getReqdFloatIssueCount() { return requiredFloatIssues; }
+int Offer::getReqdIntIssueCount()   { return requiredIntIssues;   }
