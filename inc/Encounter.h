@@ -34,7 +34,7 @@ public:
     int getLevel();
     void useOneTurn();
 
-    string getStandardisedInput(string keyword);
+    string saveStandardisedInput(string keyword);
 
     // Only to be used at initial loading time
     void loadFloatIssue(Issue<float>);

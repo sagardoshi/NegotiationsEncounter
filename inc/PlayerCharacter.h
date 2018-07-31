@@ -22,13 +22,17 @@ public:
 
     map< string, pair<int, int> > inventory;
 
-    void enterNegotiation();
+    void addToInventory(string, int, int);
+    void removeFromInventory(string);
+    void decrementFromInventory(string);
 
-    // struct Inventory inventory;
+    void enterNegotiation();
 
     void fillInventory();
     void checkInventory();
     void printInventory();
+
+    void printHelp();
 
 
 

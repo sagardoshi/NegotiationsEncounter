@@ -61,7 +61,7 @@ void Encounter::printOfferOnTable() {
 }
 
 // Gets simple, unverified user input and converts to lowercase
-string Encounter::getStandardisedInput(string keyword) {
+string Encounter::saveStandardisedInput(string keyword) {
     // Get standard input (including whitespaces)
     cout << "\n\n--------------------------\n";
     cout << ">>>> ";
@@ -86,27 +86,40 @@ void Encounter::buildValidOffer(map<string, int> econ) {
     for (int i = 0; i < floatIssues.size(); i++) {
         while (true) {
             proposal = "";
-            cout << "[What do you propose to give for ";
-            cout << floatIssues[i].getName() << "? Or type \"done\" if you ";
-            cout << "have finished.]\n";
-            getStandardisedInput(proposal);
 
-            if (proposal == "done") return;
-            if (proposal == "inventory") player->printInventory();
-
-            while (!econ.count(proposal)) {
-                cout << "You do not have such a thing. Try again.";
-                getStandardisedInput(proposal);
+            // First versus subsequent iterations
+            if (i == 0) {
+                cout << "[What do you propose to give for ";
+                cout << floatIssues[i].getName() << "? Or type ";
+                cout << " \"done\" if you have finished.]\n";
+            } else {
+                cout << "[Anything else? Type \"done\" if you have ";
+                cout << " finished.]\n";
             }
 
+            cout << "Here's what you have in your inventory:\n\n";
+            player->printInventory();
+
+
+            proposal = saveStandardisedInput(proposal);
+
+
+
+            if (proposal == "quit") exit(0);
+            else if (proposal == "done") break;
+            else if (proposal == "inventory") player->printInventory();
+            else if (proposal == "help") player->printHelp();
             // Must be a legit item, though the player may not have it
-            if (player->inventory.count(proposal)) {
+            else if (player->inventory.count(proposal)) {
                 if (player->inventory[proposal].second) {
-                    cout << "You place your " << proposal << " on the table.\n";
+                    cout << "You place your " << proposal << " on the table.";
+                    cout << "\n\n";
+                    player->decrementFromInventory(proposal);
                 } else {
-                    cout << "You have no " << proposal << " to give.\n";
+                    cout << "You have no " << proposal << " to give.\n\n";
                 }
             }
+            else cout << "You do not have such a thing. Try again.\n\n";
         }
     }
 }
@@ -122,7 +135,4 @@ void Encounter::beginEncounter(float rand) {
     cout << "==========================================================\n\n";
 
     printTurnsLeft();
-
-    cout << endl << endl;
-
 }

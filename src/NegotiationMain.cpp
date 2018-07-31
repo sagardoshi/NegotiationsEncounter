@@ -79,7 +79,6 @@ void printGorilla() {
     cout << "   `-...-'    " << endl << endl;
 }
 
-// Prints help
 void printHelp() {
     cout << "******************* GENERAL HELP *******************\n";
     cout << "[Type \"help\" to see this menu.]\n";
@@ -111,9 +110,6 @@ void printHelp() {
         cout << "solution to this negotiation.]\n";
         cout << "****************************************************\n\n";
     }
-
-
-
 }
 
 void printQuit() {
@@ -367,7 +363,7 @@ void introStart() {
     cout << "She throws up her hands and starts rummaging on the far side of ";
     cout << "her armchair. She emerges shortly thereafter with a basket.\n\n";
 
-    cout << "--Here is your one and only tool. You may use these as you wish ";
+    cout << "--This is all I can give you. You may use these as you wish ";
     cout << "for your negotiations. Ook. However, this is all you have. It ";
     cout << "must last you all three negotiations. Understand? Good.--\n\n";
 
@@ -375,8 +371,8 @@ void introStart() {
 
     player->fillInventory();
 
-    cout << "You have an inventory! At any time, type \"inventory\" in a ";
-    cout << "command prompt to see what you have.\n\n";
+    cout << "[You have an inventory! At any time, type \"inventory\" in a ";
+    cout << "command prompt to see what you have.]\n\n";
 
     cout << "--You look worried!-- She laughs. --Don't look worried! What's ";
     cout << "the worst that can happen?-- Suddenly, Chamoy takes on a wild, ";
@@ -485,10 +481,10 @@ int main() {
     ////////// Level 1 //////////
     level1 = new Encounter(player, porridge, NEGO1, L1_TURNS);
     Issue<float> key1("Porridge's Key", 10.0, 5.0, 15.0);
-    Issue<float> friendlifyPotion("Get Friendlify Potion", 15.0, 10.0, 20.0);
+    // Issue<float> friendlifyPotion("Get Friendlify Potion", 15.0, 10.0, 20.0);
     // Add issues to encounter
     level1->loadFloatIssue(key1);
-    level1->loadFloatIssue(friendlifyPotion);
+    // level1->loadFloatIssue(friendlifyPotion);
 
     ////////// Level 2 //////////
     level2 = new Encounter(player, rhubarb, NEGO2, L2_TURNS);
