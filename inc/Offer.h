@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -18,6 +19,12 @@ private:
 
 public:
     Offer();
+
+    // string = name, int1 = default price, int2 = how many owned
+    map< string, pair<int, int> > inventory;
+
+
+    void addObjToTable(string);
 
     int countIssuesInOffer();
     void printOffer();

@@ -6,32 +6,12 @@
 #include "../inc/PlayerCharacter.h"
 #include "../inc/Negotiator.h"
 #include "../inc/Inventory.h"
+#include "../inc/Offer.h"
 
 using namespace std;
 
 PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a),
                                                       levelReached(0) {
-    // inventory.haspomegranate = false;
-    // inventory.hasKnucklePads = false;
-    // inventory.hasSilverbackPerfume = false;
-    // inventory.hasbasket = false;
-    // inventory.hasGingerCookie = false;
-    // inventory.hasMoneySack = false;
-    // inventory.money = 0;
-
-    // inventory.insert("pomegranate", make_pair(10, 0)));
-    // inventory.insert("knuckle pads", make_pair(15, 0)));
-    // inventory.insert("silverback perfume", make_pair(10, 0)));
-    // inventory.insert("ginger cookie", make_pair(5, 0)));
-    // inventory.insert("coin purse", make_pair(5, 0)));
-    // inventory.insert("basket", make_pair(2, 0)));
-
-    // inventory["pomegranate"] = pomInv{10, 0};
-    // inventory["knuckle pads"] = knuckInv{15, 0};
-    // inventory["silverback perfume"] = silvInv{10, 0};
-    // inventory["ginger cookie"] = gingInv{5, 0};
-    // inventory["coin purse"] = coinInv{5, 0};
-    // inventory["basket"] = baskInv{2, 0};
 
     inventory["pomegranate"] = make_pair(10, 0);
     inventory["knuckle pads"] = make_pair(15, 0);
@@ -62,7 +42,9 @@ void PlayerCharacter::removeFromInventory(string itemName) {
     inventory[itemName].second = 0;
 }
 
-void PlayerCharacter::decrementFromInventory(string itemName) { inventory[itemName].second--;
+void PlayerCharacter::placeInvObjOnTable(string itemName, Offer* onTable) { inventory[itemName].second--;
+    onTable->addObjToTable(itemName);
+
 }
 
 void PlayerCharacter::printHelp() {
@@ -113,10 +95,10 @@ void PlayerCharacter::printInventory() {
         cout << "--" << inventory["pomegranate"].second << " pomegranate\n";
     }
     if (inventory["knuckle pads"].second) {
-        cout << "--" << inventory["knuckle pads"].second << " Set of knuckle pads\n";
+        cout << "--" << inventory["knuckle pads"].second << " set of knuckle pads\n";
     }
     if (inventory["silverback perfume"].second) {
-        cout << "--" << inventory["silverback perfume"].second << " Bottle of silverback perfume\n";
+        cout << "--" << inventory["silverback perfume"].second << " bottle of silverback perfume\n";
     }
     if (inventory["ginger cookie"].second) {
         cout << "--" << inventory["ginger cookie"].second << " ginger cookie";

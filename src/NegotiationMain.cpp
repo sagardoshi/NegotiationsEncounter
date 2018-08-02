@@ -463,11 +463,11 @@ void interact() {
 }
 
 int main() {
-    cout << getRandWeight() << endl;
-    cout << getRandWeight() << endl;
-    cout << getRandWeight() << endl;
-    cout << getRandWeight() << endl;
-    cout << getRandWeight() << endl;
+    // cout << getRandWeight() << endl;
+    // cout << getRandWeight() << endl;
+    // cout << getRandWeight() << endl;
+    // cout << getRandWeight() << endl;
+    // cout << getRandWeight() << endl;
 
     player = new PlayerCharacter("You", MODERATE);
 

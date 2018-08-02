@@ -114,7 +114,7 @@ void Encounter::buildValidOffer(map<string, int> econ) {
                 if (player->inventory[proposal].second) {
                     cout << "You place your " << proposal << " on the table.";
                     cout << "\n\n";
-                    player->decrementFromInventory(proposal);
+                    player->placeInvObjOnTable(proposal, offerOnTheTable);
                 } else {
                     cout << "You have no " << proposal << " to give.\n\n";
                 }

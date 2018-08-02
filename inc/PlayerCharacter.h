@@ -3,6 +3,7 @@
 
 #include "Negotiator.h"
 #include "Inventory.h"
+#include "Offer.h"
 
 #include <string>
 #include <utility>
@@ -13,18 +14,15 @@ class PlayerCharacter: public Negotiator {
 private:
     int levelReached;
 
-    // name: [default price, how many owned]
-
-
-
 public:
     PlayerCharacter(string, float);
 
+    // string = name, int1 = default price, int2 = how many owned
     map< string, pair<int, int> > inventory;
 
     void addToInventory(string, int, int);
     void removeFromInventory(string);
-    void decrementFromInventory(string);
+    void placeInvObjOnTable(string, Offer*);
 
     void enterNegotiation();
 

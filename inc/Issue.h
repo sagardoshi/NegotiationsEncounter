@@ -28,9 +28,9 @@ public:
 
     void printIssue() {
         cout << "Issue: " << getName() << endl;
-        cout << "Min Value: " << getMin() << endl;
-        cout << "Current Value: " << getValue() << endl;
-        cout << "Max Value: " << getMax() << endl << endl;
+        // cout << "Min Value: " << getMin() << endl;
+        // cout << "Current Value: " << getValue() << endl;
+        // cout << "Max Value: " << getMax() << endl << endl;
 
     }
 };
