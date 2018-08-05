@@ -31,14 +31,15 @@ public:
     Encounter(PlayerCharacter*, Negotiator*, int, int);
     ~Encounter();
 
+    // Only to be used at initial loading time
+    void loadFloatIssue(Issue<float>);
+    void loadIntIssue(Issue<int>);
+
+
     int getLevel();
     void useOneTurn();
 
     string saveStandardisedInput(string keyword);
-
-    // Only to be used at initial loading time
-    void loadFloatIssue(Issue<float>);
-    void loadIntIssue(Issue<int>);
 
     void buildValidOffer(map<string, int>);
     int countIssuesInEncounter();
@@ -47,7 +48,7 @@ public:
     void printEncounterIssues();
     void printOfferOnTable();
 
-    void beginEncounter(float);
+    void beginEncounter();
 
 };
 

@@ -20,8 +20,7 @@ private:
 public:
     Offer();
 
-    // string = name, int1 = default price, int2 = how many owned
-    map< string, pair<int, int> > inventory;
+    map<string, int> inventory;
 
 
     void addObjToTable(string);

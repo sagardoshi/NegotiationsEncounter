@@ -75,6 +75,14 @@ string Encounter::saveStandardisedInput(string keyword) {
         i++;
     }
 
+    if (keyword == "1") keyword = "pomegranate";
+    if (keyword == "2") keyword = "knuckle pads";
+    if (keyword == "3") keyword = "silverback perfume";
+    if (keyword == "4") keyword = "ginger cookie";
+    if (keyword == "5") keyword = "coins";
+    if (keyword == "6") keyword = "basket";
+
+
     return keyword;
 }
 
@@ -82,19 +90,21 @@ string Encounter::saveStandardisedInput(string keyword) {
 void Encounter::buildValidOffer(map<string, int> econ) {
 
     string proposal;
+    bool isFirst = true;
 
     for (int i = 0; i < floatIssues.size(); i++) {
         while (true) {
             proposal = "";
 
             // First versus subsequent iterations
-            if (i == 0) {
+            if (isFirst) {
                 cout << "[What do you propose to give for ";
                 cout << floatIssues[i].getName() << "? Or type ";
                 cout << " \"done\" if you have finished.]\n";
+                isFirst = false;
             } else {
                 cout << "[Anything else? Type \"done\" if you have ";
-                cout << " finished.]\n";
+                cout << "finished.]\n";
             }
 
             cout << "Here's what you have in your inventory:\n\n";
@@ -106,12 +116,25 @@ void Encounter::buildValidOffer(map<string, int> econ) {
 
 
             if (proposal == "quit") exit(0);
-            else if (proposal == "done") break;
+            else if (proposal == "done") {
+                // Move on to opponent response
+                cout << "Let us see what " << opponent->getName();
+                cout << "'s response is to your offer:" << endl;
+
+                bool approval = opponent->reactToOffer(offerOnTheTable);
+                if (approval) opponent->acceptTerms();
+                else { // Must return items to inventory first
+                    player->clearTable(offerOnTheTable);
+                    opponent->rejectTerms();
+                }
+
+                break;
+            }
             else if (proposal == "inventory") player->printInventory();
             else if (proposal == "help") player->printHelp();
             // Must be a legit item, though the player may not have it
             else if (player->inventory.count(proposal)) {
-                if (player->inventory[proposal].second) {
+                if (player->inventory[proposal]) {
                     cout << "You place your " << proposal << " on the table.";
                     cout << "\n\n";
                     player->placeInvObjOnTable(proposal, offerOnTheTable);
@@ -121,11 +144,13 @@ void Encounter::buildValidOffer(map<string, int> econ) {
             }
             else cout << "You do not have such a thing. Try again.\n\n";
         }
+
+        isFirst = true; // For the next item, ask afresh
     }
 }
 
 
-void Encounter::beginEncounter(float rand) {
+void Encounter::beginEncounter() {
 
     string opp = opponent->getName();
     transform(opp.begin(), opp.end(), opp.begin(), ::toupper);

@@ -12,7 +12,6 @@ University: Imperial College London
 #include "../inc/Negotiator.h"
 #include "../inc/Encounter.h"
 #include "../inc/PlayerCharacter.h"
-#include "../inc/Inventory.h"
 #include "../inc/Globals.h"
 
 #include <cstdlib>
@@ -22,7 +21,6 @@ University: Imperial College London
 #include <chrono>
 #include <string>
 #include <vector>
-#include <random>
 
 using namespace std;
 
@@ -38,35 +36,24 @@ void createActions() {
     negoActions.push_back("see issues");
     negoActions.push_back("see current offer");
     negoActions.push_back("propose offer");
-    negoActions.push_back("accept terms");
-    negoActions.push_back("walk away");
+    // negoActions.push_back("accept terms");
+    // negoActions.push_back("walk away");
 }
 
 void createEconomy() {
     // name: [default price, how many owned]
+    economy["pomegranate"] = 10;
+    economy["knuckle pads"] = 15;
+    economy["silverback perfume"] = 10;
+    economy["ginger cookie"] = 5;
+    economy["coins"] = 1;
+    economy["basket"] = 2;
 
-
-
-    economy["Pomegranate"] = 10;
-    economy["Knuckle pads"] = 15;
-    economy["Silverback perfume"] = 10;
-    economy["Ginger cookie"] = 5;
-
-    economy["Basket"] = 2;
-
-    economy["Porridge's Key"] = 12;
+    economy["porridge key"] = 30;
 
 
 }
 
-
-// A trivial 0-1 random generator engine from time-based seed
-float getRandWeight() {
-    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-    default_random_engine generator (seed);
-    uniform_int_distribution<int> distribution(1, 100);
-    return distribution(generator)/100.0;
-}
 
 // Prints ASCII art
 void printGorilla() {
@@ -91,23 +78,22 @@ void printHelp() {
     if (inNegotiation) {
         cout << "***************** NEGOTIATION HELP *****************\n";
         cout << "[DURING NEGOTIATION: type \"see turns left\" to see how many ";
-        cout << "rounds remain to conclude the negotiation.]\n";
+        cout << "turns you have left to conclude the negotiation.]\n";
 
-        cout << "[DURING NEGOTIATION: type \"see issues\" to see all ";
-        cout << "issues on the table, along with their min and max possible ";
-        cout << "values.]\n";
+        cout << "[DURING NEGOTIATION: type \"see issues\" to see what you're ";
+        cout << "negotiating over.]\n";
 
         cout << "[DURING NEGOTIATION: type \"see current offer\" to see the ";
         cout << "current offer on the table.]\n";
 
-        cout << "[DURING NEGOTIATION: type \"propose offer\" to make your own ";
-        cout << "offer. You will be prompted for a value for each issue.]\n";
+        cout << "[DURING NEGOTIATION: type \"propose offer\" to use a turn ";
+        cout << "to build your own offer.]\n";
 
-        cout << "[DURING NEGOTIATION: type \"accept terms\" to confirm that you ";
-        cout << "are willing to take the offer currently on the table.]\n";
-
-        cout << "[DURING NEGOTIATION: type \"walk away\" if you see no possible ";
-        cout << "solution to this negotiation.]\n";
+        // cout << "[DURING NEGOTIATION: type \"accept terms\" to confirm that ";
+        // cout << "you are willing to take the offer currently on the table.]\n";
+        //
+        // cout << "[DURING NEGOTIATION: type \"walk away\" if you see no ";
+        // cout << "possible solution to this negotiation.]\n";
         cout << "****************************************************\n\n";
     }
 }
@@ -147,11 +133,15 @@ void printHowToNegotiate() {
     cout << "[If there is an offer currently on the table, type \"see offer\" ";
     cout << "to see it.]\n\n";
 
-    cout << "[The core of the negotiation is to propose and respond to offers. ";
-    cout << "In order to do that here, you can type \"propose offer\" to craft ";
-    cout << "and send one of your own. You can also type \"accept terms\" to ";
-    cout << "take the current offer on the table or \"walk away\" if you ";
-    cout << "do not think an agreement is possible.]\n\n";
+    cout << "[The core of the negotiation is to propose tantalising offers ";
+    cout << "to your opponent. ";
+    cout << "In order to do that here, you can type \"propose offer\" to ";
+    cout << "craft one by selecting items from your inventory to package ";
+    cout << "together into an offer and send it.]\n\n";
+
+    // cout << " You can also type \"accept terms\" to ";
+    // cout << "take the current offer on the table or \"walk away\" if you ";
+    // cout << "do not think an agreement is possible.]\n\n";
 
     cout << "[The help menu now offers reminders of what commands to select ";
     cout << "during a negotiation.]\n";
@@ -437,7 +427,7 @@ void interact() {
     // Progress to Level 1
     currentStage = l1;
     l1Start();
-    level1->beginEncounter(getRandWeight());
+    level1->beginEncounter();
 
 
 
@@ -463,11 +453,6 @@ void interact() {
 }
 
 int main() {
-    // cout << getRandWeight() << endl;
-    // cout << getRandWeight() << endl;
-    // cout << getRandWeight() << endl;
-    // cout << getRandWeight() << endl;
-    // cout << getRandWeight() << endl;
 
     player = new PlayerCharacter("You", MODERATE);
 
@@ -480,11 +465,8 @@ int main() {
 
     ////////// Level 1 //////////
     level1 = new Encounter(player, porridge, NEGO1, L1_TURNS);
-    Issue<float> key1("Porridge's Key", 10.0, 5.0, 15.0);
-    // Issue<float> friendlifyPotion("Get Friendlify Potion", 15.0, 10.0, 20.0);
-    // Add issues to encounter
+    Issue<float> key1("Porridge's Key", 30.0, 15.0, 45.0);
     level1->loadFloatIssue(key1);
-    // level1->loadFloatIssue(friendlifyPotion);
 
     ////////// Level 2 //////////
     level2 = new Encounter(player, rhubarb, NEGO2, L2_TURNS);
@@ -497,6 +479,12 @@ int main() {
     delete porridge;
     delete rhubarb;
     delete chamoy;
+
+    delete level1;
+    delete level2;
+    delete level3;
+
+    delete player;
 
     return 0;
 

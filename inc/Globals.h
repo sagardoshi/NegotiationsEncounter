@@ -13,9 +13,9 @@ const float FRIENDLY = 0.8;
 const float GRUFF = 0.2;
 const float MODERATE = 0.5;
 
-const int L1_TURNS = 5;
-const int L2_TURNS = 10;
-const int L3_TURNS = 12;
+const int L1_TURNS = 3;
+const int L2_TURNS = 5;
+const int L3_TURNS = 7;
 
 const int NEGO1 = 1;
 const int NEGO2 = 2;

@@ -2,7 +2,6 @@
 #define PLAYER_CHARACTER_H
 
 #include "Negotiator.h"
-#include "Inventory.h"
 #include "Offer.h"
 
 #include <string>
@@ -17,12 +16,12 @@ private:
 public:
     PlayerCharacter(string, float);
 
-    // string = name, int1 = default price, int2 = how many owned
-    map< string, pair<int, int> > inventory;
+    map<string, int> inventory;
 
-    void addToInventory(string, int, int);
+    void addToInventory(string, int);
     void removeFromInventory(string);
     void placeInvObjOnTable(string, Offer*);
+    void clearTable(Offer*);
 
     void enterNegotiation();
 
