@@ -25,7 +25,8 @@ public:
 
     void addObjToTable(string);
 
-    int countIssuesInOffer();
+    int inventoryCount();
+    int issueCount();
     void printOffer();
 
     int getReqdFloatIssueCount();

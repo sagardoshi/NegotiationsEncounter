@@ -18,11 +18,10 @@ private:
     string topic;
     int level;
     int turns;
-    bool isPCTurn;
 
     PlayerCharacter* player;
     Negotiator* opponent;
-    Offer* offerOnTheTable;
+    Offer* offer;
 
     vector< Issue<float> > floatIssues;
     vector< Issue<int> > intIssues;
@@ -42,11 +41,11 @@ public:
     string saveStandardisedInput(string keyword);
 
     void buildValidOffer(map<string, int>);
-    int countIssuesInEncounter();
+    int issueCount();
 
-    void printTurnsLeft();
-    void printEncounterIssues();
+    void printTurns();
     void printOfferOnTable();
+    void printIssues();
 
     void beginEncounter();
 

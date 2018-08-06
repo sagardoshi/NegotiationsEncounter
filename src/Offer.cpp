@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <map>
+// #include <numeric>
+// #include <utility>
 
 using namespace std;
 
@@ -18,7 +20,17 @@ Offer::Offer() : requiredFloatIssues(0), requiredIntIssues(0) {
 }
 
 
-int Offer::countIssuesInOffer() {
+int Offer::inventoryCount() {
+    map<string, int>::iterator it;
+    int totalItems = 0;
+    for (it = inventory.begin(); it != inventory.end(); it++) {
+        totalItems += it->second;
+    }
+
+    return totalItems;
+}
+
+int Offer::issueCount() {
     return (floatIssues.size() + intIssues.size());
 }
 
@@ -29,29 +41,32 @@ void Offer::addObjToTable(string itemName) {
 
 
 void Offer::printOffer() {
-    cout << "On the table, you are offering: \n";
-    if (inventory["pomegranate"]) {
-        cout << "-- " << inventory["pomegranate"] << " pomegranate\n";
-    }
-    if (inventory["knuckle pads"]) {
-        cout << "-- " << inventory["knuckle pads"] << " set of knuckle pads\n";
-    }
-    if (inventory["silverback perfume"]) {
-        cout << "-- " << inventory["silverback perfume"] << " bottle of silverback perfume\n";
-    }
-    if (inventory["ginger cookie"]) {
-        cout << "-- " << inventory["ginger cookie"] << " ginger cookie";
-        cout << (inventory["ginger cookie"] > 1 ? "s" : "") << endl;
-    }
-    if (inventory["coins"]) {
-        cout << "-- " << inventory["coins"] << " coin";
-        cout << (inventory["coins"] == 1 ? "" : "s") << endl;
-    }
-    if (inventory["basket"]) {
-        cout << "-- and 1 basket to put it all in.\n";
-    }
 
-    cout << "\n\n";
+    if (inventoryCount() == 0) cout << "There is nothing on the table.\n\n";
+    else {
+        cout << "***************** ON THE TABLE *****************\n";
+        if (inventory["pomegranate"]) {
+            cout << "-- " << inventory["pomegranate"] << " pomegranate\n";
+        }
+        if (inventory["knuckle pads"]) {
+            cout << "-- " << inventory["knuckle pads"] << " set of knuckle pads\n";
+        }
+        if (inventory["silverback perfume"]) {
+            cout << "-- " << inventory["silverback perfume"] << " bottle of silverback perfume\n";
+        }
+        if (inventory["ginger cookie"]) {
+            cout << "-- " << inventory["ginger cookie"] << " ginger cookie";
+            cout << (inventory["ginger cookie"] > 1 ? "s" : "") << endl;
+        }
+        if (inventory["coins"]) {
+            cout << "-- " << inventory["coins"] << " coin";
+            cout << (inventory["coins"] == 1 ? "" : "s") << endl;
+        }
+        if (inventory["basket"]) {
+            cout << "-- and 1 basket to put it all in." << endl;
+        }
+        cout << "************************************************\n\n";
+    }
 }
 
 

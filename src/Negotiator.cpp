@@ -61,7 +61,6 @@ void Negotiator::fillPreferences() {
 
 
 bool Negotiator::reactToOffer(Offer* offer) {
-    offer->printOffer();
     map<string, int>::iterator it;
 
     float sum = 0.0;
@@ -80,12 +79,14 @@ bool Negotiator::reactToOffer(Offer* offer) {
             // cout << "Porridge's Value: ";
             // cout << it->first << ": ";
             // Porridge's weighting * base value * quantity offered
-            // cout << prefs[it->first] * economy[it->first] * it->second << endl;
+        // cout << prefs[it->first] * economy[it->first] * it->second << endl;
         }
     }
 
-    cout << "\nTotal value of offer to Porridge: " << sum << endl;
-    cout << "Value of key to Porridge: " << valuePorridgeKey << endl << endl;
+    cout << "------- DEBUG INFO -------\n";
+    cout << "Total value of offer to Porridge: " << sum << endl;
+    cout << "Value of key to Porridge: " << valuePorridgeKey << endl;
+    cout << "------- DEBUG INFO -------\n\n";
 
     generosityOfOffer = sum/valuePorridgeKey;
 
@@ -102,21 +103,65 @@ bool Negotiator::reactToOffer(Offer* offer) {
 
 }
 
-void Negotiator::walkAway() {}
+void Negotiator::walkAway() {
+    if (name == "Porridge") {
+        cout << "The little gorilla screws his face up in frustration. ";
+        cout << "\"Grandma Chamoy told me I'd be seeing someone who ";
+        cout << "came with interesting goodies to taste and to help ";
+        cout << "me feel more grown-up. But you just came with boring ";
+        cout << "stuff!\"\n\n";
+
+        cout << "You shrug your shoulders, but he just ";
+        cout << "balls his little fists in rage. ";
+        cout << "\"This was all supposed to go so much better! ";
+        cout << "He looks away from you, still seething.\n\n";
+
+        cout << "Then, without ";
+        cout << "warning, he snaps his head back up to you, staring you ";
+        cout << "down. He looks side to side, suddenly conspiratorial. ";
+        cout << "With one padded finger, he beckons you toward him.\n\n";
+
+        cout << "You lean down to get eye to eye with him. He cups his ";
+        cout << "hand and whispers something soft to you. \"Grandma ";
+        cout << "Chamoy taught me to do this if my negotiations ";
+        cout << "turn out bad, like this. Hope it doesn't hurt too ";
+        cout << "much.\"\n\n";
+
+        cout << "Before you realise it, he has spread his arms wide, to ";
+        cout << "either side of ";
+        cout << "your head. As you begin to panic and back away, it is ";
+        cout << "already too late. Porridge brings his arms ";
+        cout << "together with shocking speed, clapping your ears and ";
+        cout << "temples. You feel a sharp pain, and then nothing. ";
+        cout << "The blackness gulps you down.\n\n";
+
+        cout << "You have been killed by Porridge the Gorilla.\n\n";
+
+        cout << "Perhaps you might do better in another life if you keep ";
+        cout << "a closer eye on your turns left and offer items more ";
+        cout << "attractive to Porridge. Even young gorillas are far ";
+        cout << "stronger than you, flimsy bipedal human.\n\n";
+
+        cout << "Goodbye, and happy haggling!\n\n";
+
+        exit(0);
+
+
+    }
+}
 
 void Negotiator::acceptTerms() {
     cout << "Your opponent has accepted the offer on the table. ";
     cout << "Congratulations!\n\n";
 }
 
-void Negotiator::rejectTerms() {
+void Negotiator::rejectTerms(int turnsLeft) {
+    if (turnsLeft == 0) walkAway();
+
     cout << "Your opponent rejects the offer on the table. Try again, ";
-    cout << "but don't forget that you only have a few turns before your ";
-    cout << "opponent loses patience.\n\n";
-
-
-
-
+    cout << "but don't forget that you only have " << turnsLeft;
+    cout << (turnsLeft == 1 ? " turn" : " turns") << " left ";
+    cout << "before " << name << " loses patience.\n\n";
 }
 
 

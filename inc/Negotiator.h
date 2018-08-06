@@ -30,7 +30,7 @@ public:
     void fillPreferences();
     bool reactToOffer(Offer*);
 
-    void rejectTerms();
+    void rejectTerms(int);
     void acceptTerms();
     void walkAway();
 

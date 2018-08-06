@@ -34,7 +34,7 @@ void PlayerCharacter::fillInventory() {
 }
 
 void PlayerCharacter::addToInventory(string itemName, int quantity) {
-    inventory[itemName] = quantity;
+    inventory[itemName] += quantity;
 }
 
 void PlayerCharacter::removeFromInventory(string itemName) {
@@ -49,85 +49,74 @@ void PlayerCharacter::clearTable(Offer* table) {
     map<string, int>::iterator it;
     for (it = table->inventory.begin(); it != table->inventory.end(); it++) {
         if (it->second > 0) {
-            table->inventory[it->first] = 0;
             addToInventory(it->first, it->second);
+            table->inventory[it->first] = 0;
         }
     }
 }
 
 void PlayerCharacter::printHelp() {
     cout << "******************* GENERAL HELP *******************\n";
-    cout << "[Type \"help\" to see this menu.]\n";
-    cout << "[Type \"quit\" to quit the game.]\n";
-    cout << "[Type \"inventory\" to see what you currently hold.]\n";
-    cout << "[Type \"negotiate\" when prompted to start a level.]\n";
+    cout << "[help: see this menu]\n";
+    cout << "[quit: exit the game]\n";
+    cout << "[inventory: see what you currently hold]\n";
+    cout << "[negotiate: to start a level (when prompted)]\n";
     cout << "****************************************************\n\n";
 
-    cout << "***************** NEGOTIATION HELP *****************\n";
-    cout << "[DURING NEGOTIATION: type \"see turns left\" to see how many ";
-    cout << "rounds remain to conclude the negotiation.]\n";
-
-    cout << "[DURING NEGOTIATION: type \"see issues\" to see all ";
-    cout << "issues on the table, along with their min and max possible ";
-    cout << "values.]\n";
-
-    cout << "[DURING NEGOTIATION: type \"see current offer\" to see the ";
-    cout << "current offer on the table.]\n";
-
-    cout << "[DURING NEGOTIATION: type \"propose offer\" to use a turn ";
-    cout << "to build your own offer.]\n";
-
-    // cout << "[DURING NEGOTIATION: type \"accept terms\" to confirm that you ";
-    // cout << "are willing to take the offer currently on the table.]\n";
-    //
-    // cout << "[DURING NEGOTIATION: type \"walk away\" if you see no possible ";
-    // cout << "solution to this negotiation.]\n";
+    cout << "**************** DURING NEGOTIATION ****************\n";
+    cout << "[turns: see how many turns you have left]\n";
+    cout << "[issues: see what you're negotiating over]\n";
+    cout << "[propose offer: use a turn to build your own offer]\n";
     cout << "****************************************************\n\n";
 }
 
-void PlayerCharacter::printInventory() {
-    cout << "***************** INVENTORY ****************\n";
+void PlayerCharacter::printInventory(bool forProposal) {
+
     if (!inventory["pomegranate"] &&
         !inventory["knuckle pads"] &&
         !inventory["silverback perfume"] &&
         !inventory["ginger cookie"] &&
         !inventory["coins"] &&
         !inventory["basket"]) {
+        cout << "***************** INVENTORY ****************\n";
         cout << "You have nothing in your inventory.\n\n";
         cout << "********************************************\n\n";
         return;
     }
 
-    cout << "[You may add the following items from your inventory to the ";
-    cout << "table one by one by typing the associated number on the left:] \n";
+    if (forProposal) {
+        cout << "***************** PROPOSE OFFER ****************\n";
+        cout << "[To build an offer, add your items by number, one by one.]\n";
+        cout << "[Type \"done\" when you don't wish to add any more.]\n\n";
+    } else cout << "***************** INVENTORY ****************\n";
     if (inventory["pomegranate"]) {
-        cout << "[1: Pomegranate, " << inventory["pomegranate"];
-        cout << " owned]" << endl;
+        cout << (forProposal ? "[1: " : "[") << "Pomegranate, ";
+        cout << inventory["pomegranate"] << " owned]" << endl;
     }
     if (inventory["knuckle pads"]) {
-        cout << "[2: Knuckle Pads, " << inventory["knuckle pads"];
-        cout << " owned]" << endl;
+        cout << (forProposal ? "[2: " : "[") << "Knuckle Pads, ";
+        cout << inventory["knuckle pads"] << " owned]" << endl;
     }
     if (inventory["silverback perfume"]) {
-        cout << "[3: Silverback Perfume, ";
+        cout << (forProposal ? "[3: " : "[") << "Silverback Perfume, ";
         cout << inventory["silverback perfume"] << " owned]" << endl;
     }
     if (inventory["ginger cookie"]) {
-        cout << "[4: Ginger Cookie";
+        cout << (forProposal ? "[4: " : "[") << "Ginger Cookie";
         cout << (inventory["ginger cookie"] > 1 ? "s" : "");
         cout << ", " << inventory["ginger cookie"] << " owned]" << endl;
 
     }
     if (inventory["coins"]) {
-        cout << "[5: Coin";
+        cout << (forProposal ? "[5: " : "[") << "Coin";
         cout << (inventory["coins"] > 1 ? "s" : "");
         cout << ", " << inventory["coins"] << " owned]" << endl;
     }
     if (inventory["basket"]) {
-        cout << "[6: Basket, " << inventory["basket"];
-        cout << " owned]" << endl;
+        cout << (forProposal ? "[6: " : "[") << "Basket, ";
+        cout << inventory["basket"] << " owned]" << endl;
     }
+    cout << "************************************************\n\n";
 
-    cout << "********************************************\n\n";
 
 }

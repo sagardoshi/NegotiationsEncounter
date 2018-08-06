@@ -27,7 +27,7 @@ public:
 
     void fillInventory();
     void checkInventory();
-    void printInventory();
+    void printInventory(bool = false);
 
     void printHelp();
 

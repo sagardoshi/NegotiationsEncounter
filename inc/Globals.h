@@ -25,7 +25,7 @@ const int NEGO3 = 3;
 map<string, int> economy;
 
 // Key pointers used across functions
-Encounter* currentEncounter = nullptr;
+Encounter* currNego = nullptr;
 Encounter* level1 = nullptr;
 Encounter* level2 = nullptr;
 Encounter* level3 = nullptr;
@@ -40,8 +40,8 @@ vector<string> negoActions;
 enum dir {up, down, left, right};
 enum stage {intro, l1, l2, l3, ending};
 string uInput = "";
-bool negotiationPossible = false;
-bool inNegotiation = false;
+bool negoPossible = false;
+bool inNego = false;
 
 
 #endif

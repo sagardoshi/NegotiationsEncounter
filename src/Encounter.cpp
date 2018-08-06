@@ -12,52 +12,37 @@ using namespace std;
 
 
 Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
-                level(l), turns(t), isPCTurn(true), player(pc), opponent(opp) {
-
-    offerOnTheTable = new Offer(); // Create empty offer
+                     level(l), turns(t), player(pc), opponent(opp) {
+        offer = new Offer(); // Create empty offer
 }
 
-Encounter::~Encounter() {
-    delete offerOnTheTable;
-}
+Encounter::~Encounter()             { delete offer;            }
+int Encounter::getLevel()           { return level;                      }
+void Encounter::useOneTurn()        { turns--;                           }
+void Encounter::printTurns()        { cout << turns << " turns left.\n"; }
+void Encounter::printOfferOnTable() { offer->printOffer();               }
 
-int Encounter::getLevel()       { return level; }
-
-void Encounter::useOneTurn() {
-    turns--;
-    isPCTurn = !isPCTurn;
-}
 
 void Encounter::loadFloatIssue(Issue<float> issueToAdd) {
     floatIssues.push_back(issueToAdd);
-    offerOnTheTable->loadFloatIssue(issueToAdd);
+    offer->loadFloatIssue(issueToAdd);
 }
 
 void Encounter::loadIntIssue(Issue<int> issueToAdd) {
     intIssues.push_back(issueToAdd);
-    offerOnTheTable->loadIntIssue(issueToAdd);
+    offer->loadIntIssue(issueToAdd);
 }
 
 
-int Encounter::countIssuesInEncounter() {
+int Encounter::issueCount() {
     return (floatIssues.size() + intIssues.size());
 }
 
-void Encounter::printTurnsLeft() {
 
-    cout << "Total turns left (between both of you): " << turns << endl;
-    cout << (isPCTurn ? "It is your turn." : "It is your opponent's turn.") << endl;
-
-}
-
-void Encounter::printEncounterIssues() {
+void Encounter::printIssues() {
     // Currently just going through floats first and then ints
     for (int i = 0; i < floatIssues.size(); i++) floatIssues[i].printIssue();
     for (int j = 0; j < intIssues.size(); j++) intIssues[j].printIssue();
-}
-
-void Encounter::printOfferOnTable() {
-    offerOnTheTable->printOffer();
 }
 
 // Gets simple, unverified user input and converts to lowercase
@@ -82,70 +67,53 @@ string Encounter::saveStandardisedInput(string keyword) {
     if (keyword == "5") keyword = "coins";
     if (keyword == "6") keyword = "basket";
 
-
     return keyword;
 }
 
 
 void Encounter::buildValidOffer(map<string, int> econ) {
 
-    string proposal;
-    bool isFirst = true;
+    string prop;
+    bool forProp = true;
 
     for (int i = 0; i < floatIssues.size(); i++) {
         while (true) {
-            proposal = "";
+            prop = "";
+            player->printInventory(forProp);
+            prop = saveStandardisedInput(prop);
 
-            // First versus subsequent iterations
-            if (isFirst) {
-                cout << "[What do you propose to give for ";
-                cout << floatIssues[i].getName() << "? Or type ";
-                cout << " \"done\" if you have finished.]\n";
-                isFirst = false;
-            } else {
-                cout << "[Anything else? Type \"done\" if you have ";
-                cout << "finished.]\n";
-            }
+            if (prop == "quit") exit(0);
+            else if (prop == "inventory") player->printInventory();
+            else if (prop == "help") player->printHelp();
+            else if (prop == "on table") offer->printOffer();
+            else if (prop == "done") {
+                offer->printOffer();
 
-            cout << "Here's what you have in your inventory:\n\n";
-            player->printInventory();
-
-
-            proposal = saveStandardisedInput(proposal);
-
-
-
-            if (proposal == "quit") exit(0);
-            else if (proposal == "done") {
                 // Move on to opponent response
-                cout << "Let us see what " << opponent->getName();
-                cout << "'s response is to your offer:" << endl;
+                cout << opponent->getName() << "'s response:" << endl;
 
-                bool approval = opponent->reactToOffer(offerOnTheTable);
+                bool approval = opponent->reactToOffer(offer);
                 if (approval) opponent->acceptTerms();
                 else { // Must return items to inventory first
-                    player->clearTable(offerOnTheTable);
-                    opponent->rejectTerms();
+                    player->clearTable(offer);
+                    opponent->rejectTerms(turns);
                 }
-
                 break;
             }
-            else if (proposal == "inventory") player->printInventory();
-            else if (proposal == "help") player->printHelp();
-            // Must be a legit item, though the player may not have it
-            else if (player->inventory.count(proposal)) {
-                if (player->inventory[proposal]) {
-                    cout << "You place your " << proposal << " on the table.";
-                    cout << "\n\n";
-                    player->placeInvObjOnTable(proposal, offerOnTheTable);
-                } else {
-                    cout << "You have no " << proposal << " to give.\n\n";
-                }
-            }
-            else cout << "You do not have such a thing. Try again.\n\n";
-        }
 
-        isFirst = true; // For the next item, ask afresh
+            // Must be a legit item, though the player may not have it
+            else if (player->inventory.count(prop)) {
+                if (player->inventory[prop]) {
+                    cout << "You place your " << prop << " on the table.";
+                    cout << "\n\n";
+                    player->placeInvObjOnTable(prop, offer);
+                } else {
+                    cout << "You have no " << prop << " to give.\n\n";
+                }
+                offer->printOffer();
+            }
+            else cout << "You have no such thing. Try again.\n\n";
+        }
     }
 }
 
@@ -159,5 +127,5 @@ void Encounter::beginEncounter() {
     cout << "NEGOTIATE WITH " << opp << endl;
     cout << "==========================================================\n\n";
 
-    printTurnsLeft();
+    player->printHelp();
 }

@@ -27,17 +27,14 @@ using namespace std;
 void createActions() {
     // Acceptable actions more generally
     genActions.push_back("help");
-    genActions.push_back("inventory");
     genActions.push_back("quit");
+    genActions.push_back("inventory");
     genActions.push_back("negotiate");
 
     // Negotiation actions
-    negoActions.push_back("see turns left");
-    negoActions.push_back("see issues");
-    negoActions.push_back("see current offer");
+    negoActions.push_back("turns");
+    negoActions.push_back("issues");
     negoActions.push_back("propose offer");
-    // negoActions.push_back("accept terms");
-    // negoActions.push_back("walk away");
 }
 
 void createEconomy() {
@@ -68,37 +65,23 @@ void printGorilla() {
 
 void printHelp() {
     cout << "******************* GENERAL HELP *******************\n";
-    cout << "[Type \"help\" to see this menu.]\n";
-    cout << "[Type \"quit\" to quit the game.]\n";
-    cout << "[Type \"inventory\" to see what you currently hold.]\n";
-    cout << "[Type \"negotiate\" when prompted to start a level.]\n";
+    cout << "[help: see this menu]\n";
+    cout << "[quit: exit the game]\n";
+    cout << "[inventory: see what you currently hold]\n";
+    cout << "[negotiate: to start a level (when prompted)]\n";
     cout << "****************************************************\n\n";
 
 
-    if (inNegotiation) {
-        cout << "***************** NEGOTIATION HELP *****************\n";
-        cout << "[DURING NEGOTIATION: type \"see turns left\" to see how many ";
-        cout << "turns you have left to conclude the negotiation.]\n";
-
-        cout << "[DURING NEGOTIATION: type \"see issues\" to see what you're ";
-        cout << "negotiating over.]\n";
-
-        cout << "[DURING NEGOTIATION: type \"see current offer\" to see the ";
-        cout << "current offer on the table.]\n";
-
-        cout << "[DURING NEGOTIATION: type \"propose offer\" to use a turn ";
-        cout << "to build your own offer.]\n";
-
-        // cout << "[DURING NEGOTIATION: type \"accept terms\" to confirm that ";
-        // cout << "you are willing to take the offer currently on the table.]\n";
-        //
-        // cout << "[DURING NEGOTIATION: type \"walk away\" if you see no ";
-        // cout << "possible solution to this negotiation.]\n";
+    if (inNego) {
+        cout << "**************** DURING NEGOTIATION ****************\n";
+        cout << "[turns: see how many turns you have left]\n";
+        cout << "[issues: see what you're negotiating over]\n";
+        cout << "[propose offer: use a turn to build your own offer]\n";
         cout << "****************************************************\n\n";
     }
 }
 
-void printQuit() {
+void quitGame() {
     cout << "******************* QUIT *******************\n";
     cout << "As you whisper the word \"quit\", suddenly a powerful wind ";
     cout << "takes you up, up, and away, out of the House of Negotiations ";
@@ -108,13 +91,14 @@ void printQuit() {
     cout << "pomegranate seed falls to the ground.\n\n";
     cout << "Thank you for playing! Until next time.\n";
     cout << "********************************************\n\n\n\n";
+    exit(0);
 }
 
 void printHowToNegotiate() {
     cout << "********************* HOW TO NEGOTIATE *********************\n";
     cout << "[For your first negotiation, your goal is to get a key from ";
     cout << "Porridge, the boy gorilla. But he probably won't just ";
-    cout << "give you what you want for free... You have to make a compromise.]\n\n";
+    cout << "give you what you want for free... You have to find a trade.]\n\n";
 
     cout << "[Each opponent has a distinct personality. Porridge, for example, ";
     cout << "is a slightly impulsive, but friendly kid. He responds well if ";
@@ -123,25 +107,18 @@ void printHowToNegotiate() {
 
     cout << "[You have a limited number of rounds before your opponent gets ";
     cout << "impatient and gives up on you. At any time, you can type ";
-    cout << "\"see turns left\" to check your deadline.]\n\n";
+    cout << "\"turns\" to check your deadline.]\n\n";
 
     cout << "[In every negotiation, there are one or more issues on the ";
     cout << "table. Each issue can take certain values, between a minimum and ";
     cout << "a maximum. During a negotiation, in order to see the issues on ";
-    cout << "the table and their values, you need only type \"see issues\".]\n\n";
-
-    cout << "[If there is an offer currently on the table, type \"see offer\" ";
-    cout << "to see it.]\n\n";
+    cout << "the table and their values, you need only type \"issues\".]\n\n";
 
     cout << "[The core of the negotiation is to propose tantalising offers ";
     cout << "to your opponent. ";
     cout << "In order to do that here, you can type \"propose offer\" to ";
     cout << "craft one by selecting items from your inventory to package ";
     cout << "together into an offer and send it.]\n\n";
-
-    // cout << " You can also type \"accept terms\" to ";
-    // cout << "take the current offer on the table or \"walk away\" if you ";
-    // cout << "do not think an agreement is possible.]\n\n";
 
     cout << "[The help menu now offers reminders of what commands to select ";
     cout << "during a negotiation.]\n";
@@ -151,16 +128,16 @@ void printHowToNegotiate() {
 
 // Rejects input not in list of acceptable verbs
 bool isValidInput() {
-    if (inNegotiation) {
+    if (find(genActions.begin(), genActions.end(), uInput)
+                                      != genActions.end()) {
+        return true;
+    }
+
+    if (inNego) {
         if (find(negoActions.begin(), negoActions.end(), uInput)
                                             != genActions.end()) {
             return true;
         }
-    }
-
-    if (find(genActions.begin(), genActions.end(), uInput)
-                                      != genActions.end()) {
-        return true;
     }
     return false;
 }
@@ -189,50 +166,18 @@ string getStandardisedInput() {
 string getUserInput() {
     string uInput = getStandardisedInput();
 
-    // First check for interaction-ending keywords
-    if (negotiationPossible && uInput == "negotiate") return uInput;
-    if (uInput == "quit") {
-        printQuit();
-        exit(0);
+    // First check for general keywords
+    if (uInput == "quit") quitGame();
+    else if (uInput == "negotiate" && negoPossible) return uInput;
+    else if (uInput == "help") printHelp();
+    else if (uInput == "inventory") player->printInventory();
+    else if (uInput == "turns" && inNego) currNego->printTurns();
+    else if (uInput == "issues" && inNego) currNego->printIssues();
+    else if (uInput == "propose offer" && inNego) {
+            currNego->buildValidOffer(economy);
+            currNego->useOneTurn();
     }
-
-    // Keywords if in a negotiation
-    if (inNegotiation) {
-        if (uInput == "see turns left") {
-            currentEncounter->printTurnsLeft();
-
-        } else if (uInput == "see issues") {
-            currentEncounter->printEncounterIssues();
-
-        } else if (uInput == "see current offer") {
-            currentEncounter->printOfferOnTable();
-
-        } else if (uInput == "propose offer") {
-            currentEncounter->buildValidOffer(economy);
-            currentEncounter->useOneTurn();
-
-        } else if (uInput == "accept terms") {
-            // TODO: run player->acceptTerms()
-            cout << "You have accepted the terms." << endl;
-            currentEncounter->useOneTurn();
-            return uInput;
-
-        } else if (uInput == "walk away") {
-            // TODO: run player->walkAway()
-            cout << "You have walked away from the table." << endl;
-            currentEncounter->useOneTurn();
-            return uInput;
-        }
-    }
-
-    // Remaining general keywords (except "negotiate" and "quit")
-    if (uInput == "help") {
-        printHelp();
-
-    } else if (uInput == "inventory") {
-        player->printInventory();
-
-    } else if (!isValidInput()) {
+    else if (!isValidInput()) {
         cout << "\n[Invalid input. Try again. Type \"help\" for ";
         cout << "instructions.]\n\n";
     }
@@ -245,30 +190,30 @@ string getUserInput() {
 void tutorialChoices(string whichChoice) {
 
     if (whichChoice == "firstTutorialQuestion") {
-        cout << "[Type \"1\" for \"Uh, I'm not really sure...\"]\n";
-        cout << "[Type \"2\" for \"To meet you!\"]\n";
-        cout << "[Type \"3\" for \"It's a long story involving hot air balloons and lots of padding...\"]\n\n";
+        cout << "[1: \"Uh, I'm not really sure...\"]\n";
+        cout << "[2: \"To meet you!\"]\n";
+        cout << "[3: \"It's a long story involving hot air balloons and lots of padding...\"]\n\n";
 
         getStandardisedInput();
         while (uInput != "1" && uInput != "2" && uInput != "3") {
             cout << "[Invalid input. Try again.]\n\n";
-            cout << "[Type \"1\" for \"Uh, I'm not really sure...\"]\n";
-            cout << "[Type \"2\" for \"To meet you!\"]\n";
-            cout << "[Type \"3\" for \"It's a long story involving hot air balloons and lots of padding...\"]\n\n";
+            cout << "[1: \"Uh, I'm not really sure...\"]\n";
+            cout << "[2: \"To meet you!\"]\n";
+            cout << "[3: \"It's a long story involving hot air balloons and lots of padding...\"]\n\n";
 
             getStandardisedInput();
         }
     }
 
     if (whichChoice == "secondTutorialQuestion") {
-        cout << "[Type \"1\" for \"Yeah, sure, sounds fun!\"]\n";
-        cout << "[Type \"2\" for \"You're a bunch of weirdos! No way!\"]\n\n";
+        cout << "[1: \"Yeah, sure, sounds fun!\"]\n";
+        cout << "[2: \"You're a bunch of weirdos! No way!\"]\n\n";
 
         getStandardisedInput();
         while (uInput != "1" && uInput != "2") {
             cout << "[Invalid input. Try again.]\n\n";
-            cout << "[Type \"1\" for \"Yeah, sure, sounds fun!\"]\n";
-            cout << "[Type \"2\" for \"You're a bunch of weirdos! No way!\"]\n\n";
+            cout << "[1: \"Yeah, sure, sounds fun!\"]\n";
+            cout << "[2: \"You're a bunch of weirdos! No way!\"]\n\n";
 
             getStandardisedInput();
         }
@@ -294,49 +239,50 @@ void introStart() {
     cout << "the situation. Suddenly, her lips widen into ";
     cout << "a broad, free smile.\n\n";
 
-    cout << "--Hello there, young human! How did you get in our house?––\n\n";
+    cout << "\"Hello there, young human! How did you get in our house?\"\n\n";
 
 
     tutorialChoices("firstTutorialQuestion");
     uInput = ""; // Reset uInput
 
-    cout << "\n--Huh! Weird! Well, no matter. Welcome to the House of ";
-    cout << "Negotiations! My name is Chamoy. Ook ook.--\n\n";
+    cout << "\n\"Huh! Weird! Well, no matter. Welcome to the House of ";
+    cout << "Negotiations! My name is Chamoy. Ook ook.\"\n\n";
 
     cout << "She stands up, holding her bulk back on two powerful legs. She ";
     cout << "extends a muscular arm to you for a handshake and daintily holds ";
     cout << " your ";
     cout << "hand as if it were a delicate teacup. She steps back again.\n\n";
 
-    cout << "--Well, friend, the rules of the House are simple. Given the damage ";
+    cout << "\"Well, friend, the rules of the House are simple. Given the damage ";
     cout << "you have caused, you need to pay it off for us. Earn your way ";
     cout << "back to your normal life by winning keys from at least three members ";
-    cout << "of my family.--\n\n";
+    cout << "of my family.\"\n\n";
 
-    cout << "--How to gain the keys, you ask? Oooooook.--\n\n";
+    cout << "\"How to gain the keys, you ask? Oooooook.\"\n\n";
 
-    cout << "--Simple! Follow our favourite pastime! Haggle with us! ";
+    cout << "\"Simple! Follow our favourite pastime! Haggle with us! ";
     cout << "If you can convince three of us to give you a key, you can head ";
-    cout << "back to your normal life, no harm, no foul. Ooook.--\n\n";
+    cout << "back to your normal life, no harm, no foul. Ooook.\"\n\n";
 
-    cout << "--What do you say? Sounds like fun, right?--\n\n";
+    cout << "\"What do you say? Sounds like fun, right?\"\n\n";
 
 
     tutorialChoices("secondTutorialQuestion");
 
     if (uInput == "1") {
         cout << "Chamoy rubs her palms together in anticipation.\n\n";
-        cout << "--Excellent!! This will be great fun. Ook ook!--\n\n";
+        cout << "\"Excellent!! This will be great fun. Ook ook!\"\n\n";
     }
     if (uInput == "2") {
         cout << "Chamoy rubs her chin thoughtfully.\n\n";
 
-        cout << "--Okay, if you say so!-- she says, shrugging her shoulders. ";
-        cout << "--We have another way of making sure you learn your lesson.--\n\n";
+        cout << "\"Okay, if you say so!\" she says, shrugging her shoulders. ";
+        cout << "\"We have another way of making sure you learn your lesson.\"\n\n";
 
         cout << "She reaches one powerful arm back, and swings it rapidly ";
         cout << "towards your face. The last thing you see is her sorrowful ";
-        cout << "expression.\n\n";
+        cout << "expression. You feel a sharp pain, and then nothing. ";
+        cout << "The blackness gulps you down.\n\n";
 
         cout << "You have been killed by Chamoy the Gorilla.\n\n";
 
@@ -344,7 +290,7 @@ void introStart() {
         cout << "antagonise the very strong matriarch whose home you ";
         cout << "invaded.\n\n";
 
-        cout << "Goodbye, and happy bananas!\n\n";
+        cout << "Goodbye, and happy haggling!\n\n";
         exit(0);
     }
 
@@ -353,32 +299,32 @@ void introStart() {
     cout << "She throws up her hands and starts rummaging on the far side of ";
     cout << "her armchair. She emerges shortly thereafter with a basket.\n\n";
 
-    cout << "--This is all I can give you. You may use these as you wish ";
+    cout << "\"This is all I can give you. You may use these as you wish ";
     cout << "for your negotiations. Ook. However, this is all you have. It ";
-    cout << "must last you all three negotiations. Understand? Good.--\n\n";
+    cout << "must last you all three negotiations. Understand? Good.\"\n\n";
 
     cout << "She hands over the basket. You take it.\n\n";
 
     player->fillInventory();
 
-    cout << "[You have an inventory! At any time, type \"inventory\" in a ";
-    cout << "command prompt to see what you have.]\n\n";
+    cout << "[You have an inventory! Type \"inventory\" to see what you have.]\n\n";
 
-    cout << "--You look worried!-- She laughs. --Don't look worried! What's ";
-    cout << "the worst that can happen?-- Suddenly, Chamoy takes on a wild, ";
-    cout << "terrifying aspect. --After all, it's not like ";
-    cout << "you're negotiating for your life...-- ";
+    cout << "\"You look worried!\" She laughs. \"Don't look worried! What's ";
+    cout << "the worst that can happen?\" Suddenly, Chamoy takes on a wild, ";
+    cout << "terrifying aspect. \"After all, it's not like ";
+    cout << "you're negotiating for your life...\" ";
     cout << "Without warning, a smile spreads over her face once more.\n\n";
 
-    cout << "--And you'll start easy, by negotiating with my young ";
+    cout << "\"And you'll start easy, by negotiating with my young ";
     cout << "grandson, Porridge. He's still learning the family game, ";
     cout << "so it will be good practice for him too. Alright then, ";
-    cout << "good luck! Ook ook!--\n\n";
+    cout << "good luck! Ook ook!\"\n\n";
 
     cout << "Chamoy settles back onto her chair, opens her magazine, and pays ";
     cout << "you no heed.\n\n";
 
-    cout << "[It's time to negotiate! Type \"negotiate\" to start. If you're ";
+    cout << "[It's time to negotiate! Type \"negotiate\" to kick off ";
+    cout << "the first one. If you're ";
     cout << "stuck, you need only type \"help\".]" << endl << endl;
 
 }
@@ -395,10 +341,10 @@ void l1Start() {
     cout << "Within, you see a tiny gorilla, wearing a baseball cap and ";
     cout << "tossing a ball against the wall. When you walk in, he pauses. ";
 
-    cout << "--Hi! You must be here for a negotiation! Grandma said someone ";
+    cout << "\"Hi! You must be here for a negotiation! Grandma said someone ";
     cout << "would come knocking this morning. If you want my ";
     cout << "key, though, I'll warn you that I drive a hard bargain, and I'm ";
-    cout << "the toughest negotiator in the family! You stand no chance!--\n\n";
+    cout << "the toughest negotiator in the family! You stand no chance!\"\n\n";
 
     cout << "He strikes a fierce pose, pouting his lips, but the effect is ";
     cout << "just too cute. You stifle a giggle. ";
@@ -406,14 +352,14 @@ void l1Start() {
 
     cout << "You take your seat. The negotiation is about to begin!\n\n\n\n";
 
-    inNegotiation = true;
-    currentEncounter = level1;
+    inNego = true;
+    currNego = level1;
     printHowToNegotiate();
 }
 
-void l2Start() { currentEncounter = level2; }
-void l3Start() { currentEncounter = level3; }
-void endStart() { currentEncounter = nullptr; }
+void l2Start() { currNego = level2; }
+void l3Start() { currNego = level3; }
+void endStart() { currNego = nullptr; }
 
 void interact() {
 
@@ -421,7 +367,7 @@ void interact() {
     stage currentStage = intro;
     introStart();
 
-    negotiationPossible = true;
+    negoPossible = true;
     uInput = getUserInput();
 
     // Progress to Level 1
