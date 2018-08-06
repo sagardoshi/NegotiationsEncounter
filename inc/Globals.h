@@ -42,6 +42,8 @@ enum stage {intro, l1, l2, l3, ending};
 string uInput = "";
 bool negoPossible = false;
 bool inNego = false;
+bool bidAccepted = false;
+bool anyKeyOK = true;
 
 
 #endif

@@ -60,7 +60,6 @@ void PlayerCharacter::printHelp() {
     cout << "[help: see this menu]\n";
     cout << "[quit: exit the game]\n";
     cout << "[inventory: see what you currently hold]\n";
-    cout << "[negotiate: to start a level (when prompted)]\n";
     cout << "****************************************************\n\n";
 
     cout << "**************** DURING NEGOTIATION ****************\n";

@@ -40,7 +40,7 @@ public:
 
     string saveStandardisedInput(string keyword);
 
-    void buildValidOffer(map<string, int>);
+    void buildValidOffer(map<string, int>, bool&);
     int issueCount();
 
     void printTurns();

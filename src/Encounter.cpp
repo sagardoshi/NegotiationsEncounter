@@ -25,12 +25,10 @@ void Encounter::printOfferOnTable() { offer->printOffer();               }
 
 void Encounter::loadFloatIssue(Issue<float> issueToAdd) {
     floatIssues.push_back(issueToAdd);
-    offer->loadFloatIssue(issueToAdd);
 }
 
 void Encounter::loadIntIssue(Issue<int> issueToAdd) {
     intIssues.push_back(issueToAdd);
-    offer->loadIntIssue(issueToAdd);
 }
 
 
@@ -71,7 +69,7 @@ string Encounter::saveStandardisedInput(string keyword) {
 }
 
 
-void Encounter::buildValidOffer(map<string, int> econ) {
+void Encounter::buildValidOffer(map<string, int> econ, bool &win) {
 
     string prop;
     bool forProp = true;
@@ -90,10 +88,12 @@ void Encounter::buildValidOffer(map<string, int> econ) {
                 offer->printOffer();
 
                 // Move on to opponent response
-                cout << opponent->getName() << "'s response:" << endl;
+                // cout << opponent->getName() << "'s response:" << endl;
 
-                bool approval = opponent->reactToOffer(offer);
-                if (approval) opponent->acceptTerms();
+                // Fill win with true or false, depending on acceptance
+                win = opponent->reactToOffer(offer);
+
+                if (win) opponent->acceptTerms();
                 else { // Must return items to inventory first
                     player->clearTable(offer);
                     opponent->rejectTerms(turns);

@@ -10,7 +10,7 @@
 using namespace std;
 
 // Init required issue numbers to 0
-Offer::Offer() : requiredFloatIssues(0), requiredIntIssues(0) {
+Offer::Offer() {
     inventory["pomegranate"] = 0;
     inventory["knuckle pads"] = 0;
     inventory["silverback perfume"] = 0;
@@ -19,6 +19,7 @@ Offer::Offer() : requiredFloatIssues(0), requiredIntIssues(0) {
     inventory["basket"] = 0;
 }
 
+void Offer::addObjToTable(string itemName) { inventory[itemName]++; }
 
 int Offer::inventoryCount() {
     map<string, int>::iterator it;
@@ -26,18 +27,8 @@ int Offer::inventoryCount() {
     for (it = inventory.begin(); it != inventory.end(); it++) {
         totalItems += it->second;
     }
-
     return totalItems;
 }
-
-int Offer::issueCount() {
-    return (floatIssues.size() + intIssues.size());
-}
-
-void Offer::addObjToTable(string itemName) {
-    inventory[itemName]++;
-}
-
 
 
 void Offer::printOffer() {
@@ -68,21 +59,3 @@ void Offer::printOffer() {
         cout << "************************************************\n\n";
     }
 }
-
-
-
-
-// Bump required issue number for each new issue
-void Offer::loadFloatIssue(Issue<float> issueToAdd) {
-    floatIssues.push_back(issueToAdd);
-    requiredFloatIssues++;
-}
-
-// Bump required issue number for each new issue
-void Offer::loadIntIssue(Issue<int> issueToAdd) {
-    intIssues.push_back(issueToAdd);
-    requiredIntIssues++;
-}
-
-int Offer::getReqdFloatIssueCount() { return requiredFloatIssues; }
-int Offer::getReqdIntIssueCount()   { return requiredIntIssues;   }

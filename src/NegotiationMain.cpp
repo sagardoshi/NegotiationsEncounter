@@ -29,7 +29,6 @@ void createActions() {
     genActions.push_back("help");
     genActions.push_back("quit");
     genActions.push_back("inventory");
-    genActions.push_back("negotiate");
 
     // Negotiation actions
     negoActions.push_back("turns");
@@ -68,7 +67,6 @@ void printHelp() {
     cout << "[help: see this menu]\n";
     cout << "[quit: exit the game]\n";
     cout << "[inventory: see what you currently hold]\n";
-    cout << "[negotiate: to start a level (when prompted)]\n";
     cout << "****************************************************\n\n";
 
 
@@ -126,6 +124,17 @@ void printHowToNegotiate() {
 }
 
 
+void checkpoint(bool allKeys = true) {
+
+    uInput = "";
+    cout << "\n\n----------------------------\n";
+    if (allKeys) cout << "[Press any key to continue.]";
+    else cout << ">>>> ";
+    getline(cin, uInput);
+    cout << "----------------------------\n\n\n\n";
+
+}
+
 // Rejects input not in list of acceptable verbs
 bool isValidInput() {
     if (find(genActions.begin(), genActions.end(), uInput)
@@ -145,11 +154,7 @@ bool isValidInput() {
 // Gets simple, unverified user input and converts to lowercase
 string getStandardisedInput() {
     // Get standard input (including whitespaces)
-    uInput = "";
-    cout << "\n\n--------------------------\n";
-    cout << ">>>> ";
-    getline(cin, uInput);
-    cout << "--------------------------\n\n\n\n";
+    checkpoint(!anyKeyOK);
 
     // Convert any capitals to lowercase in place
     int i = 0;
@@ -163,27 +168,28 @@ string getStandardisedInput() {
 
 
 // Fully abstracted function to call to get user input
-string getUserInput() {
+void getUserInput() {
     string uInput = getStandardisedInput();
 
-    // First check for general keywords
-    if (uInput == "quit") quitGame();
-    else if (uInput == "negotiate" && negoPossible) return uInput;
-    else if (uInput == "help") printHelp();
-    else if (uInput == "inventory") player->printInventory();
-    else if (uInput == "turns" && inNego) currNego->printTurns();
-    else if (uInput == "issues" && inNego) currNego->printIssues();
-    else if (uInput == "propose offer" && inNego) {
-            currNego->buildValidOffer(economy);
-            currNego->useOneTurn();
+    while(true) {
+        if (inNego) {
+            if (uInput == "quit") quitGame();
+            else if (uInput == "help") printHelp();
+            else if (uInput == "inventory") player->printInventory();
+            else if (uInput == "turns" && inNego) currNego->printTurns();
+            else if (uInput == "issues" && inNego) currNego->printIssues();
+            else if (uInput == "propose offer" && inNego) {
+                currNego->buildValidOffer(economy, bidAccepted);
+                if (bidAccepted) return;
+                currNego->useOneTurn();
+            }
+        } else {
+            if (uInput == "quit") quitGame();
+            else if (uInput == "help") printHelp();
+            else if (uInput == "inventory") player->printInventory();
+        }
+        uInput = getStandardisedInput();
     }
-    else if (!isValidInput()) {
-        cout << "\n[Invalid input. Try again. Type \"help\" for ";
-        cout << "instructions.]\n\n";
-    }
-
-    uInput = getUserInput(); // Recurse if not
-    return uInput;
 }
 
 
@@ -222,7 +228,7 @@ void tutorialChoices(string whichChoice) {
 }
 
 void introStart() {
-    cout << "CRASH!! You fall through a roof and land in a soft pile of ";
+    cout << "\n\n\nCRASH!! You fall through a roof and land in a soft pile of ";
     cout << "of blankets. Ow. You shake your head as the dust settles and ";
     cout << "look up to see a large gorilla standing before you.\n\n";
 
@@ -233,6 +239,8 @@ void introStart() {
     cout << "trousers. Her fur seems to be graying and fading a little around ";
     cout << "the edges. As the dust clears, it seems she was reading a ";
     cout << "magazine whilst sitting on her living room armchair.\n\n";
+
+    checkpoint(anyKeyOK);
 
     cout << "She looks you over silently and purses her lips in confusion. ";
     cout << "You both freeze there for a few moments, considering the ";
@@ -253,12 +261,16 @@ void introStart() {
     cout << " your ";
     cout << "hand as if it were a delicate teacup. She steps back again.\n\n";
 
+    checkpoint(anyKeyOK);
+
     cout << "\"Well, friend, the rules of the House are simple. Given the damage ";
     cout << "you have caused, you need to pay it off for us. Earn your way ";
     cout << "back to your normal life by winning keys from at least three members ";
     cout << "of my family.\"\n\n";
 
     cout << "\"How to gain the keys, you ask? Oooooook.\"\n\n";
+
+    checkpoint(anyKeyOK);
 
     cout << "\"Simple! Follow our favourite pastime! Haggle with us! ";
     cout << "If you can convince three of us to give you a key, you can head ";
@@ -279,6 +291,8 @@ void introStart() {
         cout << "\"Okay, if you say so!\" she says, shrugging her shoulders. ";
         cout << "\"We have another way of making sure you learn your lesson.\"\n\n";
 
+        checkpoint(anyKeyOK);
+
         cout << "She reaches one powerful arm back, and swings it rapidly ";
         cout << "towards your face. The last thing you see is her sorrowful ";
         cout << "expression. You feel a sharp pain, and then nothing. ";
@@ -296,8 +310,11 @@ void introStart() {
 
     uInput = ""; // Reset uInput
 
+
     cout << "She throws up her hands and starts rummaging on the far side of ";
     cout << "her armchair. She emerges shortly thereafter with a basket.\n\n";
+
+    checkpoint(anyKeyOK);
 
     cout << "\"This is all I can give you. You may use these as you wish ";
     cout << "for your negotiations. Ook. However, this is all you have. It ";
@@ -307,7 +324,9 @@ void introStart() {
 
     player->fillInventory();
 
-    cout << "[You have an inventory! Type \"inventory\" to see what you have.]\n\n";
+    cout << "[You have an inventory! When negotiating, type \"inventory\" to see what you have.]\n\n";
+
+    checkpoint(anyKeyOK);
 
     cout << "\"You look worried!\" She laughs. \"Don't look worried! What's ";
     cout << "the worst that can happen?\" Suddenly, Chamoy takes on a wild, ";
@@ -323,9 +342,7 @@ void introStart() {
     cout << "Chamoy settles back onto her chair, opens her magazine, and pays ";
     cout << "you no heed.\n\n";
 
-    cout << "[It's time to negotiate! Type \"negotiate\" to kick off ";
-    cout << "the first one. If you're ";
-    cout << "stuck, you need only type \"help\".]" << endl << endl;
+    checkpoint(anyKeyOK);
 
 }
 
@@ -333,18 +350,21 @@ void l1Start() {
     cout << "You turn left and go down a hallway for a while. It's ";
     cout << "brightly lit, with colourful flowers everywhere. ";
     cout << "You see framed photos of the large Gorilla family. ";
-    cout << "You keep moving down the hallway until you get to a door. ";
+    cout << "You keep moving down the hallway until you get to a door.\n\n";
 
     cout << "The door has a chalkboard taped to it with \"Porridge\" ";
     cout << "scribbled in childish, messy handwriting. You open the door.\n\n";
 
+    checkpoint(anyKeyOK);
+
     cout << "Within, you see a tiny gorilla, wearing a baseball cap and ";
     cout << "tossing a ball against the wall. When you walk in, he pauses. ";
-
     cout << "\"Hi! You must be here for a negotiation! Grandma said someone ";
     cout << "would come knocking this morning. If you want my ";
     cout << "key, though, I'll warn you that I drive a hard bargain, and I'm ";
     cout << "the toughest negotiator in the family! You stand no chance!\"\n\n";
+
+    checkpoint(anyKeyOK);
 
     cout << "He strikes a fierce pose, pouting his lips, but the effect is ";
     cout << "just too cute. You stifle a giggle. ";
@@ -352,12 +372,42 @@ void l1Start() {
 
     cout << "You take your seat. The negotiation is about to begin!\n\n\n\n";
 
-    inNego = true;
-    currNego = level1;
+    checkpoint(anyKeyOK);
+
     printHowToNegotiate();
+
+    currNego = level1;
+
+    checkpoint(anyKeyOK);
 }
 
-void l2Start() { currNego = level2; }
+void l2Start() {
+    cout << "Just as you step into the ";
+    cout << "family room again, a rolling rumble fills the air. You ";
+    cout << "start, but it quiets down and before emerging again. And ";
+    cout << "again. And again. You quickly pinpoint the source of the ";
+    cout << "noise.\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "Chamoy is ";
+    cout << "still in her armchair, but she has fallen asleep, her ";
+    cout << "magazine slipping off her belly. She is snoring.\n\n";
+
+    cout << "You tiptoe through the room and on to the hallway on ";
+    cout << "the other side. Again, you see more framed photos ";
+    cout << "of the family, and a clutch of tulips in a vase. Toward ";
+    cout << "the end of the hallway is another room, parallel to ";
+    cout << "Porridge's.\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "";
+
+    currNego = level2;
+}
+
+
 void l3Start() { currNego = level3; }
 void endStart() { currNego = nullptr; }
 
@@ -367,24 +417,25 @@ void interact() {
     stage currentStage = intro;
     introStart();
 
-    negoPossible = true;
-    uInput = getUserInput();
-
     // Progress to Level 1
     currentStage = l1;
     l1Start();
+    inNego = true;
+    bidAccepted = false;
     level1->beginEncounter();
-
-
-
-    uInput = getUserInput();
-
+    getUserInput();
+    inNego = false;
 
 
     // Progress to Level 2
     currentStage = l2;
-    // uInput = getUserInput();
-    // l2Start();
+    l2Start();
+    inNego = true;
+    bidAccepted = false;
+    level2->beginEncounter();
+    getUserInput();
+    inNego = false;
+
 
     // Progress to Level 3
     currentStage = l3;
@@ -411,25 +462,29 @@ int main() {
 
     ////////// Level 1 //////////
     level1 = new Encounter(player, porridge, NEGO1, L1_TURNS);
-    Issue<float> key1("Porridge's Key", 30.0, 15.0, 45.0);
+    Issue<float> key1("porridge's key", 30.0, 15.0, 45.0);
     level1->loadFloatIssue(key1);
 
     ////////// Level 2 //////////
     level2 = new Encounter(player, rhubarb, NEGO2, L2_TURNS);
+    Issue<float> key2("rhubarb's key", 40.0, 30.0, 50.0);
+    level2->loadFloatIssue(key2);
 
     ////////// Level 3 //////////
     level3 = new Encounter(player, chamoy, NEGO3, L3_TURNS);
+    Issue<float> key3("chamoy's key", 50.0, 40.0, 60.0);
+    level3->loadFloatIssue(key3);
 
     interact();
-
-    delete porridge;
-    delete rhubarb;
-    delete chamoy;
 
     delete level1;
     delete level2;
     delete level3;
+    delete currNego;
 
+    delete porridge;
+    delete rhubarb;
+    delete chamoy;
     delete player;
 
     return 0;
