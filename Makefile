@@ -1,4 +1,5 @@
 # Compiler, Linker, and Target Executable
+
 CXX 		:= g++
 TARGET 		:= game
 
@@ -14,7 +15,7 @@ DEPEXT		:= d
 OBJEXT		:= o
 
 # Flags
-CXXFLAGS 	:= -Wall -g
+CXXFLAGS 	:= -Wall -g -std=c++11
 
 # Objects
 _OBJ 		:= Negotiator.o \

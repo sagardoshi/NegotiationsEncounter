@@ -21,6 +21,7 @@ University: Imperial College London
 #include <chrono>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -44,10 +45,9 @@ void createEconomy() {
     economy["ginger cookie"] = 5;
     economy["coins"] = 1;
     economy["basket"] = 2;
-
-    economy["porridge key"] = 30;
-
-
+    economy["porridge's key"] = 30;
+    economy["rhubarb's key"] = 40;
+    economy["chamoy's key"] = 50;
 }
 
 
@@ -521,11 +521,11 @@ void endStart() { currNego = nullptr; }
 void interact() {
 
     // Run introduction
-    stage currentStage = intro;
+    // stage currentStage = intro;
     introStart();
 
     // Progress to Level 1
-    currentStage = l1;
+    // currentStage = l1;
     l1Start();
     inNego = true;
     bidAccepted = false;
@@ -535,7 +535,7 @@ void interact() {
 
 
     // Progress to Level 2
-    currentStage = l2;
+    // currentStage = l2;
     l2Start();
     inNego = true;
     bidAccepted = false;
@@ -545,7 +545,7 @@ void interact() {
 
 
     // Progress to Level 3
-    currentStage = l3;
+    // currentStage = l3;
     l3Start();
     inNego = true;
     bidAccepted = false;
@@ -554,7 +554,7 @@ void interact() {
     inNego = false;
 
     // Run ending
-    currentStage = ending;
+    // currentStage = ending;
     endStart();
 
 

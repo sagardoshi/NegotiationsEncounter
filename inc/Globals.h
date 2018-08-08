@@ -37,8 +37,6 @@ vector<string> genActions;
 vector<string> negoActions;
 
 // General globals
-enum dir {up, down, left, right};
-enum stage {intro, l1, l2, l3, ending};
 string uInput = "";
 bool negoPossible = false;
 bool inNego = false;

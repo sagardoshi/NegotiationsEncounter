@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <algorithm>
 
 #include "../inc/PlayerCharacter.h"
 #include "../inc/Negotiator.h"
@@ -39,8 +40,10 @@ int Encounter::issueCount() {
 
 void Encounter::printIssues() {
     // Currently just going through floats first and then ints
-    for (int i = 0; i < floatIssues.size(); i++) floatIssues[i].printIssue();
-    for (int j = 0; j < intIssues.size(); j++) intIssues[j].printIssue();
+    for (int i = 0; i < static_cast<int>(floatIssues.size()); i++)
+        floatIssues[i].printIssue();
+    for (int j = 0; j < static_cast<int>(intIssues.size()); j++)
+        intIssues[j].printIssue();
 }
 
 // Gets simple, unverified user input and converts to lowercase
@@ -74,7 +77,7 @@ void Encounter::buildValidOffer(map<string, int> econ, bool &win) {
     string prop;
     bool forProp = true;
 
-    for (int i = 0; i < floatIssues.size(); i++) {
+    for (int i = 0; i < static_cast<int>(floatIssues.size()); i++) {
         while (true) {
             prop = "";
             player->printInventory(forProp);
