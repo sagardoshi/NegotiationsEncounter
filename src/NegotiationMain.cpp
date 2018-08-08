@@ -33,7 +33,7 @@ void createActions() {
     // Negotiation actions
     negoActions.push_back("turns");
     negoActions.push_back("issues");
-    negoActions.push_back("propose offer");
+    negoActions.push_back("propose");
 }
 
 void createEconomy() {
@@ -74,7 +74,7 @@ void printHelp() {
         cout << "**************** DURING NEGOTIATION ****************\n";
         cout << "[turns: see how many turns you have left]\n";
         cout << "[issues: see what you're negotiating over]\n";
-        cout << "[propose offer: use a turn to build your own offer]\n";
+        cout << "[propose: use a turn to build your own offer]\n";
         cout << "****************************************************\n\n";
     }
 }
@@ -98,40 +98,39 @@ void printHowToNegotiate() {
     cout << "Porridge, the boy gorilla. But he probably won't just ";
     cout << "give you what you want for free... You have to find a trade.]\n\n";
 
-    cout << "[Each opponent has a distinct personality. Porridge, for example, ";
-    cout << "is a slightly impulsive, but friendly kid. He responds well if ";
-    cout << "you offer him something he likes. Others, however, may not be ";
-    cout << "quite as straightforward.]\n\n";
+    cout << "[Everyone has a distinct personality. Porridge, for example, ";
+    cout << "is a slightly impulsive, but friendly kid. He's accommodating ";
+    cout << " and easy to please, especially if you offer him something he ";
+    cout << "likes. Others, however, may not be quite as straightforward.]\n\n";
 
     cout << "[You have a limited number of rounds before your opponent gets ";
     cout << "impatient and gives up on you. At any time, you can type ";
     cout << "\"turns\" to check your deadline.]\n\n";
 
-    cout << "[In every negotiation, there are one or more issues on the ";
-    cout << "table. Each issue can take certain values, between a minimum and ";
-    cout << "a maximum. During a negotiation, in order to see the issues on ";
-    cout << "the table and their values, you need only type \"issues\".]\n\n";
+    cout << "[To see what you're negotiating over, type \"issues\".]\n\n";
 
     cout << "[The core of the negotiation is to propose tantalising offers ";
     cout << "to your opponent. ";
-    cout << "In order to do that here, you can type \"propose offer\" to ";
+    cout << "In order to do that here, you can type \"propose\" to ";
     cout << "craft one by selecting items from your inventory to package ";
-    cout << "together into an offer and send it.]\n\n";
+    cout << "together into an offer and send it. Each proposal uses ";
+    cout << "up one turn.]\n\n";
 
-    cout << "[The help menu now offers reminders of what commands to select ";
-    cout << "during a negotiation.]\n";
-    cout << "***********************************************************\n\n\n\n";
+    cout << "[Remember: be careful with your inventory. It is your primary ";
+    cout << "resource. The more you can keep, the higher your final score. ";
+    cout << "So be cautious with your proposals.]\n\n";
+    cout << "***********************************************************\n\n";
 }
 
 
 void checkpoint(bool allKeys = true) {
 
     uInput = "";
-    cout << "\n\n----------------------------\n";
-    if (allKeys) cout << "[Press any key to continue.]";
+    cout << "\n\n---------------------------\n";
+    if (allKeys) cout << "[Press return to continue.]  ";
     else cout << ">>>> ";
     getline(cin, uInput);
-    cout << "----------------------------\n\n\n\n";
+    cout << "---------------------------\n\n\n\n";
 
 }
 
@@ -178,7 +177,7 @@ void getUserInput() {
             else if (uInput == "inventory") player->printInventory();
             else if (uInput == "turns" && inNego) currNego->printTurns();
             else if (uInput == "issues" && inNego) currNego->printIssues();
-            else if (uInput == "propose offer" && inNego) {
+            else if (uInput == "propose" && inNego) {
                 currNego->buildValidOffer(economy, bidAccepted);
                 if (bidAccepted) return;
                 currNego->useOneTurn();
@@ -198,14 +197,16 @@ void tutorialChoices(string whichChoice) {
     if (whichChoice == "firstTutorialQuestion") {
         cout << "[1: \"Uh, I'm not really sure...\"]\n";
         cout << "[2: \"To meet you!\"]\n";
-        cout << "[3: \"It's a long story involving hot air balloons and lots of padding...\"]\n\n";
+        cout << "[3: \"It's a long story involving extreme sports and ";
+        cout << "catapults...\"]\n\n";
 
         getStandardisedInput();
         while (uInput != "1" && uInput != "2" && uInput != "3") {
             cout << "[Invalid input. Try again.]\n\n";
             cout << "[1: \"Uh, I'm not really sure...\"]\n";
             cout << "[2: \"To meet you!\"]\n";
-            cout << "[3: \"It's a long story involving hot air balloons and lots of padding...\"]\n\n";
+            cout << "[3: \"It's a long story involving extreme sports and ";
+            cout << "catapults...\"]\n\n";
 
             getStandardisedInput();
         }
@@ -230,51 +231,79 @@ void tutorialChoices(string whichChoice) {
 void introStart() {
     cout << "\n\n\nCRASH!! You fall through a roof and land in a soft pile of ";
     cout << "of blankets. Ow. You shake your head as the dust settles and ";
-    cout << "look up to see a large gorilla standing before you.\n\n";
+    cout << "look up to see a large gorilla reclining before you.\n\n";
 
     printGorilla();
 
     cout << "She has a long, rounded face, has a pair of thin glasses ";
-    cout << "perched on her short nose, and is wearing a plain t-shirt and ";
-    cout << "trousers. Her fur seems to be graying and fading a little around ";
-    cout << "the edges. As the dust clears, it seems she was reading a ";
-    cout << "magazine whilst sitting on her living room armchair.\n\n";
+    cout << "perched on her short nose. ";
+    cout << "Her hair is graying a little around ";
+    cout << "the edges. As the dust clears, it seems she was napping or ";
+    cout << "reading a magazine whilst sitting on her living room ";
+    cout << "armchair.\n\n";
 
     checkpoint(anyKeyOK);
 
     cout << "She looks you over silently and purses her lips in confusion. ";
-    cout << "You both freeze there for a few moments, considering the ";
-    cout << "the situation. Suddenly, her lips widen into ";
-    cout << "a broad, free smile.\n\n";
-
-    cout << "\"Hello there, young human! How did you get in our house?\"\n\n";
+    cout << "You freeze for a few moments, and she seems to be blinking the ";
+    cout << "sleep out of her eyes.";
+    cout << "Suddenly, she speaks in a rumble. \"Hello there, young human! How did you land in our nest?\"\n\n";
 
 
     tutorialChoices("firstTutorialQuestion");
     uInput = ""; // Reset uInput
 
-    cout << "\n\"Huh! Weird! Well, no matter. Welcome to the House of ";
-    cout << "Negotiations! My name is Chamoy. Ook ook.\"\n\n";
+    cout << "\n\"Hmm...\" she wipes her face. \"Well, no matter. You're ";
+    cout << "here now, and you will have to deal with the consequences. ";
+    cout << "But for now, it's good to meet you! My name is Chamoy. ";
+    cout << "Welcome to the Tripgor Family Nest.\"\n\n";
 
-    cout << "She stands up, holding her bulk back on two powerful legs. She ";
-    cout << "extends a muscular arm to you for a handshake and daintily holds ";
-    cout << " your ";
-    cout << "hand as if it were a delicate teacup. She steps back again.\n\n";
-
-    checkpoint(anyKeyOK);
-
-    cout << "\"Well, friend, the rules of the House are simple. Given the damage ";
-    cout << "you have caused, you need to pay it off for us. Earn your way ";
-    cout << "back to your normal life by winning keys from at least three members ";
-    cout << "of my family.\"\n\n";
-
-    cout << "\"How to gain the keys, you ask? Oooooook.\"\n\n";
+    cout << "She stands up, an operation that sounds and looks like grand ";
+    cout << "boulders grinding into a new position. She holds her bulk low ";
+    cout << "on two powerful legs. Her lightening hair and age belies the ";
+    cout << "metal power coiled in her form. She extends a meaty ";
+    cout << "arm to you for a handshake. You reach, and she daintily grasps ";
+    cout << "your hand, as if she were holding a teacup.\n\n";
 
     checkpoint(anyKeyOK);
 
-    cout << "\"Simple! Follow our favourite pastime! Haggle with us! ";
-    cout << "If you can convince three of us to give you a key, you can head ";
-    cout << "back to your normal life, no harm, no foul. Ooook.\"\n\n";
+    cout << "\"Well, friend, you intruded ";
+    cout << "on my family's peace and quiet. You'd be surprised how often ";
+    cout << "this happens, and how little you humans seem to care. We can't ";
+    cout << "run a household this way. And so, we have had to apply some ";
+    cout << "serious rules to disincentivise projectile humans like you.\"\n\n";
+
+    cout << "You gulp, still sore from your crash landing and silently ";
+    cout << "cursing the trust you placed in the catapult technician.\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "\"As of now,\" she says, while casually cleaning an ear with ";
+    cout << "a thick finger, \"your life is forfeit. You left ";
+    cout << " your human lands and ";
+    cout << "arrived here in the Gorilla Nation. Here, our law applies. ";
+    cout << "Our law states that if someone invades a nest, whatever the ";
+    cout << "homeowners decide to do goes.\" She pauses here, checking to see ";
+    cout << "how you take this. You keep still and try to avoid reacting.\n\n";
+
+    cout << "\"However,\" she quips, \"we are not unreasonable people, ";
+    cout << "here ";
+    cout << "in the Tripgor family. We're a light-hearted bunch!\" She grins ";
+    cout << "widely here, a terrifying sight that reveals her fangs. \"";
+    cout << "Despite the damage you have caused, our rule is to allow ";
+    cout << "intruders to win their freedom... but you need to earn it. ";
+    cout << "If you can convince each one of my family members, well, then ";
+    cout << " that's a good enough endorsement from me.\"\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "Chamoy leans closer to you, and the swiftness of her movement ";
+    cout << "startles you. \"How to convince them, you ask?\"\n\n";
+
+    cout << "\"Simple! Follow our favourite pastime! Negotiate with us! ";
+    cout << "If you can earn a key from everyone in formal negotiation, ";
+    cout << "you can head ";
+    cout << "back to your normal life, no harm, no foul.\"\n\n";
 
     cout << "\"What do you say? Sounds like fun, right?\"\n\n";
 
@@ -283,7 +312,9 @@ void introStart() {
 
     if (uInput == "1") {
         cout << "Chamoy rubs her palms together in anticipation.\n\n";
-        cout << "\"Excellent!! This will be great fun. Ook ook!\"\n\n";
+        cout << "\"Excellent! Just what I was hoping to hear! Let's see ";
+        cout << "if you can be the first human to make it through ";
+        cout << "all of us.\"\n\n";
     }
     if (uInput == "2") {
         cout << "Chamoy rubs her chin thoughtfully.\n\n";
@@ -298,29 +329,33 @@ void introStart() {
         cout << "expression. You feel a sharp pain, and then nothing. ";
         cout << "The blackness gulps you down.\n\n";
 
-        cout << "You have been killed by Chamoy the Gorilla.\n\n";
+        cout << "You have been killed by Chamoy Tripgor.\n\n";
 
         cout << "Perhaps you might do better in another life if you don't ";
         cout << "antagonise the very strong matriarch whose home you ";
         cout << "invaded.\n\n";
 
-        cout << "Goodbye, and happy haggling!\n\n";
+        cout << "Goodbye, and happy haggling!\n\n\n\n";
         exit(0);
     }
 
     uInput = ""; // Reset uInput
 
 
-    cout << "She throws up her hands and starts rummaging on the far side of ";
-    cout << "her armchair. She emerges shortly thereafter with a basket.\n\n";
+    cout << "She scratches her elbows. \"Ah, and before you ";
+    cout << "start, I have something for you.\" She begins rummaging ";
+    cout << "behind her armchair, muttering to herself. She emerges shortly ";
+    cout << "with a small wicker picnic basket.\n\n";
 
     checkpoint(anyKeyOK);
 
-    cout << "\"This is all I can give you. You may use these as you wish ";
-    cout << "for your negotiations. Ook. However, this is all you have. It ";
-    cout << "must last you all three negotiations. Understand? Good.\"\n\n";
-
-    cout << "She hands over the basket. You take it.\n\n";
+    cout << "\"Take this. You may use the items within as you wish ";
+    cout << "for your negotiations. You can trade these away for the keys, ";
+    cout << "but I can't guarantee that everyone will want everything. ";
+    cout << "However, this is all you get: it must last you all three ";
+    cout << " negotiations. Whatever you end with is yours to keep. ";
+    cout << "Understand? Good.\" ";
+    cout << "She hands over the basket.\n\n";
 
     player->fillInventory();
 
@@ -328,19 +363,25 @@ void introStart() {
 
     checkpoint(anyKeyOK);
 
-    cout << "\"You look worried!\" She laughs. \"Don't look worried! What's ";
-    cout << "the worst that can happen?\" Suddenly, Chamoy takes on a wild, ";
-    cout << "terrifying aspect. \"After all, it's not like ";
-    cout << "you're negotiating for your life...\" ";
-    cout << "Without warning, a smile spreads over her face once more.\n\n";
+    cout << "\"You look worried!\" She laughs. \"Don't! What's ";
+    cout << "the worst that can happen?\" Suddenly, Chamoy reassumes her ";
+    cout << "wild, terrifying aspect. \"After all, it's not like ";
+    cout << "you're negotiating for your life...\"\n\n";
 
+    checkpoint(anyKeyOK);
+
+    cout << "Her face clears and she looks sleepy and calm again.\n\n";
     cout << "\"And you'll start easy, by negotiating with my young ";
-    cout << "grandson, Porridge. He's still learning the family game, ";
-    cout << "so it will be good practice for him too. Alright then, ";
-    cout << "good luck! Ook ook!\"\n\n";
+    cout << "grandson, Porridge.\" She points down a hallway to your left. ";
+    cout << "\"He's still learning the family game, ";
+    cout << "so it will be good practice for both of you.\"\n\n";
 
-    cout << "Chamoy settles back onto her chair, opens her magazine, and pays ";
-    cout << "you no heed.\n\n";
+    cout << "She looks pensive. \"Well, I guess he'll still be alright if ";
+    cout << "he doesn't do well, whereas you...\" she trails off. \"Well, ";
+    cout << "anyway, good luck, then!\n\n";
+
+    cout << "Chamoy settles back onto her chair, and falls asleep before you ";
+    cout << "even have time to move.\n\n";
 
     checkpoint(anyKeyOK);
 
@@ -349,18 +390,26 @@ void introStart() {
 void l1Start() {
     cout << "You turn left and go down a hallway for a while. It's ";
     cout << "brightly lit, with colourful flowers everywhere. ";
-    cout << "You see framed photos of the large Gorilla family. ";
-    cout << "You keep moving down the hallway until you get to a door.\n\n";
+    cout << "You see framed photos of the Tripgor family. There seem to be ";
+    cout << "three of them. You recognise Chamoy, and then someone who looks ";
+    cout << "like her daughter, and someone who must be the grandson, ";
+    cout << "Porridge.\n\n";
 
+    cout << "You keep moving down the hallway until you get to a door. ";
     cout << "The door has a chalkboard taped to it with \"Porridge\" ";
     cout << "scribbled in childish, messy handwriting. You open the door.\n\n";
 
     checkpoint(anyKeyOK);
 
     cout << "Within, you see a tiny gorilla, wearing a baseball cap and ";
-    cout << "tossing a ball against the wall. When you walk in, he pauses. ";
+    cout << "tossing a ball against the wall. The room has a soft mattress ";
+    cout << "with drawings pasted up on the walls. There's a toy closet, and ";
+    cout << "a bright window shining a circle of light on the wall just ";
+    cout << "where Porridge is aiming his ball.\n\n";
+
+    cout << "When you walk in, he pauses. ";
     cout << "\"Hi! You must be here for a negotiation! Grandma said someone ";
-    cout << "would come knocking this morning. If you want my ";
+    cout << "would likely come knocking this morning. If you want my ";
     cout << "key, though, I'll warn you that I drive a hard bargain, and I'm ";
     cout << "the toughest negotiator in the family! You stand no chance!\"\n\n";
 
@@ -368,9 +417,9 @@ void l1Start() {
 
     cout << "He strikes a fierce pose, pouting his lips, but the effect is ";
     cout << "just too cute. You stifle a giggle. ";
-    cout << "He grins too and points to a chair, gesturing you to sit down.\n\n";
+    cout << "He laughs too and points to a chair.\n\n";
 
-    cout << "You take your seat. The negotiation is about to begin!\n\n\n\n";
+    cout << "You take your seat. The negotiation is about to begin!\n\n";
 
     checkpoint(anyKeyOK);
 
@@ -397,18 +446,76 @@ void l2Start() {
     cout << "You tiptoe through the room and on to the hallway on ";
     cout << "the other side. Again, you see more framed photos ";
     cout << "of the family, and a clutch of tulips in a vase. Toward ";
-    cout << "the end of the hallway is another room, parallel to ";
-    cout << "Porridge's.\n\n";
+    cout << "the end of the hallway is another door, parallel to ";
+    cout << "Porridge's. This one has a cleanly etched name on it: ";
+    cout << "\"Rhubarb.\"\n\n";
 
     checkpoint(anyKeyOK);
 
-    cout << "";
+    cout << "The door is slightly ajar, and you knock lightly and poke your ";
+    cout << "head around. The room is a studied contrast to Porridge's. When ";
+    cout << "you step inside, you are greeted with an explosion of scent. ";
+    cout << "At first glance, the room seems like an indoor forest, but it's ";
+    cout << "far more organised than that.\n\n";
+
+    cout << "The walls to the left and right have neat, white wooden shelves ";
+    cout << "which are filled to the limit with plant cuttings. Some are ";
+    cout << "wrapped with twine in bundles, some are living in small pots, ";
+    cout << "but each one is labeled, catalogued, and placed precisely.\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "After you take all this in, you notice the gorilla in the back ";
+    cout << "of the room. She is far larger than Porridge, looming behind ";
+    cout << "a tiny, but delicately arranged small desk. She has a pen in ";
+    cout << "hand and appears to be making a sketch of a sprig of rosemary. ";
+    cout << "This must be Rhubarb, Porridge's mother and ";
+    cout << "(presumably) Chamoy's daughter. And indeed, she shares a nose ";
+    cout << "shape with both of them. She has a dignified, magisterial ";
+    cout << "air. More serious than Porridge, less relaxed than Chamoy.\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "Rhubarb takes off her glasses and sighs, rubbing her temples. ";
+    cout << "You're the latest intruder, then?\" she asks.\n\n";
+
+    cout << "You nod, and then feel absurd for agreeing to name yourself an ";
+    cout << "intruder, when it's the catapult technician's fault you are ";
+    cout << "here anyway.\n\n";
+
+    checkpoint(anyKeyOK);
+
+    cout << "\"Alright. I don't know why Mother persists in playing these ";
+    cout << "games. I would rather just do away with you all and send the ";
+    cout << "message loud and clear that we won't stand for this home ";
+    cout << "invasion. It would waste far less time. But oh, what do I know? ";
+    cout << "I only keep this nest functioning.\" She sighs again, a heavy, ";
+    cout << "deep affair, and gestures to the seat across from her.\n\n";
+
+    cout << "\"Well,\" she says, \"let's get this over with. What do you ";
+    cout << "have for me?\"\n\n";
+
+    checkpoint(anyKeyOK);
 
     currNego = level2;
 }
 
 
-void l3Start() { currNego = level3; }
+void l3Start() {
+
+    checkpoint(anyKeyOK);
+
+    cout << "[More flavour text to be filled out here, showing your ";
+    cout << "triumphant return from Rhubarb, and your approach to Chamoy, ";
+    cout << "weakened, with fewer items in your inventory, but nearly at the ";
+    cout << "end.]\n\n";
+
+    checkpoint(anyKeyOK);
+
+    currNego = level3;
+
+}
+
 void endStart() { currNego = nullptr; }
 
 void interact() {
@@ -439,8 +546,12 @@ void interact() {
 
     // Progress to Level 3
     currentStage = l3;
-    // uInput = getUserInput();
-    // l3Start();
+    l3Start();
+    inNego = true;
+    bidAccepted = false;
+    level3->beginEncounter();
+    getUserInput();
+    inNego = false;
 
     // Run ending
     currentStage = ending;

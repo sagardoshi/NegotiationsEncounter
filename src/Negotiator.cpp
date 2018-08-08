@@ -52,10 +52,10 @@ void Negotiator::fillPreferences() {
     }
 
     else if (name == "Porridge") {
-        prefs["pomegranate"] = 1.5; // loves fruit
+        prefs["pomegranate"] = 1.25; // loves fruit
         prefs["knuckle pads"] = 0.25; // has young, fresh knuckles
         prefs["silverback perfume"] = 2.0; // wants to seem older
-        prefs["ginger cookie"] = 1.5; // loves cookies
+        prefs["ginger cookie"] = 1.25; // loves cookies
         prefs["coins"] = 1.0;
         prefs["basket"] = 0.25; // irrelevant
         prefs["porridge's key"] = 1.0;
@@ -152,7 +152,7 @@ void Negotiator::walkAway() {
         cout << "temples. You feel a sharp pain, and then nothing. ";
         cout << "The blackness gulps you down.\n\n";
 
-        cout << "You have been killed by Porridge the Gorilla.\n\n";
+        cout << "You have been killed by Porridge Trigor.\n\n";
 
         cout << "Perhaps you might do better in another life if you keep ";
         cout << "a closer eye on your turns left and offer items more ";
@@ -169,7 +169,7 @@ void Negotiator::walkAway() {
         cout << " and then nothing. ";
         cout << "The blackness gulps you down.\n\n";
 
-        cout << "You have been killed by Rhubarb the Gorilla.\n\n";
+        cout << "You have been killed by Rhubarb Trigor.\n\n";
 
         cout << "Perhaps you might do better in another life if you are ";
         cout << "a bit more careful with your inventory ahead of time. ";
@@ -195,7 +195,7 @@ void Negotiator::walkAway() {
         cout << "feel a sharp pain, and then nothing. ";
         cout << "The blackness gulps you down.\n\n";
 
-        cout << "You have been killed by Chamoy the Gorilla.\n\n";
+        cout << "You have been killed by Chamoy Trigor.\n\n";
 
         cout << "By the third negotiation, things are tough. You need to have ";
         cout << "conserved the right resources. Think ahead to what an older ";
@@ -210,7 +210,7 @@ void Negotiator::walkAway() {
         cout << "having failed to prove yourself worthy, away you go.\n\n";
     }
 
-    cout << "Goodbye, and happy haggling!\n\n";
+    cout << "Goodbye, and happy haggling!\n\n\n\n";
     exit(0);
 }
 
@@ -222,11 +222,11 @@ void Negotiator::acceptTerms() {
         cout << "He tosses you his key, and you snatch it out of the ";
         cout << "air.\n\n";
 
-        cout << "[Congratulations, you now have Porridge's Key! You are ";
-        cout << "one step toward your escape. Two more to go...]\n\n";
+        cout << "Congratulations, you now have Porridge's Key! You are ";
+        cout << "one step toward your escape. Two more to go...\n\n";
 
-        cout << "Porridge is lost in his own bliss, paying you no ";
-        cout << "attention, when you ";
+        cout << "Porridge is lost in his own bliss, inspecting his ";
+        cout << "winnings, when you ";
         cout << "clear your throat. \"Oh,\" he says, remembering ";
         cout << "you, \"I guess you still have to get past the rest of ";
         cout << "the family, right?\n\n";
@@ -243,11 +243,13 @@ void Negotiator::acceptTerms() {
     }
 
     if (name == "Rhubarb") {
-        cout << "Rhubarb accepts your offer. Nice job!\n\n";
+        cout << "Rhubarb accepts your offer. Nice job! [More flavour text ";
+        cout << "to be filled out here.]\n\n";
     }
 
     if (name == "Chamoy") {
-        cout << "Chamoy accepts your offer. Nice job! You win! Wooooo!\n\n";
+        cout << "Chamoy accepts your offer. Nice job! You win! Wooooo! ";
+        cout << "[More flavour text to be filled out here.]\n\n";
     }
 }
 

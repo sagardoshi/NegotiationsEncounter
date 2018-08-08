@@ -19,7 +19,7 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
 Encounter::~Encounter()             { delete offer;            }
 int Encounter::getLevel()           { return level;                      }
 void Encounter::useOneTurn()        { turns--;                           }
-void Encounter::printTurns()        { cout << turns << " turns left.\n"; }
+void Encounter::printTurns()        { cout << turns << " turns left\n"; }
 void Encounter::printOfferOnTable() { offer->printOffer();               }
 
 

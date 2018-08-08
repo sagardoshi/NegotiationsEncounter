@@ -65,7 +65,7 @@ void PlayerCharacter::printHelp() {
     cout << "**************** DURING NEGOTIATION ****************\n";
     cout << "[turns: see how many turns you have left]\n";
     cout << "[issues: see what you're negotiating over]\n";
-    cout << "[propose offer: use a turn to build your own offer]\n";
+    cout << "[propose: use a turn to build your own offer]\n";
     cout << "****************************************************\n\n";
 }
 
@@ -84,7 +84,7 @@ void PlayerCharacter::printInventory(bool forProposal) {
     }
 
     if (forProposal) {
-        cout << "***************** PROPOSE OFFER ****************\n";
+        cout << "***************** PROPOSE ****************\n";
         cout << "[To build an offer, add your items by number, one by one.]\n";
         cout << "[Type \"done\" when you don't wish to add any more.]\n\n";
     } else cout << "***************** INVENTORY ****************\n";
