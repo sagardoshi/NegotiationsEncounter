@@ -22,7 +22,7 @@ const int NEGO2 = 2;
 const int NEGO3 = 3;
 
 // Inventory
-map<string, int> economy;
+map<string, float> economy;
 
 // Key pointers used across functions
 Encounter* currNego = nullptr;
@@ -31,6 +31,9 @@ Encounter* level2 = nullptr;
 Encounter* level3 = nullptr;
 
 PlayerCharacter* player = nullptr;
+Negotiator* porridge = nullptr;
+Negotiator* rhubarb = nullptr;
+Negotiator* chamoy = nullptr;
 
 // Empty vectors for possible user inputs
 vector<string> genActions;
@@ -41,7 +44,7 @@ string uInput = "";
 bool negoPossible = false;
 bool inNego = false;
 bool bidAccepted = false;
-bool anyKeyOK = true;
-
+bool startingNego = false;
+int currLevel = 1;
 
 #endif

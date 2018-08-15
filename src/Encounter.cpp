@@ -14,37 +14,16 @@ using namespace std;
 
 Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
                      level(l), turns(t), player(pc), opponent(opp) {
+
         offer = new Offer(); // Create empty offer
+        startInvValue = player->getInvValue(&player->inventory);
 }
 
-Encounter::~Encounter()             { delete offer;            }
+Encounter::~Encounter()             { delete offer;                      }
 int Encounter::getLevel()           { return level;                      }
-void Encounter::useOneTurn()        { turns--;                           }
-void Encounter::printTurns()        { cout << turns << " turns left\n"; }
+void Encounter::printTurns()        { cout << turns << " turns left\n";  }
 void Encounter::printOfferOnTable() { offer->printOffer();               }
 
-
-void Encounter::loadFloatIssue(Issue<float> issueToAdd) {
-    floatIssues.push_back(issueToAdd);
-}
-
-void Encounter::loadIntIssue(Issue<int> issueToAdd) {
-    intIssues.push_back(issueToAdd);
-}
-
-
-int Encounter::issueCount() {
-    return (floatIssues.size() + intIssues.size());
-}
-
-
-void Encounter::printIssues() {
-    // Currently just going through floats first and then ints
-    for (int i = 0; i < static_cast<int>(floatIssues.size()); i++)
-        floatIssues[i].printIssue();
-    for (int j = 0; j < static_cast<int>(intIssues.size()); j++)
-        intIssues[j].printIssue();
-}
 
 // Gets simple, unverified user input and converts to lowercase
 string Encounter::saveStandardisedInput(string keyword) {
@@ -72,51 +51,42 @@ string Encounter::saveStandardisedInput(string keyword) {
 }
 
 
-void Encounter::buildValidOffer(map<string, int> econ, bool &win) {
+void Encounter::buildValidOffer(map<string, float> econ, bool &didWin) {
 
     string prop;
-    bool forProp = true;
+    bool forProposal = true;
+    bool negoOver = false;
 
-    for (int i = 0; i < static_cast<int>(floatIssues.size()); i++) {
-        while (true) {
-            prop = "";
-            player->printInventory(forProp);
-            prop = saveStandardisedInput(prop);
+    while (true) {
+        prop = "";
+        player->printInventory(forProposal);
+        prop = saveStandardisedInput(prop);
 
-            if (prop == "quit") exit(0);
-            else if (prop == "inventory") player->printInventory();
-            else if (prop == "help") player->printHelp();
-            else if (prop == "on table") offer->printOffer();
-            else if (prop == "done") {
-                offer->printOffer();
+        if (prop == "quit") exit(0);
+        else if (prop == "inventory") player->printInventory();
+        else if (prop == "help") player->printHelp();
+        else if (prop == "turns") printTurns();
+        else if (prop == "propose") {
 
-                // Move on to opponent response
-                // cout << opponent->getName() << "'s response:" << endl;
+            // Print offer and save its value
+            offer->printOffer();
+            offerInvValue = player->getInvValue(&offer->offerInv);
 
-                // Fill win with true or false, depending on acceptance
-                win = opponent->reactToOffer(offer);
-
-                if (win) opponent->acceptTerms();
-                else { // Must return items to inventory first
-                    player->clearTable(offer);
-                    opponent->rejectTerms(turns);
-                }
-                break;
-            }
-
-            // Must be a legit item, though the player may not have it
-            else if (player->inventory.count(prop)) {
-                if (player->inventory[prop]) {
-                    cout << "You place your " << prop << " on the table.";
-                    cout << "\n\n";
-                    player->placeInvObjOnTable(prop, offer);
-                } else {
-                    cout << "You have no " << prop << " to give.\n\n";
-                }
-                offer->printOffer();
-            }
-            else cout << "You have no such thing. Try again.\n\n";
+            // Check if nego done, and break if so
+            checkEndEncounter(didWin, negoOver);
+            if (negoOver) return;
         }
+
+        // Must be a legit item, though the player might not have it
+        else if (player->inventory.count(prop)) {
+            if (player->inventory[prop]) {
+                cout << "You place your " << prop << " on the table.";
+                cout << "\n\n";
+                player->placeInvObjOnTable(prop, offer);
+            } else cout << "You have no " << prop << " to give.\n\n";
+            offer->printOffer();
+        }
+        else cout << "You have no such thing. Try again.\n\n";
     }
 }
 
@@ -127,8 +97,51 @@ void Encounter::beginEncounter() {
     transform(opp.begin(), opp.end(), opp.begin(), ::toupper);
 
     cout << "==========================================================\n";
-    cout << "NEGOTIATE WITH " << opp << endl;
+    cout << "YOU ENTERED A NEGOTIATION WITH " << opp << endl;
     cout << "==========================================================\n\n";
 
     player->printHelp();
+}
+
+void Encounter::printEndEncounter(bool didWin) {
+
+    string opp = opponent->getName();
+    transform(opp.begin(), opp.end(), opp.begin(), ::toupper);
+
+    cout << "==========================================================\n";
+    cout << "YOU " << (didWin ? "PASSED" : "LOST") << " A ";
+    cout << "NEGOTIATION WITH " << opp << endl;
+    cout << "==========================================================\n\n";
+}
+
+void Encounter::checkEndEncounter(bool &didWin, bool &negoOver) {
+    // Fill win with true or false, depending on acceptance
+    didWin = opponent->reactToOffer(offer);
+
+    // In case over, remember inventory
+    endInvValue = player->getInvValue(&player->inventory);
+
+    // If won
+    if (didWin) {
+        negoOver = true;
+        printEndEncounter(didWin);
+        player->score(startInvValue, offerInvValue, endInvValue);
+        opponent->acceptTerms();
+    }
+    // If offer rejected
+    else {
+        // but no turns left
+        if (!turns) {
+            negoOver = true;
+            printEndEncounter(didWin);
+            player->score(startInvValue, offerInvValue, endInvValue);
+            opponent->walkAway();
+        }
+        // but turns are left, must return items to inventory first
+        else {
+            player->clearTable(offer);
+            opponent->rejectTerms(turns);
+            turns--; // Use one turn
+        }
+    }
 }

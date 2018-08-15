@@ -45,28 +45,33 @@ void PlayerCharacter::placeInvObjOnTable(string itemName, Offer* onTable) { inve
     onTable->addObjToTable(itemName);
 }
 
-void PlayerCharacter::clearTable(Offer* table) {
+void PlayerCharacter::clearTable(Offer* offer) {
     map<string, int>::iterator it;
-    for (it = table->inventory.begin(); it != table->inventory.end(); it++) {
-        if (it->second > 0) {
-            addToInventory(it->first, it->second);
-            table->inventory[it->first] = 0;
+    string item = "";
+    int amount = 0;
+
+    for (it = offer->offerInv.begin(); it != offer->offerInv.end();
+         it++) {
+        item = it->first;
+        amount = it->second;
+        if (amount > 0) {
+            addToInventory(item, amount);
+            offer->offerInv[item] = 0;
         }
     }
 }
 
 void PlayerCharacter::printHelp() {
-    cout << "******************* GENERAL HELP *******************\n";
-    cout << "[help: see this menu]\n";
-    cout << "[quit: exit the game]\n";
-    cout << "[inventory: see what you currently hold]\n";
-    cout << "****************************************************\n\n";
+    cout << "******************* HELP *******************\n";
+    cout << "Add your inventory items by number to your offer\n";
+    cout << "propose: type this to send your current offer\n\n";
+    cout << "turns: see how many turns you have left\n";
 
-    cout << "**************** DURING NEGOTIATION ****************\n";
-    cout << "[turns: see how many turns you have left]\n";
-    cout << "[issues: see what you're negotiating over]\n";
-    cout << "[propose: use a turn to build your own offer]\n";
-    cout << "****************************************************\n\n";
+    cout << "inventory: double-check what you currently hold\n";
+    cout << "help: see this menu\n";
+    cout << "quit: exit the game\n\n";
+    cout << "********************************************\n";
+
 }
 
 void PlayerCharacter::printInventory(bool forProposal) {
@@ -84,7 +89,7 @@ void PlayerCharacter::printInventory(bool forProposal) {
     }
 
     if (forProposal) {
-        cout << "***************** PROPOSE ****************\n";
+        cout << "****************** PROPOSE *****************\n";
         cout << "[To build an offer, add your items by number, one by one.]\n";
         cout << "[Type \"done\" when you don't wish to add any more.]\n\n";
     } else cout << "***************** INVENTORY ****************\n";
@@ -115,7 +120,7 @@ void PlayerCharacter::printInventory(bool forProposal) {
         cout << (forProposal ? "[6: " : "[") << "Basket, ";
         cout << inventory["basket"] << " owned]" << endl;
     }
-    cout << "************************************************\n\n";
+    cout << "********************************************\n\n";
 
 
 }

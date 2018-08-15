@@ -23,31 +23,27 @@ private:
     Negotiator* opponent;
     Offer* offer;
 
-    vector< Issue<float> > floatIssues;
-    vector< Issue<int> > intIssues;
+    float startInvValue;
+    float offerInvValue;
+    float endInvValue;
+
 
 public:
     Encounter(PlayerCharacter*, Negotiator*, int, int);
     ~Encounter();
 
-    // Only to be used at initial loading time
-    void loadFloatIssue(Issue<float>);
-    void loadIntIssue(Issue<int>);
-
-
     int getLevel();
-    void useOneTurn();
 
     string saveStandardisedInput(string keyword);
 
-    void buildValidOffer(map<string, int>, bool&);
-    int issueCount();
+    void buildValidOffer(map<string, float>, bool&);
 
     void printTurns();
     void printOfferOnTable();
-    void printIssues();
 
     void beginEncounter();
+    void printEndEncounter(bool);
+    void checkEndEncounter(bool&, bool&);
 
 };
 

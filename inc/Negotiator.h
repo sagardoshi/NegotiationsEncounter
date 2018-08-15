@@ -17,7 +17,7 @@ private:
 
 
 protected:
-    map<string, int> economy;
+    map<string, float> economy;
     map<string, float> prefs;
 
 public:
@@ -25,15 +25,19 @@ public:
 
     string getName();
     float getAmiability();
-    void setAmiability(float);
+    void checkpoint();
 
+    // Values and economics
     void fillPreferences();
-    bool reactToOffer(Offer*);
+    void fillEconomy();
+    float getInvValue(map<string, int>*);
+    void score(float, float, float);
 
+    // Dealing with Offers
+    bool reactToOffer(Offer*);
     void rejectTerms(int);
     void acceptTerms();
     void walkAway();
-
 };
 
 #endif

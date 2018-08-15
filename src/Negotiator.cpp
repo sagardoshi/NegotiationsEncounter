@@ -3,31 +3,20 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <map>
 #include <random>
-#include <chrono>
 
 using namespace std;
 
 
 Negotiator::Negotiator(string n, float a) : name(n), amiability(a) {
     fillPreferences();
-
-    // name: [default price, how many owned]
-    economy["pomegranate"] = 10;
-    economy["knuckle pads"] = 15;
-    economy["silverback perfume"] = 10;
-    economy["ginger cookie"] = 5;
-    economy["coins"] = 1;
-    economy["basket"] = 2;
-    economy["porridge's key"] = 30;
-    economy["rhubarb's key"] = 40;
-    economy["chamoy's key"] = 50;
+    fillEconomy();
 }
 
 string Negotiator::getName()                { return name;        }
 float Negotiator::getAmiability()           { return amiability;  }
-void Negotiator::setAmiability(float newAm) { amiability = newAm; }
 
 // A trivial 0-1 random generator engine from time-based seed
 float Negotiator::getRandWeight() {
@@ -37,6 +26,45 @@ float Negotiator::getRandWeight() {
     return distribution(generator)/100.0;
 }
 
+void Negotiator::checkpoint() {
+    string uInput = "";
+    cout << "\n\n---------------------------\n";
+    cout << "[Press return to continue.]";
+    getline(cin, uInput);
+    cout << "---------------------------\n\n\n\n";
+}
+
+
+float Negotiator::getInvValue(map<string, int>* invPointer) {
+    map<string, int> inv = *invPointer;
+
+    map<string, int>::iterator it;
+    string itemName = "";
+    float baseValue = 0.0;
+    int quantity = 0;
+    float totalValue = 0.0;
+
+    for (it = inv.begin(); it != inv.end(); it++) {
+        itemName = it->first;
+        quantity = it->second;
+        baseValue = economy[itemName];
+        totalValue += (baseValue * quantity);
+    }
+    return totalValue;
+}
+
+void Negotiator::fillEconomy() {
+    // name: [default price, how many owned]
+    economy["pomegranate"] = 10.0;
+    economy["knuckle pads"] = 15.0;
+    economy["silverback perfume"] = 10.0;
+    economy["ginger cookie"] = 5.0;
+    economy["coins"] = 1.0;
+    economy["basket"] = 2.0;
+    economy["porridge's key"] = 30.0;
+    economy["rhubarb's key"] = 40.0;
+    economy["chamoy's key"] = 50.0;
+}
 
 void Negotiator::fillPreferences() {
     // Player will take base value
@@ -65,11 +93,11 @@ void Negotiator::fillPreferences() {
     }
 
     else if (name == "Rhubarb") {
-        prefs["pomegranate"] = 1.5; // loves fruit
+        prefs["pomegranate"] = 1.25; // loves fruit
         prefs["knuckle pads"] = 1.0;
         prefs["silverback perfume"] = 0.5; // is female
         prefs["ginger cookie"] = 0.5; // no nutrition
-        prefs["coins"] = 1.25; // cash poor, idea rich
+        prefs["coins"] = 1.5; // cash poor, idea rich
         prefs["basket"] = 1.25; // can never have enough
         prefs["porridge's key"] = 0.0; // irrelevant
         prefs["rhubarb's key"] = 1.0;
@@ -98,14 +126,22 @@ bool Negotiator::reactToOffer(Offer* offer) {
     float generosityOfOffer = 0.0;
     float response = 0.0;
 
+    string item = "";
+    int amount = 0;
+
     if (name == "Porridge") ownKey = "porridge's key";
     if (name == "Rhubarb") ownKey = "rhubarb's key";
     if (name == "Chamoy") ownKey = "chamoy's key";
     float valueOfKey = prefs[ownKey] * economy[ownKey];
 
-    for (it = offer->inventory.begin(); it != offer->inventory.end(); it++)
-        if (it->second > 0)
-            sum += prefs[it->first] * economy[it->first] * it->second;
+
+    for (it = offer->offerInv.begin(); it != offer->offerInv.end();
+         it++) {
+        item = it->first;
+        amount = it->second;
+
+        if (amount > 0) sum += prefs[item] * economy[item] * amount;
+    }
 
     generosityOfOffer = sum / valueOfKey;
 
@@ -121,6 +157,22 @@ bool Negotiator::reactToOffer(Offer* offer) {
 
 }
 
+void Negotiator::score(float startVal, float offerVal, float endVal) {
+
+    cout << "You began with an inventory of base value: ";
+    cout << startVal << endl;
+
+    cout << "You gave away a total value of: ";
+    cout << offerVal << endl;
+
+    cout << "You ended with an inventory of base value: ";
+    cout << endVal << endl << endl;
+
+
+
+    return;
+}
+
 void Negotiator::walkAway() {
     if (name == "Porridge") {
         cout << "The little gorilla screws his face up in frustration. ";
@@ -128,6 +180,8 @@ void Negotiator::walkAway() {
         cout << "came with interesting goodies to taste and to help ";
         cout << "me feel more grown-up. But you just came with boring ";
         cout << "stuff!\"\n\n";
+
+        checkpoint();
 
         cout << "You shrug your shoulders, but he just ";
         cout << "balls his little fists in rage. ";
@@ -139,11 +193,15 @@ void Negotiator::walkAway() {
         cout << "down. He looks side to side, suddenly conspiratorial. ";
         cout << "With one padded finger, he beckons you toward him.\n\n";
 
+        checkpoint();
+
         cout << "You lean down to get eye to eye with him. He cups his ";
         cout << "hand and whispers something soft to you. \"Grandma ";
         cout << "Chamoy taught me to do this if my negotiations ";
         cout << "turn out bad, like this. Hope it doesn't hurt too ";
         cout << "much.\"\n\n";
+
+        checkpoint();
 
         cout << "Before you realise it, he has spread his arms wide, to ";
         cout << "either side of ";
@@ -155,6 +213,8 @@ void Negotiator::walkAway() {
 
         cout << "You have been killed by Porridge Trigor.\n\n";
 
+        checkpoint();
+
         cout << "Perhaps you might do better in another life if you keep ";
         cout << "a closer eye on your turns left and offer items more ";
         cout << "attractive to Porridge. Even young gorillas are far ";
@@ -165,6 +225,9 @@ void Negotiator::walkAway() {
     if (name == "Rhubarb") {
         cout << "Rhubarb never liked you. She seems gleeful for a moment.\n\n";
         cout << "A pause. Another pause.\n\n";
+
+        checkpoint();
+
         cout << "Before you know what's happening, she has let out an ";
         cout << "roar and comes barreling toward you. You feel a sharp pain, ";
         cout << " and then nothing. ";
@@ -172,12 +235,14 @@ void Negotiator::walkAway() {
 
         cout << "You have been killed by Rhubarb Trigor.\n\n";
 
+        checkpoint();
+
         cout << "Perhaps you might do better in another life if you are ";
         cout << "a bit more careful with your inventory ahead of time. ";
         cout << "And don't forget –- Rhubarb isn't as amenable as her son is. ";
         cout << "You have to suss out her needs better.\n\n";
 
-        cout << "Or else, you'll let her engage in her most important ";
+        cout << "Or else, you'll remind her of her most important ";
         cout << "job: defending her nest from spindly hairless intruders ";
         cout << "like you.\n\n";
     }
@@ -191,6 +256,8 @@ void Negotiator::walkAway() {
 
         cout << "You will not be okay.\n\n";
 
+        checkpoint();
+
         cout << "Sure enough, she brings her head down onto yours, and your ";
         cout << "time of consciousness is kept mercifully short. You simply ";
         cout << "feel a sharp pain, and then nothing. ";
@@ -198,11 +265,15 @@ void Negotiator::walkAway() {
 
         cout << "You have been killed by Chamoy Trigor.\n\n";
 
+        checkpoint();
+
         cout << "By the third negotiation, things are tough. You need to have ";
         cout << "conserved the right resources. Think ahead to what an older ";
         cout << "matriarch like Chamoy might want the most, and save those ";
         cout << "resources if you can. At least Chamoy's predominant ";
         cout << "characteristic is languor, rather than anger.\n\n";
+
+        checkpoint();
 
         cout << "But even then, you cannot mistake it for passivity. She ";
         cout << "might seem lighthearted, but it is her home that you have ";
@@ -223,14 +294,20 @@ void Negotiator::acceptTerms() {
         cout << "He tosses you his key, and you snatch it out of the ";
         cout << "air.\n\n";
 
+        checkpoint();
+
         cout << "Congratulations, you now have Porridge's Key! You are ";
         cout << "one step toward your escape. Two more to go...\n\n";
+
+        checkpoint();
 
         cout << "Porridge is lost in his own bliss, inspecting his ";
         cout << "winnings, when you ";
         cout << "clear your throat. \"Oh,\" he says, remembering ";
         cout << "you, \"I guess you still have to get past the rest of ";
         cout << "the family, right?\n\n";
+
+        checkpoint();
 
         cout << "You nod, and Porridge says, \"Well, just go back ";
         cout << "through the family room, where Grandma sits, and keep ";
@@ -241,6 +318,8 @@ void Negotiator::acceptTerms() {
 
         cout << "You give Porridge a high-five and go back out of the ";
         cout << "room and down the hallway.";
+
+        checkpoint();
     }
 
     if (name == "Rhubarb") {
@@ -256,8 +335,6 @@ void Negotiator::acceptTerms() {
 
 
 void Negotiator::rejectTerms(int turnsLeft) {
-    if (turnsLeft == 0) walkAway();
-
     cout << name << " rejects the offer on the table. Try again, ";
     cout << "but don't forget that you only have " << turnsLeft;
     cout << (turnsLeft == 1 ? " turn" : " turns") << " left ";
