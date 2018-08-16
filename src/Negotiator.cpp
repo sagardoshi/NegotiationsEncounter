@@ -323,11 +323,58 @@ void Negotiator::acceptTerms() {
     }
 
     if (name == "Rhubarb") {
-        cout << "Rhubarb accepts your offer. Nice job! [More flavour text ";
-        cout << "to be filled out here.]\n\n";
+        cout << "Rhubarb chuckles to herself. \"I don't know why Mother ";
+        cout << "only likes giving me things through an intermediary.\" She ";
+        cout << "looks up to you. \"I suppose it's her idea of a fun game. ";
+        cout << "Ah, well. At least she still gets me the best presents.\"\n\n";
+
+        checkpoint();
+
+        cout << "Rhubarb steps up to her full height, out from behind the ";
+        cout << "desk, and she steps around, leaning back against it and ";
+        cout << "crossing her arms. You hold your breath for a moment, until ";
+        cout << "she speaks again.\n\n";
+
+        checkpoint();
+
+        cout << "\"Alright, young human. I'll accept your offer. Leave me ";
+        cout << "all that is here on the table, and you may have this.\" From ";
+        cout << "a pocket, she pulls out a silver key. It stands out sharply ";
+        cout << "against the black pads of her palm.\n\n";
+
+        cout << "Before she can change her mind, you gingerly take the key ";
+        cout << "out of her hand.\n\n";
+
+        checkpoint();
+
+        cout << "You turn to walk away, and she calls back to you. \"There's ";
+        cout << "only one more of us for you to face, you know.\" You turn ";
+        cout << "back, waiting for more. She's still smirking, arms crossed. ";
+        cout << "\"And it's whom you think it is. A word of advice: she's not ";
+        cout << " as easy-going as she might seem. And after all, although ";
+        cout << "a couple of you intruders have made it this far, no one has ";
+        cout << "finished successfully. You are, after all, notably ";
+        cout << "diminished from your efforts, are you not?\"\n\n";
+
+        checkpoint();
+
+        cout << "You check your inventory, and indeed, your holdings are a ";
+        cout << "far cry from the full basket Chamoy had originally given ";
+        cout << "you.\n\n";
+
+        cout << "Rhubarb laughs again, watching you. This time, it's ";
+        cout << "sinister. \"Let's see if you can make your way through ";
+        cout << "this one.\" She goes back to her desk and sits down, ";
+        cout << "leaning over it and steepling her fingers. \"You know the ";
+        cout << "way. Get going. And good luck.\"\n\n";
+
+        checkpoint();
+
+        cout << "She laughs again, and the sound of it echoes in your mind as ";
+        cout << "you walk back down the hallway, shivering.\n\n";
     }
 
-    if (name == "Chamoy") {
+    if (name == "Chamoy") { // TODO: Flavour text
         cout << "Chamoy accepts your offer. Nice job! You win! Wooooo! ";
         cout << "[More flavour text to be filled out here.]\n\n";
     }

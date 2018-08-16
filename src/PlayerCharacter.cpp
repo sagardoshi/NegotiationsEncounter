@@ -63,10 +63,10 @@ void PlayerCharacter::clearTable(Offer* offer) {
 
 void PlayerCharacter::printHelp() {
     cout << "******************* HELP *******************\n";
-    cout << "Add your inventory items by number to your offer\n";
-    cout << "propose: type this to send your current offer\n\n";
-    cout << "turns: see how many turns you have left\n";
+    cout << "Add your inventory items by number to your offer\n\n";
 
+    cout << "propose: type this to send your current offer\n";
+    cout << "turns: see how many turns you have left\n";
     cout << "inventory: double-check what you currently hold\n";
     cout << "help: see this menu\n";
     cout << "quit: exit the game\n\n";
