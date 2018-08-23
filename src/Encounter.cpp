@@ -16,6 +16,7 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
                      level(l), turns(t), player(pc), opponent(opp) {
 
         offer = new Offer(); // Create empty offer
+        mapPlayerInventory(); // Give each inventory item a number
         startInvValue = player->getInvValue(&player->inventory);
 }
 
@@ -24,6 +25,24 @@ int Encounter::getLevel()           { return level;                      }
 void Encounter::printTurns()        { cout << turns << " turns left\n";  }
 void Encounter::printOfferOnTable() { offer->printOffer();               }
 
+// Goes through every item player has in an encounter, and assigns a number
+void Encounter::mapPlayerInventory() {
+    map<string, int>::iterator it;
+    string item = "";
+    int itemOrder = 1;
+    int amount = 0;
+
+
+    for (it = player->inventory.begin(); it != player->inventory.end(); it++) {
+        item = it->first;
+        amount = it->second;
+
+        if (amount > 0) {
+            player->invMap[item] = itemOrder;
+            itemOrder++;
+        }
+    }
+}
 
 // Gets simple, unverified user input and converts to lowercase
 string Encounter::saveStandardisedInput(string keyword) {
@@ -40,12 +59,17 @@ string Encounter::saveStandardisedInput(string keyword) {
         i++;
     }
 
-    if (keyword == "1") keyword = "pomegranate";
-    if (keyword == "2") keyword = "knuckle pads";
-    if (keyword == "3") keyword = "silverback perfume";
-    if (keyword == "4") keyword = "ginger cookie";
-    if (keyword == "5") keyword = "coins";
-    if (keyword == "6") keyword = "basket";
+    // TODO: FIX THIS TO BE GENERAL
+    if (keyword == "1") keyword = "burn relief ointment";
+    if (keyword == "2") keyword = "carved walking cane";
+    if (keyword == "3") keyword = "sunflower seeds packet";
+
+    // if (keyword == "1") keyword = "pomegranate";
+    // if (keyword == "2") keyword = "knuckle pads";
+    // if (keyword == "3") keyword = "silverback perfume";
+    // if (keyword == "4") keyword = "ginger cookie";
+    // if (keyword == "5") keyword = "coins";
+    // if (keyword == "6") keyword = "basket";
 
     return keyword;
 }

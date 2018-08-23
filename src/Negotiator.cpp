@@ -26,14 +26,17 @@ float Negotiator::getRandWeight() {
     return distribution(generator)/100.0;
 }
 
+// Pauses text for user to read and get a breather
 void Negotiator::checkpoint() {
-    string uInput = "";
-    cout << "\n\n---------------------------\n";
-    cout << "[Press return to continue.]";
-    getline(cin, uInput);
-    cout << "---------------------------\n\n\n\n";
-}
+    string input = "";
+    string PROMPT_DIVIDER =  "----------------------------------------";
+           PROMPT_DIVIDER += "----------------------------------------\n";
+    string anyInputText = "\n" + PROMPT_DIVIDER + "[Press return to continue.]";
 
+    cout << anyInputText;
+    getline(cin, input);
+    cout << PROMPT_DIVIDER << "\n";
+}
 
 float Negotiator::getInvValue(map<string, int>* invPointer) {
     map<string, int> inv = *invPointer;
@@ -54,68 +57,30 @@ float Negotiator::getInvValue(map<string, int>* invPointer) {
 }
 
 void Negotiator::fillEconomy() {
-    // name: [default price, how many owned]
-    economy["pomegranate"] = 10.0;
-    economy["knuckle pads"] = 15.0;
-    economy["silverback perfume"] = 10.0;
-    economy["ginger cookie"] = 5.0;
-    economy["coins"] = 1.0;
-    economy["basket"] = 2.0;
-    economy["porridge's key"] = 30.0;
-    economy["rhubarb's key"] = 40.0;
-    economy["chamoy's key"] = 50.0;
+    // economy[name] = base value
+    economy["burn relief ointment"] = 10.0;
+    economy["carved walking cane"] = 15.0;
+    economy["sunflower seeds"] = 10.0;
+    economy["bird spirit key packet"] = 10.0;
 }
+
 
 void Negotiator::fillPreferences() {
     // Player will take base value
     if (name == "You") {
-        prefs["pomegranate"] = 1.0;
-        prefs["knuckle pads"] = 1.0;
-        prefs["silverback perfume"] = 1.0;
-        prefs["ginger cookie"] = 1.0;
-        prefs["coins"] = 1.0;
-        prefs["basket"] = 1.0;
-        prefs["porridge's key"] = 1.0;
-        prefs["rhubarb's key"] = 1.0;
-        prefs["chamoy's key"] = 1.0;
+        prefs["burn relief ointment"] = 1.0;
+        prefs["carved walking cane"] = 1.0;
+        prefs["sunflower seeds packet"] = 1.0;
+        prefs["bird spirit key"] = 1.0;
     }
-
-    else if (name == "Porridge") {
-        prefs["pomegranate"] = 1.25; // loves fruit
-        prefs["knuckle pads"] = 0.25; // has young, fresh knuckles
-        prefs["silverback perfume"] = 2.0; // wants to seem older
-        prefs["ginger cookie"] = 1.25; // loves cookies
-        prefs["coins"] = 1.0;
-        prefs["basket"] = 0.25; // irrelevant
-        prefs["porridge's key"] = 1.0;
-        prefs["rhubarb's key"] = 0.0; // irrelevant
-        prefs["chamoy's key"] = 0.0; // irrelevant
-    }
-
-    else if (name == "Rhubarb") {
-        prefs["pomegranate"] = 1.25; // loves fruit
-        prefs["knuckle pads"] = 1.0;
-        prefs["silverback perfume"] = 0.5; // is female
-        prefs["ginger cookie"] = 0.5; // no nutrition
-        prefs["coins"] = 1.5; // cash poor, idea rich
-        prefs["basket"] = 1.25; // can never have enough
-        prefs["porridge's key"] = 0.0; // irrelevant
-        prefs["rhubarb's key"] = 1.0;
-        prefs["chamoy's key"] = 0.0; // irrelevant
-    }
-
-    else if (name == "Chamoy") {
-        prefs["pomegranate"] = 1.5; // loves fruit
-        prefs["knuckle pads"] = 3.0; // very important in old age!
-        prefs["silverback perfume"] = 0.25; // ain't got no time for romance
-        prefs["ginger cookie"] = 1.5; // who doesn't love a cookie?
-        prefs["coins"] = 0.5; // you can't take it with you
-        prefs["basket"] = 1.0; // sure
-        prefs["porridge's key"] = 0.0; // irrelevant
-        prefs["rhubarb's key"] = 0.0; // irrelevant
-        prefs["chamoy's key"] = 1.0;
+    else if (name == "Mosta and Pepita") {
+        prefs["burn relief ointment"] = 2.0;
+        prefs["carved walking cane"] = 2.0;
+        prefs["sunflower seeds packet"] = 1.5;
+        prefs["bird spirit key"] = 1.0;
     }
 }
+
 
 
 bool Negotiator::reactToOffer(Offer* offer) {
@@ -129,9 +94,7 @@ bool Negotiator::reactToOffer(Offer* offer) {
     string item = "";
     int amount = 0;
 
-    if (name == "Porridge") ownKey = "porridge's key";
-    if (name == "Rhubarb") ownKey = "rhubarb's key";
-    if (name == "Chamoy") ownKey = "chamoy's key";
+    if (name == "Mosta and Pepita") ownKey = "bird spirit key";
     float valueOfKey = prefs[ownKey] * economy[ownKey];
 
 
@@ -286,106 +249,14 @@ void Negotiator::walkAway() {
     exit(0);
 }
 
-void Negotiator::acceptTerms() {
-    if (name == "Porridge") {
-        cout << "Porridge grins just with his lips, a sparkle in his ";
-        cout << "eyes. \"Yes! I'll take that offer!\" he shouts, ";
-        cout << "leaping up and beginning to scoop up his winnings. ";
-        cout << "He tosses you his key, and you snatch it out of the ";
-        cout << "air.\n\n";
-
-        checkpoint();
-
-        cout << "Congratulations, you now have Porridge's Key! You are ";
-        cout << "one step toward your escape. Two more to go...\n\n";
-
-        checkpoint();
-
-        cout << "Porridge is lost in his own bliss, inspecting his ";
-        cout << "winnings, when you ";
-        cout << "clear your throat. \"Oh,\" he says, remembering ";
-        cout << "you, \"I guess you still have to get past the rest of ";
-        cout << "the family, right?\n\n";
-
-        checkpoint();
-
-        cout << "You nod, and Porridge says, \"Well, just go back ";
-        cout << "through the family room, where Grandma sits, and keep ";
-        cout << "on heading through until you get to my Momma's door.\" ";
-        cout << "He pauses, checks the clock on the wall, and scratches ";
-        cout << "his head. \"Umm, just be careful, okay? If you catch ";
-        cout << "her before lunchtime, she can be a little cranky.\n\n";
-
-        cout << "You give Porridge a high-five and go back out of the ";
-        cout << "room and down the hallway.";
-
-        checkpoint();
-    }
-
-    if (name == "Rhubarb") {
-        cout << "Rhubarb chuckles to herself. \"I don't know why Mother ";
-        cout << "only likes giving me things through an intermediary.\" She ";
-        cout << "looks up to you. \"I suppose it's her idea of a fun game. ";
-        cout << "Ah, well. At least she still gets me the best presents.\"\n\n";
-
-        checkpoint();
-
-        cout << "Rhubarb steps up to her full height, out from behind the ";
-        cout << "desk, and she steps around, leaning back against it and ";
-        cout << "crossing her arms. You hold your breath for a moment, until ";
-        cout << "she speaks again.\n\n";
-
-        checkpoint();
-
-        cout << "\"Alright, young human. I'll accept your offer. Leave me ";
-        cout << "all that is here on the table, and you may have this.\" From ";
-        cout << "a pocket, she pulls out a silver key. It stands out sharply ";
-        cout << "against the black pads of her palm.\n\n";
-
-        cout << "Before she can change her mind, you gingerly take the key ";
-        cout << "out of her hand.\n\n";
-
-        checkpoint();
-
-        cout << "You turn to walk away, and she calls back to you. \"There's ";
-        cout << "only one more of us for you to face, you know.\" You turn ";
-        cout << "back, waiting for more. She's still smirking, arms crossed. ";
-        cout << "\"And it's whom you think it is. A word of advice: she's not ";
-        cout << " as easy-going as she might seem. And after all, although ";
-        cout << "a couple of you intruders have made it this far, no one has ";
-        cout << "finished successfully. You are, after all, notably ";
-        cout << "diminished from your efforts, are you not?\"\n\n";
-
-        checkpoint();
-
-        cout << "You check your inventory, and indeed, your holdings are a ";
-        cout << "far cry from the full basket Chamoy had originally given ";
-        cout << "you.\n\n";
-
-        cout << "Rhubarb laughs again, watching you. This time, it's ";
-        cout << "sinister. \"Let's see if you can make your way through ";
-        cout << "this one.\" She goes back to her desk and sits down, ";
-        cout << "leaning over it and steepling her fingers. \"You know the ";
-        cout << "way. Get going. And good luck.\"\n\n";
-
-        checkpoint();
-
-        cout << "She laughs again, and the sound of it echoes in your mind as ";
-        cout << "you walk back down the hallway, shivering.\n\n";
-    }
-
-    if (name == "Chamoy") { // TODO: Flavour text
-        cout << "Chamoy accepts your offer. Nice job! You win! Wooooo! ";
-        cout << "[More flavour text to be filled out here.]\n\n";
-    }
-}
+void Negotiator::acceptTerms() {}
 
 
 void Negotiator::rejectTerms(int turnsLeft) {
     cout << name << " rejects the offer on the table. Try again, ";
     cout << "but don't forget that you only have " << turnsLeft;
     cout << (turnsLeft == 1 ? " turn" : " turns") << " left ";
-    cout << "before " << name << " loses patience.\n\n";
+    cout << "before the patience of " << name << " runs out.\n\n";
 }
 
 
@@ -431,3 +302,171 @@ if > 1, accept!
 else reject
 
 */
+
+
+
+// void Negotiator::fillEconomy() {
+//     // name: [default price, how many owned]
+//     // economy["pomegranate"] = 10.0;
+//     // economy["knuckle pads"] = 15.0;
+//     // economy["silverback perfume"] = 10.0;
+//     // economy["ginger cookie"] = 5.0;
+//     // economy["coins"] = 1.0;
+//     // economy["basket"] = 2.0;
+//     // economy["porridge's key"] = 30.0;
+//     // economy["rhubarb's key"] = 40.0;
+//     // economy["chamoy's key"] = 50.0;
+// }
+
+//
+// void Negotiator::fillPreferences() {
+//     // Player will take base value
+//     if (name == "You") {
+//         // prefs["pomegranate"] = 1.0;
+//         // prefs["knuckle pads"] = 1.0;
+//         // prefs["silverback perfume"] = 1.0;
+//         // prefs["ginger cookie"] = 1.0;
+//         // prefs["coins"] = 1.0;
+//         // prefs["basket"] = 1.0;
+//         // prefs["porridge's key"] = 1.0;
+//         // prefs["rhubarb's key"] = 1.0;
+//         // prefs["chamoy's key"] = 1.0;
+//
+//         prefs["burn relief ointment"] = 1.0;
+//         prefs["carved walking cane"] = 1.0;
+//         prefs["sunflower seeds"] = 1.0;
+//         prefs["bird spirit key"] = 1.0;
+//
+//     }
+//
+//     // else if (name == "Porridge") {
+//     //     prefs["pomegranate"] = 1.25; // loves fruit
+//     //     prefs["knuckle pads"] = 0.25; // has young, fresh knuckles
+//     //     prefs["silverback perfume"] = 2.0; // wants to seem older
+//     //     prefs["ginger cookie"] = 1.25; // loves cookies
+//     //     prefs["coins"] = 1.0;
+//     //     prefs["basket"] = 0.25; // irrelevant
+//     //     prefs["porridge's key"] = 1.0;
+//     //     prefs["rhubarb's key"] = 0.0; // irrelevant
+//     //     prefs["chamoy's key"] = 0.0; // irrelevant
+//     // }
+//     //
+//     // else if (name == "Rhubarb") {
+//     //     prefs["pomegranate"] = 1.25; // loves fruit
+//     //     prefs["knuckle pads"] = 1.0;
+//     //     prefs["silverback perfume"] = 0.5; // is female
+//     //     prefs["ginger cookie"] = 0.5; // no nutrition
+//     //     prefs["coins"] = 1.5; // cash poor, idea rich
+//     //     prefs["basket"] = 1.25; // can never have enough
+//     //     prefs["porridge's key"] = 0.0; // irrelevant
+//     //     prefs["rhubarb's key"] = 1.0;
+//     //     prefs["chamoy's key"] = 0.0; // irrelevant
+//     // }
+//     //
+//     // else if (name == "Chamoy") {
+//     //     prefs["pomegranate"] = 1.5; // loves fruit
+//     //     prefs["knuckle pads"] = 3.0; // very important in old age!
+//     //     prefs["silverback perfume"] = 0.25; // ain't got no time for romance
+//     //     prefs["ginger cookie"] = 1.5; // who doesn't love a cookie?
+//     //     prefs["coins"] = 0.5; // you can't take it with you
+//     //     prefs["basket"] = 1.0; // sure
+//     //     prefs["porridge's key"] = 0.0; // irrelevant
+//     //     prefs["rhubarb's key"] = 0.0; // irrelevant
+//     //     prefs["chamoy's key"] = 1.0;
+//     // }
+// }
+
+
+// void Negotiator::acceptTerms() {
+//     // if (name == "Porridge") {
+//     //     cout << "Porridge grins just with his lips, a sparkle in his ";
+//     //     cout << "eyes. \"Yes! I'll take that offer!\" he shouts, ";
+//     //     cout << "leaping up and beginning to scoop up his winnings. ";
+//     //     cout << "He tosses you his key, and you snatch it out of the ";
+//     //     cout << "air.\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "Congratulations, you now have Porridge's Key! You are ";
+//     //     cout << "one step toward your escape. Two more to go...\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "Porridge is lost in his own bliss, inspecting his ";
+//     //     cout << "winnings, when you ";
+//     //     cout << "clear your throat. \"Oh,\" he says, remembering ";
+//     //     cout << "you, \"I guess you still have to get past the rest of ";
+//     //     cout << "the family, right?\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "You nod, and Porridge says, \"Well, just go back ";
+//     //     cout << "through the family room, where Grandma sits, and keep ";
+//     //     cout << "on heading through until you get to my Momma's door.\" ";
+//     //     cout << "He pauses, checks the clock on the wall, and scratches ";
+//     //     cout << "his head. \"Umm, just be careful, okay? If you catch ";
+//     //     cout << "her before lunchtime, she can be a little cranky.\n\n";
+//     //
+//     //     cout << "You give Porridge a high-five and go back out of the ";
+//     //     cout << "room and down the hallway.";
+//     //
+//     //     checkpoint();
+//     // }
+//     //
+//     // if (name == "Rhubarb") {
+//     //     cout << "Rhubarb chuckles to herself. \"I don't know why Mother ";
+//     //     cout << "only likes giving me things through an intermediary.\" She ";
+//     //     cout << "looks up to you. \"I suppose it's her idea of a fun game. ";
+//     //     cout << "Ah, well. At least she still gets me the best presents.\"\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "Rhubarb steps up to her full height, out from behind the ";
+//     //     cout << "desk, and she steps around, leaning back against it and ";
+//     //     cout << "crossing her arms. You hold your breath for a moment, until ";
+//     //     cout << "she speaks again.\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "\"Alright, young human. I'll accept your offer. Leave me ";
+//     //     cout << "all that is here on the table, and you may have this.\" From ";
+//     //     cout << "a pocket, she pulls out a silver key. It stands out sharply ";
+//     //     cout << "against the black pads of her palm.\n\n";
+//     //
+//     //     cout << "Before she can change her mind, you gingerly take the key ";
+//     //     cout << "out of her hand.\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "You turn to walk away, and she calls back to you. \"There's ";
+//     //     cout << "only one more of us for you to face, you know.\" You turn ";
+//     //     cout << "back, waiting for more. She's still smirking, arms crossed. ";
+//     //     cout << "\"And it's whom you think it is. A word of advice: she's not ";
+//     //     cout << " as easy-going as she might seem. And after all, although ";
+//     //     cout << "a couple of you intruders have made it this far, no one has ";
+//     //     cout << "finished successfully. You are, after all, notably ";
+//     //     cout << "diminished from your efforts, are you not?\"\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "You check your inventory, and indeed, your holdings are a ";
+//     //     cout << "far cry from the full basket Chamoy had originally given ";
+//     //     cout << "you.\n\n";
+//     //
+//     //     cout << "Rhubarb laughs again, watching you. This time, it's ";
+//     //     cout << "sinister. \"Let's see if you can make your way through ";
+//     //     cout << "this one.\" She goes back to her desk and sits down, ";
+//     //     cout << "leaning over it and steepling her fingers. \"You know the ";
+//     //     cout << "way. Get going. And good luck.\"\n\n";
+//     //
+//     //     checkpoint();
+//     //
+//     //     cout << "She laughs again, and the sound of it echoes in your mind as ";
+//     //     cout << "you walk back down the hallway, shivering.\n\n";
+//     // }
+//     //
+//     // if (name == "Chamoy") {
+//     //     cout << "Chamoy accepts your offer. Nice job! You win! Wooooo! ";
+//     //     cout << "[More flavour text to be filled out here.]\n\n";
+//     // }
+// }

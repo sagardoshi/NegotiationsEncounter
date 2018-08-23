@@ -31,16 +31,21 @@ Encounter* level2 = nullptr;
 Encounter* level3 = nullptr;
 
 PlayerCharacter* player = nullptr;
-Negotiator* porridge = nullptr;
-Negotiator* rhubarb = nullptr;
-Negotiator* chamoy = nullptr;
+Negotiator* birdSpirits = nullptr;
+
+
+// Negotiator* porridge = nullptr;
+// Negotiator* rhubarb = nullptr;
+// Negotiator* chamoy = nullptr;
 
 // Empty vectors for possible user inputs
 vector<string> genActions;
 vector<string> negoActions;
 
 // General globals
-string uInput = "";
+string uInput, PROMPT_DIVIDER, INVALID_INPUT = "";
+
+bool printIntroText = true;
 bool negoPossible = false;
 bool inNego = false;
 bool bidAccepted = false;

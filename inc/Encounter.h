@@ -36,6 +36,8 @@ public:
 
     string saveStandardisedInput(string keyword);
 
+    void mapPlayerInventory();
+
     void buildValidOffer(map<string, float>, bool&);
 
     void printTurns();

@@ -17,13 +17,10 @@ public:
     PlayerCharacter(string, float);
 
     map<string, int> inventory;
+    map<string, int> invMap;
 
-    void addToInventory(string, int);
-    void removeFromInventory(string);
     void placeInvObjOnTable(string, Offer*);
     void clearTable(Offer*);
-
-    void enterNegotiation();
 
     void fillInventory();
     void checkInventory();
