@@ -10,7 +10,8 @@
 using namespace std;
 
 
-Negotiator::Negotiator(string n, float a) : name(n), amiability(a) {
+Negotiator::Negotiator(string n, float a) : name(n), amiability(a),
+                                            generosityOfOffer(0.0) {
     fillPreferences();
     fillEconomy();
 }
@@ -60,8 +61,8 @@ void Negotiator::fillEconomy() {
     // economy[name] = base value
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
-    economy["sunflower seeds"] = 10.0;
-    economy["bird spirit key packet"] = 10.0;
+    economy["sunflower seeds packet"] = 10.0;
+    economy["bird spirit key"] = 10.0;
 }
 
 
@@ -88,7 +89,7 @@ bool Negotiator::reactToOffer(Offer* offer) {
 
     string ownKey = "";
     float sum = 0.0;
-    float generosityOfOffer = 0.0;
+    generosityOfOffer = 0.0; // Reset if hadn't already been
     float response = 0.0;
 
     string item = "";
@@ -253,10 +254,44 @@ void Negotiator::acceptTerms() {}
 
 
 void Negotiator::rejectTerms(int turnsLeft) {
-    cout << name << " rejects the offer on the table. Try again, ";
-    cout << "but don't forget that you only have " << turnsLeft;
-    cout << (turnsLeft == 1 ? " turn" : " turns") << " left ";
-    cout << "before the patience of " << name << " runs out.\n\n";
+    string rejection = "";
+    bool plural = (name == "Mosta and Pepita" ? true : false);
+
+    rejection  = name + " reject" + (plural ? " " : "s ");
+    rejection += "the offer on the table.\n\n";
+
+    // Try to give somewhat customised feedback after each rejected offer
+    if (generosityOfOffer <= 0.5) {
+        rejection += "Your offer was far from acceptable to the spirit";
+        rejection += (plural ? "s. " : ". ");
+        rejection += "Try looking for items\nthat might be more valuable ";
+        rejection += "to " + name + " in particular.";
+    } else { // Must have offered between 0.5 and 1
+        if (amiability < 0.5) {  // offered 0.5 and 1; amiable opponent
+            rejection += "A little off. Your offer was reasonable, but " + name;
+            rejection += (plural ? " are " : " is ");
+            rejection += "not easy to crack.\n";
+            rejection += "Try a slightly bigger offer or select items that may";
+            rejection += " appeal more to " + name + " in particular.";
+        } else { // offered 0.5 and 1; non-amiable opponent
+            rejection += "You just missed it! Your offer was reasonable, and ";
+            rejection += name + (plural ? " are " : " is ");
+            rejection += "relatively friendly.\n";
+            rejection += "Try a slightly bigger offer or select items that may";
+            rejection += " appeal more to " + name + " in particular.";
+        }
+    }
+
+    // Note turns left
+    rejection += "\n\nDon't forget that ";
+    rejection += "you only have " + to_string(turnsLeft) + " more turn";
+    rejection += (turnsLeft == 1 ? " " : "s ");
+    rejection += "before ";
+    rejection += (plural ? "their " : "the spirit's ");
+    rejection += "patience runs out.\n\n";
+
+    // Flush out string
+    cout << rejection;
 }
 
 

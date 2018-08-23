@@ -17,13 +17,14 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
 
         offer = new Offer(); // Create empty offer
         mapPlayerInventory(); // Give each inventory item a number
+        // Calculate open market value of inventory at start of encounter
         startInvValue = player->getInvValue(&player->inventory);
 }
 
-Encounter::~Encounter()             { delete offer;                      }
-int Encounter::getLevel()           { return level;                      }
-void Encounter::printTurns()        { cout << turns << " turns left\n";  }
-void Encounter::printOfferOnTable() { offer->printOffer();               }
+Encounter::~Encounter()             { delete offer;                       }
+int Encounter::getLevel()           { return level;                       }
+void Encounter::printTurns()        { cout << turns << " turns left\n\n"; }
+void Encounter::printOfferOnTable() { offer->printOffer();                }
 
 // Goes through every item player has in an encounter, and assigns a number
 void Encounter::mapPlayerInventory() {
@@ -164,8 +165,9 @@ void Encounter::checkEndEncounter(bool &didWin, bool &negoOver) {
         // but turns are left, must return items to inventory first
         else {
             player->clearTable(offer);
-            opponent->rejectTerms(turns);
             turns--; // Use one turn
+            opponent->rejectTerms(turns);
+
         }
     }
 }

@@ -1,4 +1,3 @@
-// Ref: http://patorjk.com/software/taag/#p=testall&f=Fun%20Face&t=O
 
 /*
 METADATA
@@ -46,10 +45,9 @@ void createEconomy() {
     economy["sunflower seeds"] = 10.0;
     economy["bird spirit key"] = 10.0;
 
-
     // 1) centzon totochtin -- spirit of debauchery
     // 2) night river beaver -- spirit of industriousness
-    // 3) mama elephant -- spirit of order
+    // 3) lepha -- spirit of order
 
 }
 
@@ -99,8 +97,8 @@ void startScreen() {
     uInput = ""; // Clear uInput
 }
 
+// Converts a string fully to lowercase (in place)
 string lower(string anyString) {
-    // Convert any capitals to lowercase in place
     int i = 0;
     while (anyString[i]) {
         anyString[i] = tolower(anyString[i]);

@@ -13,6 +13,7 @@ class Negotiator {
 private:
     string name;
     float amiability;
+    float generosityOfOffer;
     float getRandWeight();
 
 
