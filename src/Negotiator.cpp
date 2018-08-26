@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iomanip>
 #include <map>
 #include <random>
 
@@ -25,6 +26,13 @@ float Negotiator::getRandWeight() {
     default_random_engine generator (seed);
     uniform_int_distribution<int> distribution(1, 100);
     return distribution(generator)/100.0;
+}
+
+template <typename T>
+string Negotiator::toPreciseString(const T input, const int precision) {
+    ostringstream out;
+    out << setprecision(precision) << input;
+    return out.str();
 }
 
 // Pauses text for user to read and get a breather
@@ -123,18 +131,15 @@ bool Negotiator::reactToOffer(Offer* offer) {
 
 void Negotiator::score(float startVal, float offerVal, float endVal) {
 
-    cout << "You began with an inventory of base value: ";
-    cout << startVal << endl;
+    string border = "***** ENCOUNTER SCORE *****\n";
+    string scoreText  = "You began with an inventory of market value: ";
+           scoreText += toPreciseString(startVal) + "\n";
+           scoreText += "You gave away a total market value of: ";
+           scoreText += toPreciseString(offerVal) + "\n";
+           scoreText += "You ended with an inventory of market value: ";
+           scoreText += toPreciseString(endVal) + "\n";
 
-    cout << "You gave away a total value of: ";
-    cout << offerVal << endl;
-
-    cout << "You ended with an inventory of base value: ";
-    cout << endVal << endl << endl;
-
-
-
-    return;
+    cout << border << scoreText << border << endl;
 }
 
 void Negotiator::walkAway() {
@@ -142,7 +147,27 @@ void Negotiator::walkAway() {
     exit(0);
 }
 
-void Negotiator::acceptTerms() {}
+void Negotiator::acceptTerms() {
+    string acceptance = "";
+    bool plural = (name == "Mosta and Pepita" ? true : false);
+
+    acceptance  = name + " accept" + (plural ? " " : "s ");
+    acceptance += "the offer on the table.\n\n";
+
+    // Try to give somewhat customised feedback after each rejected offer
+    if (generosityOfOffer >= 1) {
+        acceptance += "Your offer was very generous. In fact, " + name + " ";
+        acceptance += "may have accepted a\n";
+        acceptance += "lower offer. You have progressed ";
+        acceptance += "onward in your journey, but you may find\n";
+        acceptance += "yourself short of inventory in the future, having ";
+        acceptance += "given away so much here.\n";
+        acceptance += "Nevertheless, you survive to fight ";
+        acceptance += "another day. Well done!\n";
+    }
+
+    cout << acceptance << endl;
+}
 
 
 void Negotiator::rejectTerms(int turnsLeft) {

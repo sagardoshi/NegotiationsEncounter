@@ -34,7 +34,7 @@ public:
 
     int getLevel();
 
-    string saveStandardisedInput(string keyword);
+    void saveStandardisedInput(string&);
 
     void mapPlayerInventory();
     bool isNum(string&);

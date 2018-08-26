@@ -21,10 +21,11 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
         startInvValue = player->getInvValue(&player->inventory);
 }
 
-Encounter::~Encounter()             { delete offer;                       }
-int Encounter::getLevel()           { return level;                       }
-void Encounter::printOfferOnTable() { offer->printOffer();                }
+Encounter::~Encounter()             { delete offer;        }
+int Encounter::getLevel()           { return level;        }
+void Encounter::printOfferOnTable() { offer->printOffer(); }
 
+// Prints turns left
 void Encounter::printTurns() {
     string turnsText  = "***** TURNS *****\n";
            turnsText += "You have " + to_string(turns) + " turns left before ";
@@ -65,7 +66,6 @@ bool Encounter::isNum(string &input) {
     return ( !input.empty() && (it == input.end()) );
 }
 
-
 // Takes int input and resaves it as appropriate string mapping
 void Encounter::remapKeyword(string &keyword) {
     // Keyword should come in as number
@@ -89,7 +89,7 @@ void Encounter::remapKeyword(string &keyword) {
 }
 
 // Gets simple, unverified user input and converts to lowercase
-string Encounter::saveStandardisedInput(string keyword) {
+void Encounter::saveStandardisedInput(string &keyword) {
     // Get standard input (including whitespaces)
     cout << "\n\n--------------------------\n";
     cout << ">>>> ";
@@ -105,8 +105,6 @@ string Encounter::saveStandardisedInput(string keyword) {
 
     // Non-action int input implies an inv item... replace int with string
     if (isNum(keyword)) remapKeyword(keyword);
-
-    return keyword;
 }
 
 void Encounter::buildValidOffer(map<string, float> econ, bool &didWin) {
@@ -118,7 +116,7 @@ void Encounter::buildValidOffer(map<string, float> econ, bool &didWin) {
     while (true) {
         prop = "";
         player->printInventory(forProposal);
-        prop = saveStandardisedInput(prop);
+        saveStandardisedInput(prop);
 
         if (prop == "quit") exit(0);
         else if (prop == "inventory") player->printInventory();

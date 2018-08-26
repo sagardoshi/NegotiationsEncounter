@@ -16,6 +16,9 @@ private:
     float generosityOfOffer;
     float getRandWeight();
 
+    template <typename T>
+    string toPreciseString(const T, const int = 2);
+
 
 protected:
     map<string, float> economy;
