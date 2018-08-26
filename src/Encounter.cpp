@@ -23,8 +23,17 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
 
 Encounter::~Encounter()             { delete offer;                       }
 int Encounter::getLevel()           { return level;                       }
-void Encounter::printTurns()        { cout << turns << " turns left\n\n"; }
 void Encounter::printOfferOnTable() { offer->printOffer();                }
+
+void Encounter::printTurns() {
+    string turnsText  = "***** TURNS *****\n";
+           turnsText += "You have " + to_string(turns) + " turns left before ";
+           turnsText += " the patience of ";
+           turnsText += opponent->getName() + " runs out.\n";
+           turnsText += "***** TURNS *****\n";
+
+    cout << turnsText << endl;
+}
 
 // Goes through every item player has in an encounter, and assigns a number
 void Encounter::mapPlayerInventory() {
@@ -45,6 +54,40 @@ void Encounter::mapPlayerInventory() {
     }
 }
 
+// Verifies that string is a number by iterating through each char of string
+bool Encounter::isNum(string &input) {
+    string::const_iterator it = input.begin();
+
+    // Advance iterator as long as every character in string is a digit
+    while (it != input.end() && isdigit(*it)) ++it;
+
+    // Return true if not empty AND iterator has reached the end
+    return ( !input.empty() && (it == input.end()) );
+}
+
+
+// Takes int input and resaves it as appropriate string mapping
+void Encounter::remapKeyword(string &keyword) {
+    // Keyword should come in as number
+    int keyNumber = stoi(keyword);
+
+    // Re-save it as the appropriate string
+    map<string, int>::iterator it;
+    string currentItem = "";
+    int currentOrder;
+
+    for (it = player->invMap.begin(); it != player->invMap.end(); it++) {
+        currentItem = it->first;
+        currentOrder = it->second;
+
+        // If the invMap leads to the player's entry, save that string mapping
+        if (currentOrder == keyNumber) {
+            keyword = currentItem;
+            return;
+        }
+    }
+}
+
 // Gets simple, unverified user input and converts to lowercase
 string Encounter::saveStandardisedInput(string keyword) {
     // Get standard input (including whitespaces)
@@ -60,21 +103,11 @@ string Encounter::saveStandardisedInput(string keyword) {
         i++;
     }
 
-    // TODO: FIX THIS TO BE GENERAL
-    if (keyword == "1") keyword = "burn relief ointment";
-    if (keyword == "2") keyword = "carved walking cane";
-    if (keyword == "3") keyword = "sunflower seeds packet";
-
-    // if (keyword == "1") keyword = "pomegranate";
-    // if (keyword == "2") keyword = "knuckle pads";
-    // if (keyword == "3") keyword = "silverback perfume";
-    // if (keyword == "4") keyword = "ginger cookie";
-    // if (keyword == "5") keyword = "coins";
-    // if (keyword == "6") keyword = "basket";
+    // Non-action int input implies an inv item... replace int with string
+    if (isNum(keyword)) remapKeyword(keyword);
 
     return keyword;
 }
-
 
 void Encounter::buildValidOffer(map<string, float> econ, bool &didWin) {
 

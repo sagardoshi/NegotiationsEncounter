@@ -37,6 +37,8 @@ public:
     string saveStandardisedInput(string keyword);
 
     void mapPlayerInventory();
+    bool isNum(string&);
+    void remapKeyword(string&);
 
     void buildValidOffer(map<string, float>, bool&);
 

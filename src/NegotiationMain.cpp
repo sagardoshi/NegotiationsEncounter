@@ -25,6 +25,7 @@ University: Imperial College London
 
 using namespace std;
 
+// Only allowable actions are help, quit, inventory, turns, & propose
 void createActions() {
     // Acceptable actions more generally
     genActions.push_back("help");
@@ -36,6 +37,7 @@ void createActions() {
     negoActions.push_back("propose");
 }
 
+// Adds total items in economy... unfortunately duplicated in Negotiator.cpp
 void createEconomy() {
 
     // If we imagine that opponents are now:
@@ -51,6 +53,7 @@ void createEconomy() {
 
 }
 
+// Defines PROMPT_DIVIDER and INVALID_INPUT
 void createGlobalStrings() {
     PROMPT_DIVIDER =  "----------------------------------------";
     PROMPT_DIVIDER += "----------------------------------------\n";
@@ -58,12 +61,14 @@ void createGlobalStrings() {
     INVALID_INPUT = "\n" + PROMPT_DIVIDER + "\nInvalid input. Try again.\n";
 }
 
+// Creates player, Mosta/Pepita
 void createCharacters() {
     player = new PlayerCharacter("You", MODERATE);
 
     birdSpirits = new Negotiator("Mosta and Pepita", FRIENDLY);
 }
 
+// Starts game and asks if player wants to jump to encounter
 void startScreen() {
     uInput = "";
 
@@ -141,6 +146,7 @@ void checkpoint() {
     cout << PROMPT_DIVIDER << "\n";
 }
 
+// Checks if user input is a particular string
 void specificInputCheck(string targetInput) {
     string prompt = "Type \"" + targetInput + "\"\n";
 
@@ -150,8 +156,7 @@ void specificInputCheck(string targetInput) {
     if (targetInput == "inventory") player->printInventory();
 }
 
-// Print text script saved in txt directory by name
-// Also replaces key symbols with frequent functions
+// Prints txt script and replaces key symbols with frequent functions
 void loadScript(string filename) {
     string filepath = "txt/" + filename + ".txt";
 
@@ -182,6 +187,7 @@ void loadScript(string filename) {
     cout << output << endl << endl;
 }
 
+// Prints help menu, unfortunately duplicated in PlayerCharacter.cpp
 void printHelp() {
     string helpBorder = "***** HELP *****\n";
 
@@ -200,6 +206,7 @@ void printHelp() {
 
 }
 
+// Can be called anytime -- ends game
 void quitGame() {
     loadScript("QuitGame");
     exit(0);
@@ -221,7 +228,6 @@ bool isValidInput() {
     return false;
 }
 
-
 // Fully abstracted function to call to get user input
 void getUserInput() {
     if (!startingNego) setUInput();
@@ -239,12 +245,14 @@ void getUserInput() {
     }
 }
 
+// Loads intro scripts in turn
 void runIntro() {
     loadScript("Intro1"); // Early exposition until discovery by Lepha
     loadScript("Intro2"); // Background on you, worldbuilding, your motivation
     loadScript("Intro3"); // Tutorial opponents, leading to level kick-off
 }
 
+// After intros, these kick off each individual level
 void levelStart(int level) {
     if (level == 1) {
         loadScript("Level1Start");
@@ -254,6 +262,7 @@ void levelStart(int level) {
     if (level == 3) loadScript("Level3Start");
 }
 
+// After levels, loads the ending scripts
 void endStart() { currNego = nullptr; } // Placeholder
 
 // Handles the bool and pointer switches for each level
@@ -278,9 +287,7 @@ void playGame() {
 
     player->fillInventory(); // Give player an inventory before the intro
 
-    if (printIntroText) runIntro();
-
-
+    if (printIntroText) runIntro(); // Runs intro assuming no skip
 
     // Progress to Level 1
     level1 = new Encounter(player, birdSpirits, NEGO1, L1_TURNS);
@@ -326,91 +333,3 @@ int main() {
 
     return 0;
 }
-
-
-
-//
-// void tutorialChoices(string whichChoice) {
-//
-//     if (whichChoice == "firstTutorialQuestion") {
-//         cout << "[1: \"Uh, I'm not really sure...\"]\n";
-//         cout << "[2: \"To meet you!\"]\n";
-//         cout << "[3: \"It's a long story involving extreme sports and ";
-//         cout << "catapults...\"]\n\n";
-//
-//         setUInput();
-//         while (uInput != "1" && uInput != "2" && uInput != "3") {
-//             cout << "[Invalid input. Try again.]\n\n";
-//             cout << "[1: \"Uh, I'm not really sure...\"]\n";
-//             cout << "[2: \"To meet you!\"]\n";
-//             cout << "[3: \"It's a long story involving extreme sports and ";
-//             cout << "catapults...\"]\n\n";
-//
-//             setUInput();
-//         }
-//     }
-//
-//     if (whichChoice == "secondTutorialQuestion") {
-//         cout << "[1: \"Yeah, sure, sounds fun!\"]\n";
-//         cout << "[2: \"You're a bunch of weirdos! No way!\"]\n\n";
-//
-//         setUInput();
-//         while (uInput != "1" && uInput != "2") {
-//             cout << "[Invalid input. Try again.]\n\n";
-//             cout << "[1: \"Yeah, sure, sounds fun!\"]\n";
-//             cout << "[2: \"You're a bunch of weirdos! No way!\"]\n\n";
-//
-//             setUInput();
-//         }
-//     }
-//
-// }
-
-// // void introStart() {
-//
-//     loadScript("Intro1");
-//
-//     tutorialChoices("firstTutorialQuestion");
-//     uInput = ""; // Reset uInput
-//
-//     loadScript("Intro2");
-//
-//     tutorialChoices("secondTutorialQuestion");
-//
-//     if (uInput == "1") {
-//         cout << "Chamoy rubs her palms together in anticipation.\n\n";
-//         cout << "\"Excellent! Just what I was hoping to hear! Let's see ";
-//         cout << "if you can be the first human to make it through ";
-//         cout << "all of us.\"\n";
-//     }
-//     if (uInput == "2") {
-//         cout << "Chamoy rubs her chin thoughtfully.\n\n";
-//
-//         cout << "\"Okay, if you say so!\" she says, shrugging her shoulders. ";
-//         cout << "\"We have another way of making sure you learn your lesson.\"\n\n";
-//
-//         checkpoint();
-//
-//         cout << "She reaches one powerful arm back, and swings it rapidly ";
-//         cout << "towards your face. The last thing you see is her sorrowful ";
-//         cout << "expression. You feel a sharp pain, and then nothing. ";
-//         cout << "The blackness gulps you down.\n\n";
-//
-//         cout << "You have been killed by Chamoy Tripgor.\n\n";
-//
-//         cout << "Perhaps you might do better in another life if you don't ";
-//         cout << "antagonise the very strong matriarch whose home you ";
-//         cout << "invaded.\n\n";
-//
-//         cout << "Goodbye, and happy haggling!\n\n\n\n";
-//         exit(0);
-//     }
-//
-//     uInput = ""; // Reset uInput
-//
-//     loadScript("Intro3");
-//
-//     player->fillInventory();
-//
-//     loadScript("Intro4");
-// }

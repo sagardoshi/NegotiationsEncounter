@@ -111,7 +111,7 @@ void PlayerCharacter::printInventory(bool forProposal) {
     if (!numItemsHeld) {
         footer = "You have nothing in your inventory.\n" + footer;
     }
-    cout << footer;
+    cout << footer << endl;
 
 }
 
