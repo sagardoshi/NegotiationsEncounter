@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <map>
@@ -26,6 +27,29 @@ float Negotiator::getRandWeight() {
     default_random_engine generator (seed);
     uniform_int_distribution<int> distribution(1, 100);
     return distribution(generator)/100.0;
+}
+
+// COPY: Prints txt script and replaces key symbols with frequent functions
+void Negotiator::loadScript(string filename) {
+    string filepath = "txt/" + filename + ".txt";
+
+    string output = "";
+    string line = "";
+
+	ifstream in;
+	in.open(filepath);
+
+	while (getline(in, line)) {
+        if (line == "***") {
+            cout << output;
+            checkpoint();
+            output = "";
+        } else output = output + "\n" + line;
+    }
+
+    in.close();
+
+    cout << output << endl << endl;
 }
 
 template <typename T>
@@ -143,7 +167,10 @@ void Negotiator::score(float startVal, float offerVal, float endVal) {
 }
 
 void Negotiator::walkAway() {
-    if (name == "Mosta and Pepita")
+    if (name == "Mosta and Pepita") loadScript("1/Level1Lose");
+    if (name == "Totochtin") loadScript("2/Level2Lose");
+    if (name == "Burro") loadScript("3/Level3Lose");
+    if (name == "Lepha") loadScript("4/Level4Lose");
     exit(0);
 }
 
@@ -155,15 +182,24 @@ void Negotiator::acceptTerms() {
     acceptance += "the offer on the table.\n\n";
 
     // Try to give somewhat customised feedback after each rejected offer
-    if (generosityOfOffer >= 1) {
-        acceptance += "Your offer was very generous. In fact, " + name + " ";
+    if (generosityOfOffer > 1) {
+        acceptance += "Your offer was quite generous. In fact, " + name + " ";
         acceptance += "may have accepted a\n";
-        acceptance += "lower offer. You have progressed ";
-        acceptance += "onward in your journey, but you may find\n";
-        acceptance += "yourself short of inventory in the future, having ";
-        acceptance += "given away so much here.\n";
+        acceptance += "lower offer, if you had a way to give it. ";
+        acceptance += "You have progressed ";
+        acceptance += "onward in your\njourney, but you may find ";
+        acceptance += "yourself short of inventory in the future, having\n";
+        acceptance += "given away what you have here.\n\n";
         acceptance += "Nevertheless, you survive to fight ";
         acceptance += "another day. Well done!\n";
+    } else if (generosityOfOffer >= 0.5 && generosityOfOffer < 0.75) {
+        acceptance += "Wow, you drove an extremely hard bargain and won! ";
+        acceptance += "Very, very impressive. You've moved along efficiently ";
+        acceptance += "and set yourself up well for the future. Well done!\n";
+    } else if (generosityOfOffer >= 0.75 && generosityOfOffer < 1.0) {
+        acceptance += "You made a solid offer and won the day. ";
+        acceptance += "It's up to you now to continue to manage your stock ";
+        acceptance += "efficiently and get out of here safely. Well done!\n";
     }
 
     cout << acceptance << endl;

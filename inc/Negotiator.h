@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 
+
 using namespace std;
 
 class Negotiator {
@@ -18,6 +19,7 @@ private:
 
     template <typename T>
     string toPreciseString(const T, const int = 2);
+    void loadScript(string);
 
 
 protected:

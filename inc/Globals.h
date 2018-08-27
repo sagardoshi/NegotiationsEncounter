@@ -45,7 +45,7 @@ vector<string> negoActions;
 // General globals
 string uInput, PROMPT_DIVIDER, INVALID_INPUT = "";
 
-bool printIntroText = true;
+bool doSkip = false;
 bool negoPossible = false;
 bool inNego = false;
 bool bidAccepted = false;

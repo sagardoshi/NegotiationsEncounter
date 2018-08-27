@@ -1,8 +1,0 @@
-***
-
-cout << "[More flavour text to be filled out here, showing your ";
-cout << "triumphant return from Rhubarb, and your approach to Chamoy, ";
-cout << "weakened, with fewer items in your inventory, but nearly at the ";
-cout << "end.]\n\n";
-
-***

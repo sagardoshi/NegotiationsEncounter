@@ -1,15 +1,15 @@
-You hear one last line from Lepha. "Vogels! Stop distracting yourself with that
-cursed game. Watch over the human, until I finish with my dinner. I will return
-shortly." With your heart in your throat, you hear her thunderous steps echo
-away.
+==========================================================
+Level 1: Mosta and Pepita
+==========================================================
 
-Is this a reprieve before Lepha's final punishment?
+
+The echoes of her footsteps fade. What will happen to you?
 
 ***
 
-When the echoes of her footsteps fade, you hear a bit of chittering.
+Just then, you hear a bit of chittering.
 
-You finally dare to move, your heart pounding. You peek over the edge of your
+You dare to move, heart pounding. You peek over the edge of your
 container and see that the entire box has been deposited into a narrow,
 high-ceilinged room. You step out of the box and nervously pace the perimeter.
 
@@ -21,9 +21,9 @@ to pry at it.
 
 ***
 
-And then you look up. There is a square opening in the wall.
-But it must be at least 20 meters up the wall! You run your fingers along the
-wall, but find no dents or ledges. You have no way of reaching it.
+And then you look up. There is a square opening in the wall. But it must be at
+least 20 meters up the wall! You run your fingers along the wall, but find no
+dents or ledges. You have no way of reaching it.
 
 You grit your teeth and clench your eyes shut. Is this the end?
 
@@ -44,11 +44,11 @@ smaller one is nearly your own height.
 
 ***
 
-The taller one is an imposing maribou stork, with a mottled pink
-head and a cracked, curving beak that seems to comprise the majority of its
-size. It has its silver wings with flaming tips folded back against its body,
-and a generous curve of the belly. It peers at you with a dignified air and
-shuffles back and forth with a noticeable limp.
+The taller one is an imposing maribou stork, with a mottled pink head and a
+cracked, curving beak that seems to comprise the majority of its size. It has
+its silver wings with flaming tips folded back against its body, and a generous
+curve of the belly. It peers at you with a dignified air and shuffles back and
+forth with a noticeable limp.
 
 ***
 
@@ -100,9 +100,9 @@ Hold on! They could be your only chance of escape!
 ***
 
 "I need your help. I need to get out of here," you venture at the bird
-spirits. "I can't reach the opening. Perhaps -- perhaps you could carry me on
-your wings up there?" It sounds like madness even as you say it, but you don't
-know what else to do.
+spirits. "I can't reach the opening. Perhaps -- perhaps you have another way
+out?" It sounds like madness even as you say it, but you don't know what else
+to do.
 
 They don't look impressed. "And why should we?" asks Mosta.
 
@@ -112,10 +112,10 @@ They don't look impressed. "And why should we?" asks Mosta.
 
 They glance at each other.
 
-Human. What could you possibly have that we would want? You come from the
-Outside. You seem to have acquired language, which I admit is astonishing. But
-your people, such as they are, can't have possibly produced something of real
-value."
+"Human," says Mosta, "what could you possibly have that we would want? You come
+from the Outside. You seem to have acquired language, which I admit is
+astonishing. But your people, such as they are, can't have possibly produced
+something of real value."
 
 ***
 
@@ -191,5 +191,5 @@ happens afterward, but this is the best we can offer. What can you offer?"
 
 ***
 
-You can tell that you won't be able to hold their interest for long.
-t's now or never. Time to negotiate for your escape!
+You can tell that you won't be able to hold their interest for long. It's now
+or never. Time to negotiate for your escape!

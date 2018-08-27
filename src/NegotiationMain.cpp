@@ -68,9 +68,22 @@ void createCharacters() {
     birdSpirits = new Negotiator("Mosta and Pepita", FRIENDLY);
 }
 
+// Pauses text for user to read and get a breather
+void checkpoint() {
+    string anyInputText  = "\n" + PROMPT_DIVIDER + "[Press return to continue ";
+           anyInputText += "or type \"skip\" to jump to the next encounter.] ";
+
+    cout << anyInputText;
+    getline(cin, uInput);
+
+    if (uInput == "skip" ) doSkip = true; // Set global flag for future
+
+    cout << PROMPT_DIVIDER << "\n";
+}
+
 // Starts game and asks if player wants to jump to encounter
 void startScreen() {
-    uInput = "";
+    // uInput = "";
 
     string title  = "\n\n========================================";
            title +=     "========================================\n";
@@ -80,26 +93,30 @@ void startScreen() {
            title +=     "========================================";
            title +=     "========================================\n\n";
 
-    string skipIntroText =  "\n" + PROMPT_DIVIDER;
-           skipIntroText += "Type \"start\" to start from the beginning.\n";
-           skipIntroText += "Type \"skip\" to skip to the first encounter.\n";
-           skipIntroText += ">>>> ";
+    cout << title;
 
+    checkpoint();
 
-    // Print title and prompt to skip
-    cout << title << skipIntroText;
-    getline(cin, uInput);
-
-    // Keep reprinting prompt until input valid
-    while (uInput != "start" && uInput != "skip") {
-        cout << INVALID_INPUT << skipIntroText;
-        getline(cin, uInput);
-    }
-    cout << PROMPT_DIVIDER << "\n";
-
-    if (uInput == "skip") printIntroText = false;
-
-    uInput = ""; // Clear uInput
+    // string skipIntroText =  "\n" + PROMPT_DIVIDER;
+    //        skipIntroText += "Type \"start\" to start from the beginning.\n";
+    //        skipIntroText += "Type \"skip\" to skip to the first encounter.\n";
+    //        skipIntroText += ">>>> ";
+    //
+    //
+    // // Print title and prompt to skip
+    // cout << title << skipIntroText;
+    // getline(cin, uInput);
+    //
+    // // Keep reprinting prompt until input valid
+    // while (uInput != "start" && uInput != "skip") {
+    //     cout << INVALID_INPUT << skipIntroText;
+    //     getline(cin, uInput);
+    // }
+    // cout << PROMPT_DIVIDER << "\n";
+    //
+    // if (uInput == "skip") doNotSkip = false;
+    //
+    // uInput = ""; // Clear uInput
 }
 
 // Converts a string fully to lowercase (in place)
@@ -137,15 +154,6 @@ void setUInput (string prompt = "", string targetInput = "") {
 
 }
 
-// Pauses text for user to read and get a breather
-void checkpoint() {
-    string anyInputText = "\n" + PROMPT_DIVIDER + "[Press return to continue.]";
-
-    cout << anyInputText;
-    getline(cin, uInput);
-    cout << PROMPT_DIVIDER << "\n";
-}
-
 // Checks if user input is a particular string
 void specificInputCheck(string targetInput) {
     string prompt = "Type \"" + targetInput + "\"\n";
@@ -158,6 +166,8 @@ void specificInputCheck(string targetInput) {
 
 // Prints txt script and replaces key symbols with frequent functions
 void loadScript(string filename) {
+    if (doSkip) return; // Skip all text until encounter
+
     string filepath = "txt/" + filename + ".txt";
 
     string output = "";
@@ -170,6 +180,12 @@ void loadScript(string filename) {
         if (line == "***") {
             cout << output;
             checkpoint();
+
+            if (doSkip) { // If user typed "skip", end this script now
+                in.close();
+                return;
+            }
+
             output = "";
         } else if (line == "***inventory***") {
             cout << output;
@@ -179,7 +195,7 @@ void loadScript(string filename) {
             cout << output;
             specificInputCheck("stop");
             output = "";
-        } else output = output + "\n" + line;
+        } else output += "\n" + line;
     }
 
     in.close();
@@ -208,7 +224,7 @@ void printHelp() {
 
 // Can be called anytime -- ends game
 void quitGame() {
-    loadScript("QuitGame");
+    loadScript("Gen/QuitGame");
     exit(0);
 }
 
@@ -247,19 +263,18 @@ void getUserInput() {
 
 // Loads intro scripts in turn
 void runIntro() {
-    loadScript("Intro1"); // Early exposition until discovery by Lepha
-    loadScript("Intro2"); // Background on you, worldbuilding, your motivation
-    loadScript("Intro3"); // Tutorial opponents, leading to level kick-off
+    loadScript("0/Intro1"); // Early exposition until discovery by Lepha
+    loadScript("0/Intro2"); // Background on you, worldbuilding, your motivation
 }
 
 // After intros, these kick off each individual level
 void levelStart(int level) {
     if (level == 1) {
-        loadScript("Level1Start");
-        loadScript("NegotiationStrategy");
+        loadScript("1/Level1Start"); // Tutorial opponents
+        loadScript("Gen/NegotiationStrategy");
     }
-    if (level == 2) loadScript("Level2Start");
-    if (level == 3) loadScript("Level3Start");
+    if (level == 2) loadScript("2/Level2Start");
+    if (level == 3) loadScript("3/Level3Start");
 }
 
 // After levels, loads the ending scripts
@@ -278,6 +293,7 @@ void runNextLevel(Encounter* levelPointer) {
     getUserInput();
 
     inNego = false;
+    doSkip = false; // Re-engage scripts after an encounter
     currLevel++;
 }
 
@@ -287,7 +303,7 @@ void playGame() {
 
     player->fillInventory(); // Give player an inventory before the intro
 
-    if (printIntroText) runIntro(); // Runs intro assuming no skip
+    runIntro(); // Runs intro
 
     // Progress to Level 1
     level1 = new Encounter(player, birdSpirits, NEGO1, L1_TURNS);
