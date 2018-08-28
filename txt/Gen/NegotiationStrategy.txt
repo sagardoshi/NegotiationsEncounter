@@ -1,4 +1,4 @@
-***** NEGOTIATION STRATEGY *****
+----- NEGOTIATION STRATEGY -----
 The spirits are fickle.
 
 To win their favour, you must offer them a package of objects (as few or as
@@ -13,9 +13,8 @@ Friendly spirits will be more willing to accept weaker offers from you, but it
 is up to you to judge when and how to try.
 
 Do note: you only have a few tries before they lose patience with you. If one
-offer doesn't work, perhaps try a more generous one. Just remember: you only
-have a small inventory of goods, and the more you retain, the better you will
-do.
-***** NEGOTIATION STRATEGY *****
+offer doesn't work, try a more generous one. You only have a small inventory of
+goods, and the more you retain by the end, the better you will do.
+----- NEGOTIATION STRATEGY -----
 
 ***

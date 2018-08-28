@@ -68,20 +68,32 @@ float Negotiator::getInvValue(map<string, int>* invPointer) {
 
 // Full copy (unfortunately) of economy in NegotiationMain.cpp
 void Negotiator::fillEconomy() {
-    // economy[name] = base value
+    // 0) Tutorial Lepha
+    economy["black trousers"] = 1.0;
+    economy["black tunic"] = 1.0;
+
+    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- bird spirits
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
-    economy["packet of sunflower seeds"] = 10.0;
+    economy["packet of sunflower seeds"] = 5.0;
+
+    // 2) Toto the #2 Rabbit of Centzon Totochtin -- spirit of drunkenness
     economy["pulque bottle"] = 5.0;
     economy["paint jar"] = 2.0;
     economy["morning headache tonic"] = 10.0;
     economy["long ear warmers"] = 5.0;
+
+
+    // 3) night river beaver -- spirit of industriousness
+    // 4) lepha -- spirit of order
 }
 
 
 void Negotiator::fillPreferences() {
     // Player will take base value
     if (name == "You") {
+        prefs["black trousers"] = 1.0;
+        prefs["black tunic"] = 1.0;
         prefs["burn relief ointment"] = 1.0;
         prefs["carved walking cane"] = 1.0;
         prefs["packet of sunflower seeds"] = 1.0;
@@ -91,6 +103,8 @@ void Negotiator::fillPreferences() {
         prefs["long ear warmers"] = 1.0;
     }
     else if (name == "Mosta and Pepita") {
+        prefs["black trousers"] = 0.1;
+        prefs["black tunic"] = 0.1;
         prefs["burn relief ointment"] = 1.25;
         prefs["carved walking cane"] = 1.5;
         prefs["packet of sunflower seeds"] = 1.25;
@@ -100,6 +114,8 @@ void Negotiator::fillPreferences() {
         prefs["long ear warmers"] = 0.1;
     }
     else if (name == "Toto") {
+        prefs["black trousers"] = 0.1;
+        prefs["black tunic"] = 0.1;
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 0.3;
         prefs["packet of sunflower seeds"] = 0.75;

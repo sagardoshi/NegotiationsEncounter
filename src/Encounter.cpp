@@ -183,5 +183,8 @@ void Encounter::handleEnd(bool didWin) {
     player->score(startInvValue, offerInvValue, endInvValue);
 
     if (didWin) opponent->acceptTerms();
-    else opponent->walkAway();
+    else {
+        player->clearTable(offer); // Returns stuff to you if loss ≠ end
+        opponent->walkAway();
+    }
 }

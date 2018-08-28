@@ -28,9 +28,11 @@ using namespace std;
 
 // Adds total items in economy... unfortunately duplicated in Negotiator.cpp
 void createEconomy() {
+    // 0) Tutorial Lepha
+    economy["black trousers"] = 1.0;
+    economy["black tunic"] = 1.0;
 
-    // If we imagine that opponents are now:
-    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- tutorial spirits
+    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- bird spirits
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
     economy["packet of sunflower seeds"] = 5.0;
@@ -59,10 +61,11 @@ void createGlobalStrings() {
 void createCharacters() {
     player = new PlayerCharacter("You", MODERATE);
 
+    opponent0 = new Negotiator("Lepha", MODERATE);
     opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
-    opponent2 = new Negotiator("Toto", FRIENDLY);
-    opponent3 = new Negotiator("Burro", MODERATE);
-    opponent4 = new Negotiator("Lepha", GRUFF);
+    opponent2 = new Negotiator("Toto", MODERATE);
+    opponent3 = new Negotiator("Burro", GRUFF);
+    opponent4 = opponent0;
 
 }
 
@@ -207,14 +210,9 @@ void quitGame() {
 }
 
 
-// Loads intro scripts in turn
-void runIntro() {
-    loadScript("0/Intro1"); // Early exposition until discovery by Lepha
-    loadScript("0/Intro2"); // Background on you, worldbuilding, your motivation
-}
 
 // After intros, these kick off each individual level
-void levelStart(int ) {
+void startCurrentLevel() {
     string outText  = to_string(currLevel) + "/Level";
            outText += to_string(currLevel) + "Start";
 
@@ -222,7 +220,7 @@ void levelStart(int ) {
     loadScript(outText);
 
     // Extra instruction at the start
-    if (currLevel == 1) loadScript("Gen/NegotiationStrategy");
+    if (currLevel == 0) loadScript("Gen/NegotiationStrategy");
 }
 
 void levelEnd(bool wonEncounter) {
@@ -233,7 +231,8 @@ void levelEnd(bool wonEncounter) {
     doSkip = false; // Allow scripts after encounter
     loadScript(outText); // Text for victory or loss to be run first
 
-    if (!wonEncounter) quitGame();
+    // If lost and not in tutorial
+    if (!wonEncounter && (currLevel > 0)) quitGame();
 
     currLevel++;
     return;
@@ -241,16 +240,26 @@ void levelEnd(bool wonEncounter) {
 
 // Runs text before level, runs encounter, and runs text after level
 void runNextLevel(Encounter* levelPointer) {
-    levelStart(currLevel); // Intro text for level
+    startCurrentLevel(); // Intro text for level
     levelPointer->runEncounter(economy, wonEncounter);
     levelEnd(wonEncounter); // Ending text for level (plus ending if lost)
+}
+
+// Loads intro scripts in turn
+void runIntro() {
+    player->fillInventory(); // Give player an inventory before the intro
+    loadScript("0/Intro"); // Early exposition until discovery by Lepha
+
+    player->initInventory(); // Clear inventory before tutorial level
+    level0 = new Encounter(player, opponent0, L0_TURNS, L0_KEY);
+    runNextLevel(level0);
+
+    player->fillInventory(); // Refill inventory before Level 1
 }
 
 void playGame() {
 
     startScreen(); // Ask to skip intro
-
-    player->fillInventory(); // Give player an inventory before the intro
 
     runIntro(); // Runs intro
 
@@ -277,16 +286,18 @@ void fillDictsAndCharacters() {
 
 void releaseMemory() {
     // Delete levels
+    delete level0;
     delete level1;
     delete level2;
     delete level3;
     delete level4;
 
     // Delete characters
+    delete opponent0; // No need to delete opponent4, as it's a duplicate
     delete opponent1;
     delete opponent2;
     delete opponent3;
-    delete opponent4;
+
     delete player;
 }
 

@@ -14,6 +14,8 @@ PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
 }
 
 void PlayerCharacter::initInventory() {
+    inventory["black trousers"] = 1;
+    inventory["black tunic"] = 1;
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["packet of sunflower seeds"] = 0;
@@ -28,7 +30,7 @@ void PlayerCharacter::fillInventory() {
     inventory["burn relief ointment"] = 1;
     inventory["carved walking cane"] = 1;
     inventory["packet of sunflower seeds"] = 1;
-    inventory["pulque bottle"] = 3;
+    inventory["pulque bottle"] = 2;
     inventory["paint jar"] = 3;
     inventory["morning headache tonic"] = 1;
     inventory["long ear warmers"] = 1;

@@ -9,6 +9,8 @@ using namespace std;
 
 // Init required issue numbers to 0
 Offer::Offer() {
+    inventory["black trousers"] = 0;
+    inventory["black tunic"] = 0;
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["packet of sunflower seeds"] = 0;
