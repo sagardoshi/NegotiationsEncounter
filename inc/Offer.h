@@ -11,7 +11,7 @@ class Offer {
 public:
     Offer();
 
-    map<string, int> offerInv;
+    map<string, int> inventory;
 
     void addObjToTable(string);
 

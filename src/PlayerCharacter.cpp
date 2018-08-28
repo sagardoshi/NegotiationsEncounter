@@ -10,16 +10,28 @@
 using namespace std;
 
 PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
-
-    inventory["burn relief ointment"] = 0;
-    inventory["carved walking cane"] = 0;
-    inventory["sunflower seeds packet"] = 0;
+    initInventory();
 }
 
+void PlayerCharacter::initInventory() {
+    inventory["burn relief ointment"] = 0;
+    inventory["carved walking cane"] = 0;
+    inventory["packet of sunflower seeds"] = 0;
+    inventory["pulque bottle"] = 0;
+    inventory["paint jar"] = 0;
+    inventory["morning headache tonic"] = 0;
+    inventory["long ear warmers"] = 0;
+}
+
+// How many of each item you carry
 void PlayerCharacter::fillInventory() {
     inventory["burn relief ointment"] = 1;
     inventory["carved walking cane"] = 1;
-    inventory["sunflower seeds packet"] = 1;
+    inventory["packet of sunflower seeds"] = 1;
+    inventory["pulque bottle"] = 3;
+    inventory["paint jar"] = 3;
+    inventory["morning headache tonic"] = 1;
+    inventory["long ear warmers"] = 1;
 }
 
 // Goes through every item player has in an encounter, and assigns a number
@@ -50,12 +62,12 @@ void PlayerCharacter::clearTable(Offer* offer) {
     string item = "";
     int amount = 0;
 
-    for (it = offer->offerInv.begin(); it != offer->offerInv.end(); it++) {
+    for (it = offer->inventory.begin(); it != offer->inventory.end(); it++) {
         item = it->first;
         amount = it->second;
         if (amount > 0) {
             inventory[item] += amount;
-            offer->offerInv[item] = 0;
+            offer->inventory[item] = 0;
         }
     }
 }

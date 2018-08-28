@@ -11,7 +11,7 @@ using namespace std;
 // CONSTANTS
 const float FRIENDLY = 0.8, GRUFF = 0.2, MODERATE = 0.5;
 const int L1_TURNS = 3, L2_TURNS = 3, L3_TURNS = 3, L4_TURNS = 3;
-const float L1_KEY = 10.0, L2_KEY = 20.0, L3_KEY = 30.0, L4_KEY = 40.0;
+const float L1_KEY = 20.0, L2_KEY = 30.0, L3_KEY = 40.0, L4_KEY = 40.0;
 
 
 // Inventory

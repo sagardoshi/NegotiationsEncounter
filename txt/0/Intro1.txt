@@ -5,7 +5,6 @@ Prologue: Caught
 You heft your bag of loot. Did you get everything you needed? Check your
 inventory.
 
-
 ***inventory***
 
 Okay, that looks like everything you had on your list. You take in a whiff of

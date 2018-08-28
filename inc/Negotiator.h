@@ -19,7 +19,6 @@ private:
 
     template <typename T>
     string toPreciseString(const T, const int = 2);
-    void loadScript(string);
 
 
 protected:

@@ -9,18 +9,21 @@ using namespace std;
 
 // Init required issue numbers to 0
 Offer::Offer() {
-    offerInv["burn relief ointment"] = 0;
-    offerInv["carved walking cane"] = 0;
-    offerInv["sunflower seeds packet"] = 0;
-    offerInv["bird spirit key"] = 0;
+    inventory["burn relief ointment"] = 0;
+    inventory["carved walking cane"] = 0;
+    inventory["packet of sunflower seeds"] = 0;
+    inventory["pulque bottle"] = 0;
+    inventory["paint jar"] = 0;
+    inventory["morning headache tonic"] = 0;
+    inventory["long ear warmers"] = 0;
 }
 
-void Offer::addObjToTable(string itemName) { offerInv[itemName]++; }
+void Offer::addObjToTable(string itemName) { inventory[itemName]++; }
 
 int Offer::inventoryCount() {
     map<string, int>::iterator it;
     int totalItems = 0;
-    for (it = offerInv.begin(); it != offerInv.end(); it++) {
+    for (it = inventory.begin(); it != inventory.end(); it++) {
         totalItems += it->second;
     }
     return totalItems;
@@ -39,7 +42,7 @@ void Offer::printOffer() {
     int amount = 0;
 
     // For all items held with >0 quantity, print amount and name on table
-    for (it = offerInv.begin(); it != offerInv.end(); it++) {
+    for (it = inventory.begin(); it != inventory.end(); it++) {
         itemName = it->first;
         amount = it->second;
 
@@ -62,33 +65,3 @@ void Offer::printOffer() {
     cout << borderText << endl;
 
 }
-
-//
-// void Offer::printOffer() {
-//
-//     if (inventoryCount() == 0) cout << "There is nothing on the table.\n\n";
-//     else {
-//         cout << "***************** ON THE TABLE *****************\n";
-//         if (offerInv["pomegranate"]) {
-//             cout << "-- " << offerInv["pomegranate"] << " pomegranate\n";
-//         }
-//         if (offerInv["knuckle pads"]) {
-//             cout << "-- " << offerInv["knuckle pads"] << " set of knuckle pads\n";
-//         }
-//         if (offerInv["silverback perfume"]) {
-//             cout << "-- " << offerInv["silverback perfume"] << " bottle of silverback perfume\n";
-//         }
-//         if (offerInv["ginger cookie"]) {
-//             cout << "-- " << offerInv["ginger cookie"] << " ginger cookie";
-//             cout << (offerInv["ginger cookie"] > 1 ? "s" : "") << endl;
-//         }
-//         if (offerInv["coins"]) {
-//             cout << "-- " << offerInv["coins"] << " coin";
-//             cout << (offerInv["coins"] == 1 ? "" : "s") << endl;
-//         }
-//         if (offerInv["basket"]) {
-//             cout << "-- and 1 basket to put it all in." << endl;
-//         }
-//         cout << "************************************************\n\n";
-//     }
-// }

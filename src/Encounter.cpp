@@ -113,7 +113,7 @@ void Encounter::runEncounter(map<string, float> econ, bool &didWin) {
 
             // Print offer and save its value
             offer->printOffer();
-            offerInvValue = player->getInvValue(&offer->offerInv);
+            offerInvValue = player->getInvValue(&offer->inventory);
 
             // Check if nego done, and break if so
             if (encounterIsOver(didWin)) {

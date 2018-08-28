@@ -29,29 +29,6 @@ float Negotiator::getRandWeight() {
     return distribution(generator) / 100.0;
 }
 
-// COPY: Prints txt script and replaces key symbols with frequent functions
-void Negotiator::loadScript(string filename) {
-    string filepath = "txt/" + filename + ".txt";
-
-    string output = "";
-    string line = "";
-
-	ifstream in;
-	in.open(filepath);
-
-	while (getline(in, line)) {
-        if (line == "***") {
-            cout << output;
-            checkpoint();
-            output = "";
-        } else output = output + "\n" + line;
-    }
-
-    in.close();
-
-    cout << output << endl << endl;
-}
-
 template <typename T>
 string Negotiator::toPreciseString(const T input, const int precision) {
     ostringstream out;
@@ -89,11 +66,16 @@ float Negotiator::getInvValue(map<string, int>* invPointer) {
     return totalValue;
 }
 
+// Full copy (unfortunately) of economy in NegotiationMain.cpp
 void Negotiator::fillEconomy() {
     // economy[name] = base value
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
-    economy["sunflower seeds packet"] = 10.0;
+    economy["packet of sunflower seeds"] = 10.0;
+    economy["pulque bottle"] = 5.0;
+    economy["paint jar"] = 2.0;
+    economy["morning headache tonic"] = 10.0;
+    economy["long ear warmers"] = 5.0;
 }
 
 
@@ -102,12 +84,29 @@ void Negotiator::fillPreferences() {
     if (name == "You") {
         prefs["burn relief ointment"] = 1.0;
         prefs["carved walking cane"] = 1.0;
-        prefs["sunflower seeds packet"] = 1.0;
+        prefs["packet of sunflower seeds"] = 1.0;
+        prefs["pulque bottle"] = 1.0;
+        prefs["paint jar"] = 1.0;
+        prefs["morning headache tonic"] = 1.0;
+        prefs["long ear warmers"] = 1.0;
     }
     else if (name == "Mosta and Pepita") {
-        prefs["burn relief ointment"] = 2.0;
-        prefs["carved walking cane"] = 2.0;
-        prefs["sunflower seeds packet"] = 1.5;
+        prefs["burn relief ointment"] = 1.25;
+        prefs["carved walking cane"] = 1.5;
+        prefs["packet of sunflower seeds"] = 1.25;
+        prefs["pulque bottle"] = 0.2;
+        prefs["paint jar"] = 0.1;
+        prefs["morning headache tonic"] = 0.4;
+        prefs["long ear warmers"] = 0.1;
+    }
+    else if (name == "Toto") {
+        prefs["burn relief ointment"] = 0.2;
+        prefs["carved walking cane"] = 0.3;
+        prefs["packet of sunflower seeds"] = 0.75;
+        prefs["pulque bottle"] = 1.5;
+        prefs["paint jar"] = 1.75;
+        prefs["morning headache tonic"] = 0.5;
+        prefs["long ear warmers"] = 2.0;
     }
 }
 
@@ -121,7 +120,7 @@ bool Negotiator::reactToOffer(Offer* offer, float keyValue) {
     string item = "";
     int amount = 0;
 
-    for (it = offer->offerInv.begin(); it != offer->offerInv.end(); it++) {
+    for (it = offer->inventory.begin(); it != offer->inventory.end(); it++) {
         item = it->first;
         amount = it->second;
 
@@ -183,23 +182,15 @@ void Negotiator::acceptTerms() {
         acceptance += "another day. Well done!\n";
     } else if (generosityOfOffer >= 0.5 && generosityOfOffer < 0.75) {
         acceptance += "Wow, you drove an extremely hard bargain and won! ";
-        acceptance += "Very, very impressive. You've moved along efficiently ";
+        acceptance += "Very, very impressive. You've\nmoved along efficiently ";
         acceptance += "and set yourself up well for the future. Well done!\n";
     } else if (generosityOfOffer >= 0.75 && generosityOfOffer < 1.0) {
         acceptance += "You made a solid offer and won the day. ";
-        acceptance += "It's up to you now to continue to manage your stock ";
+        acceptance += "It's up to you now to continue to manage\nyour stock ";
         acceptance += "efficiently and get out of here safely. Well done!\n";
     }
 
     cout << acceptance << endl;
-
-    checkpoint();
-    //
-    // if (name == "Mosta and Pepita") loadScript("1/Level1Win");
-    // if (name == "Toto") loadScript("2/Level2Win");
-    // if (name == "Burro") loadScript("3/Level3Win");
-    // if (name == "Lepha") loadScript("4/Level4Win");
-
 
 }
 

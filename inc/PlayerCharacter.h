@@ -21,6 +21,7 @@ public:
     void placeInvObjOnTable(string, Offer*);
     void clearTable(Offer*);
 
+    void initInventory();
     void fillInventory();
     void checkInventory();
     void printInventory(bool = false);

@@ -1,4 +1,3 @@
-***** QUIT *****
 You can't handle this anymore. This house, these spirits, they are driving you
 mad! You've gotten this far, and that feels like an achievement in itself.
 
@@ -9,5 +8,5 @@ punishment coming.
 
 ***
 
-You have quit the game. Please try again whenever you can!
-***** QUIT *****
+You have quit the game. Please come back and visit the spirits again whenever
+you can! They'll be waiting...

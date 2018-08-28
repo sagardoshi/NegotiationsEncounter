@@ -30,12 +30,18 @@ using namespace std;
 void createEconomy() {
 
     // If we imagine that opponents are now:
-    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- spirits of play
+    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- tutorial spirits
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
-    economy["sunflower seeds"] = 10.0;
+    economy["packet of sunflower seeds"] = 5.0;
 
-    // 2) centzon totochtin -- spirit of drunkenness
+    // 2) Toto the #2 Rabbit of Centzon Totochtin -- spirit of drunkenness
+    economy["pulque bottle"] = 5.0;
+    economy["paint jar"] = 2.0;
+    economy["morning headache tonic"] = 10.0;
+    economy["long ear warmers"] = 5.0;
+
+
     // 3) night river beaver -- spirit of industriousness
     // 4) lepha -- spirit of order
 
@@ -56,18 +62,38 @@ void createCharacters() {
     opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
     opponent2 = new Negotiator("Toto", FRIENDLY);
     opponent3 = new Negotiator("Burro", MODERATE);
-    opponent4 = new Negotiator("LEPHA", GRUFF);
+    opponent4 = new Negotiator("Lepha", GRUFF);
 
 }
 
+// Converts a string fully to lowercase (in place)
+void lower(string &anyString) {
+    int i = 0;
+    while (anyString[i]) {
+        anyString[i] = tolower(anyString[i]);
+        i++;
+    }
+}
+
+// Removes whitespaces in string (in place)
+void removeWS(string &str) {
+   str.erase(remove(str.begin(), str.end(), ' '), str.end());
+}
+
+// Packages lower() & removeWS() with a getline call, using global uInput
+void getCleanLine(istream &is, string &str) {
+    getline(cin, str);
+    lower(str);
+    removeWS(str);
+}
 
 // Pauses text for user to read and get a breather
 void checkpoint() {
     string anyInputText  = "\n" + PROMPT_DIVIDER + "[Press return to continue ";
-           anyInputText += "or type \"skip\" to jump to the next encounter.] ";
+           anyInputText += "or type \"skip\" to jump to the next section.] ";
 
     cout << anyInputText;
-    getline(cin, uInput);
+    getCleanLine(cin, uInput);
 
     if (uInput == "skip" ) doSkip = true; // Set global flag for future
 
@@ -89,17 +115,6 @@ void startScreen() {
     checkpoint();
 }
 
-// Converts a string fully to lowercase (in place)
-string lower(string anyString) {
-    int i = 0;
-    while (anyString[i]) {
-        anyString[i] = tolower(anyString[i]);
-        i++;
-    }
-
-    return anyString;
-}
-
 // Gets simple input to lowercase; callable with specific prompt/target
 void setUInput(string prompt = "", string targetInput = "") {
 
@@ -107,30 +122,52 @@ void setUInput(string prompt = "", string targetInput = "") {
     string specificInputText = "\n" + PROMPT_DIVIDER + ">>>> ";
 
     cout << prompt << specificInputText;
-    getline(cin, uInput);
+    getCleanLine(cin, uInput);
+
+    lower(targetInput);
+    removeWS(targetInput);
 
     // Only worry about invalidity if targetInput not empty
     if (targetInput != "") {
         // Then if wrong input, note invalidity, and re-print prompt
-        while (uInput != lower(targetInput)) {
+        while (uInput != targetInput) {
             cout << INVALID_INPUT << prompt << specificInputText;
-            getline(cin, uInput);
+            getCleanLine(cin, uInput);
         }
     }
     cout << PROMPT_DIVIDER << "\n";
-
-    lower(uInput);
-
 }
 
-// Checks if user input is a particular string
-void specificInputCheck(string targetInput) {
-    string prompt = "Type \"" + targetInput + "\"\n";
+// Require a specific input from user, as coded by text file
+void handleSpecificInput(string line, string &output) {
+    cout << output; // Flush output thus far
 
+    const int ASTERISKS_NEEDED = 3;
+    int newLength = line.length() - ASTERISKS_NEEDED - ASTERISKS_NEEDED;
+
+    string targetInput = line.substr(ASTERISKS_NEEDED, newLength);
+    string prompt = "\nType \"" + targetInput + "\"\n";
     setUInput(prompt, targetInput);
 
     // Once inventory typed, display it
     if (targetInput == "inventory") player->printInventory();
+
+    output = ""; // Reset output
+}
+
+// Ensures that line is of format ***SOME_KEYWORD***
+bool isAsteriskEntry(string line) {
+    // Must have three asterisks at beginning AND end of prompt
+
+    const int ASTERISKS_NEEDED = 3;
+    if (line.length() <= (ASTERISKS_NEEDED + ASTERISKS_NEEDED)) return false;
+
+    for (int i = 0; i < ASTERISKS_NEEDED; i++) {
+        if (line[i] != '*') return false; // Check for asterisks at beginning
+        if (line[line.length() - i - 1] != '*') return false; // and at end
+    }
+
+    return true;
 }
 
 // Prints txt script and replaces key symbols with frequent functions
@@ -138,9 +175,7 @@ void loadScript(string filename) {
     if (doSkip) return; // Skip all text until encounter
 
     string filepath = "txt/" + filename + ".txt";
-
-    string output = "";
-    string line = "";
+    string line = "", output = "";
 
 	ifstream in;
 	in.open(filepath);
@@ -149,23 +184,15 @@ void loadScript(string filename) {
         if (line == "***") {
             cout << output;
             checkpoint();
+            output = "";
 
             // Handle "skip" typed within a script file
             if (doSkip) {
                 in.close();
                 return;
             }
-
-            output = "";
-        } else if (line == "***inventory***") {
-            cout << output;
-            specificInputCheck("inventory");
-            output = "";
-        } else if (line == "***stop***") {
-            cout << output;
-            specificInputCheck("stop");
-            output = "";
-        } else output += "\n" + line;
+        } else if (isAsteriskEntry(line)) handleSpecificInput(line, output);
+        else output += "\n" + line;
     }
 
     in.close();
