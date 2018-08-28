@@ -25,31 +25,19 @@ University: Imperial College London
 
 using namespace std;
 
-// Only allowable actions are help, quit, inventory, turns, & propose
-void createActions() {
-    // Acceptable actions more generally
-    genActions.push_back("help");
-    genActions.push_back("quit");
-    genActions.push_back("inventory");
-
-    // Negotiation actions
-    negoActions.push_back("turns");
-    negoActions.push_back("propose");
-}
 
 // Adds total items in economy... unfortunately duplicated in Negotiator.cpp
 void createEconomy() {
 
     // If we imagine that opponents are now:
-    // 0) Mosta the Maribou Stork & Pepita the Pigeon -- spirits of play
+    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- spirits of play
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
     economy["sunflower seeds"] = 10.0;
-    economy["bird spirit key"] = 10.0;
 
-    // 1) centzon totochtin -- spirit of debauchery
-    // 2) night river beaver -- spirit of industriousness
-    // 3) lepha -- spirit of order
+    // 2) centzon totochtin -- spirit of drunkenness
+    // 3) night river beaver -- spirit of industriousness
+    // 4) lepha -- spirit of order
 
 }
 
@@ -61,12 +49,17 @@ void createGlobalStrings() {
     INVALID_INPUT = "\n" + PROMPT_DIVIDER + "\nInvalid input. Try again.\n";
 }
 
-// Creates player, Mosta/Pepita
+// Creates player and all enemies
 void createCharacters() {
     player = new PlayerCharacter("You", MODERATE);
 
-    birdSpirits = new Negotiator("Mosta and Pepita", FRIENDLY);
+    opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
+    opponent2 = new Negotiator("Toto", FRIENDLY);
+    opponent3 = new Negotiator("Burro", MODERATE);
+    opponent4 = new Negotiator("LEPHA", GRUFF);
+
 }
+
 
 // Pauses text for user to read and get a breather
 void checkpoint() {
@@ -83,12 +76,10 @@ void checkpoint() {
 
 // Starts game and asks if player wants to jump to encounter
 void startScreen() {
-    // uInput = "";
-
     string title  = "\n\n========================================";
            title +=     "========================================\n";
-           title +=     "                            ";
-           title +=     "DEALING WITH THE SPIRITS";
+           title +=     "                             ";
+           title +=     "A DEAL WITH THE SPIRITS";
            title +=     "                            \n";
            title +=     "========================================";
            title +=     "========================================\n\n";
@@ -96,27 +87,6 @@ void startScreen() {
     cout << title;
 
     checkpoint();
-
-    // string skipIntroText =  "\n" + PROMPT_DIVIDER;
-    //        skipIntroText += "Type \"start\" to start from the beginning.\n";
-    //        skipIntroText += "Type \"skip\" to skip to the first encounter.\n";
-    //        skipIntroText += ">>>> ";
-    //
-    //
-    // // Print title and prompt to skip
-    // cout << title << skipIntroText;
-    // getline(cin, uInput);
-    //
-    // // Keep reprinting prompt until input valid
-    // while (uInput != "start" && uInput != "skip") {
-    //     cout << INVALID_INPUT << skipIntroText;
-    //     getline(cin, uInput);
-    // }
-    // cout << PROMPT_DIVIDER << "\n";
-    //
-    // if (uInput == "skip") doNotSkip = false;
-    //
-    // uInput = ""; // Clear uInput
 }
 
 // Converts a string fully to lowercase (in place)
@@ -130,9 +100,8 @@ string lower(string anyString) {
     return anyString;
 }
 
-// Gets simple, unverified user input and converts to lowercase
-// Can be called with particular prompt/target
-void setUInput (string prompt = "", string targetInput = "") {
+// Gets simple input to lowercase; callable with specific prompt/target
+void setUInput(string prompt = "", string targetInput = "") {
 
     uInput = ""; // Clear uInput
     string specificInputText = "\n" + PROMPT_DIVIDER + ">>>> ";
@@ -181,7 +150,8 @@ void loadScript(string filename) {
             cout << output;
             checkpoint();
 
-            if (doSkip) { // If user typed "skip", end this script now
+            // Handle "skip" typed within a script file
+            if (doSkip) {
                 in.close();
                 return;
             }
@@ -203,63 +173,12 @@ void loadScript(string filename) {
     cout << output << endl << endl;
 }
 
-// Prints help menu, unfortunately duplicated in PlayerCharacter.cpp
-void printHelp() {
-    string helpBorder = "***** HELP *****\n";
-
-    string extraHelp  = "Add your inventory items by number to your offer\n\n";
-           extraHelp += "propose: type this to send your current offer\n";
-           extraHelp += "turns: see how many turns you have left\n";
-
-    string helpText   = "inventory: double-check what you currently hold\n";
-           helpText  += "help: see this menu\n";
-           helpText  += "quit: exit the game\n\n";
-
-    (inNego ? helpText = helpBorder + extraHelp + helpText + helpBorder :
-              helpText = helpBorder +             helpText + helpBorder);
-
-    cout << helpText;
-
-}
-
-// Can be called anytime -- ends game
+// Can be called any time -- ends game
 void quitGame() {
     loadScript("Gen/QuitGame");
     exit(0);
 }
 
-// Rejects input not in list of acceptable verbs
-bool isValidInput() {
-    if (find(genActions.begin(), genActions.end(), uInput)
-                                      != genActions.end()) {
-        return true;
-    }
-
-    if (inNego) {
-        if (find(negoActions.begin(), negoActions.end(), uInput)
-                                            != genActions.end()) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// Fully abstracted function to call to get user input
-void getUserInput() {
-    if (!startingNego) setUInput();
-
-    while(true) {
-        if (uInput == "quit") quitGame();
-        else if (uInput == "help") printHelp();
-        else if (uInput == "inventory") player->printInventory();
-
-        if (inNego) {
-            currNego->buildValidOffer(economy, bidAccepted);
-            if (bidAccepted) return;
-        }
-        setUInput();
-    }
-}
 
 // Loads intro scripts in turn
 void runIntro() {
@@ -268,33 +187,36 @@ void runIntro() {
 }
 
 // After intros, these kick off each individual level
-void levelStart(int level) {
-    if (level == 1) {
-        loadScript("1/Level1Start"); // Tutorial opponents
-        loadScript("Gen/NegotiationStrategy");
-    }
-    if (level == 2) loadScript("2/Level2Start");
-    if (level == 3) loadScript("3/Level3Start");
+void levelStart(int ) {
+    string outText  = to_string(currLevel) + "/Level";
+           outText += to_string(currLevel) + "Start";
+
+    doSkip = false; // Allow scripts at beginning of level
+    loadScript(outText);
+
+    // Extra instruction at the start
+    if (currLevel == 1) loadScript("Gen/NegotiationStrategy");
 }
 
-// After levels, loads the ending scripts
-void endStart() { currNego = nullptr; } // Placeholder
+void levelEnd(bool wonEncounter) {
+    string outText  = to_string(currLevel) + "/Level" + to_string(currLevel);
+    // Load the correct script
+    (wonEncounter ? (outText += "Win") : (outText += "Lose"));
 
-// Handles the bool and pointer switches for each level
+    doSkip = false; // Allow scripts after encounter
+    loadScript(outText); // Text for victory or loss to be run first
+
+    if (!wonEncounter) quitGame();
+
+    currLevel++;
+    return;
+}
+
+// Runs text before level, runs encounter, and runs text after level
 void runNextLevel(Encounter* levelPointer) {
     levelStart(currLevel); // Intro text for level
-
-    currNego = levelPointer;
-    inNego = true;
-    bidAccepted = false;
-
-    currNego->beginEncounter();
-    startingNego = true;
-    getUserInput();
-
-    inNego = false;
-    doSkip = false; // Re-engage scripts after an encounter
-    currLevel++;
+    levelPointer->runEncounter(economy, wonEncounter);
+    levelEnd(wonEncounter); // Ending text for level (plus ending if lost)
 }
 
 void playGame() {
@@ -305,37 +227,39 @@ void playGame() {
 
     runIntro(); // Runs intro
 
-    // Progress to Level 1
-    level1 = new Encounter(player, birdSpirits, NEGO1, L1_TURNS);
+    // Create levels immediately before running for freshest inventory mapping
+    level1 = new Encounter(player, opponent1, L1_TURNS, L1_KEY);
     runNextLevel(level1);
 
-    // Progress to Level 2
-    // level2 = new Encounter(player, rhubarb, NEGO2, L2_TURNS);
-    // runNextLevel(level2);
+    level2 = new Encounter(player, opponent2, L2_TURNS, L2_KEY);
+    runNextLevel(level2);
 
-    // Progress to Level 3
-    // level3 = new Encounter(player, chamoy, NEGO3, L3_TURNS);
-    // runNextLevel(level3);
+    level3 = new Encounter(player, opponent3, L3_TURNS, L3_KEY);
+    runNextLevel(level3);
 
-    // Run ending
-    endStart();
+    level4 = new Encounter(player, opponent4, L4_TURNS, L4_KEY);
+    runNextLevel(level4);
+
 }
 
 void fillDictsAndCharacters() {
-    createActions();
     createEconomy();
     createGlobalStrings();
-    createCharacters(); // including player
+    createCharacters(); // including player BEFORE creating levels
 }
 
 void releaseMemory() {
+    // Delete levels
     delete level1;
-    // delete level2;
-    // delete level3;
-    delete currNego;
+    delete level2;
+    delete level3;
+    delete level4;
 
-
-    delete birdSpirits;
+    // Delete characters
+    delete opponent1;
+    delete opponent2;
+    delete opponent3;
+    delete opponent4;
     delete player;
 }
 

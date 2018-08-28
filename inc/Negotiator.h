@@ -40,7 +40,7 @@ public:
     void score(float, float, float);
 
     // Dealing with Offers
-    bool reactToOffer(Offer*);
+    bool reactToOffer(Offer*, float);
     void rejectTerms(int);
     void acceptTerms();
     void walkAway();

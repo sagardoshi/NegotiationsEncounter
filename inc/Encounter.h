@@ -18,6 +18,7 @@ private:
     string topic;
     int level;
     int turns;
+    float keyValue;
 
     PlayerCharacter* player;
     Negotiator* opponent;
@@ -29,25 +30,27 @@ private:
 
 
 public:
-    Encounter(PlayerCharacter*, Negotiator*, int, int);
+    Encounter(PlayerCharacter*, Negotiator*, int, float);
     ~Encounter();
 
     int getLevel();
 
     void saveStandardisedInput(string&);
 
-    void mapPlayerInventory();
     bool isNum(string&);
     void remapKeyword(string&);
 
-    void buildValidOffer(map<string, float>, bool&);
+    void setInventoryForEncounter();
+
+    void runEncounter(map<string, float>, bool&);
 
     void printTurns();
     void printOfferOnTable();
 
     void beginEncounter();
     void printEndEncounter(bool);
-    void checkEndEncounter(bool&, bool&);
+    bool encounterIsOver(bool&);
+    void handleEnd(bool);
 
 };
 

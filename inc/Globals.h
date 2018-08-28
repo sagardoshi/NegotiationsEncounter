@@ -9,47 +9,32 @@
 using namespace std;
 
 // CONSTANTS
-const float FRIENDLY = 0.8;
-const float GRUFF = 0.2;
-const float MODERATE = 0.5;
+const float FRIENDLY = 0.8, GRUFF = 0.2, MODERATE = 0.5;
+const int L1_TURNS = 3, L2_TURNS = 3, L3_TURNS = 3, L4_TURNS = 3;
+const float L1_KEY = 10.0, L2_KEY = 20.0, L3_KEY = 30.0, L4_KEY = 40.0;
 
-const int L1_TURNS = 3;
-const int L2_TURNS = 3;
-const int L3_TURNS = 3;
-
-const int NEGO1 = 1;
-const int NEGO2 = 2;
-const int NEGO3 = 3;
 
 // Inventory
 map<string, float> economy;
 
 // Key pointers used across functions
-Encounter* currNego = nullptr;
-Encounter* level1 = nullptr;
-Encounter* level2 = nullptr;
-Encounter* level3 = nullptr;
+Encounter*       level1 = nullptr;
+Encounter*       level2 = nullptr;
+Encounter*       level3 = nullptr;
+Encounter*       level4 = nullptr;
 
 PlayerCharacter* player = nullptr;
-Negotiator* birdSpirits = nullptr;
 
-
-// Negotiator* porridge = nullptr;
-// Negotiator* rhubarb = nullptr;
-// Negotiator* chamoy = nullptr;
-
-// Empty vectors for possible user inputs
-vector<string> genActions;
-vector<string> negoActions;
+Negotiator*      opponent1 = nullptr;
+Negotiator*      opponent2 = nullptr;
+Negotiator*      opponent3 = nullptr;
+Negotiator*      opponent4 = nullptr;
 
 // General globals
-string uInput, PROMPT_DIVIDER, INVALID_INPUT = "";
+string uInput = "", PROMPT_DIVIDER = "", INVALID_INPUT = "";
 
 bool doSkip = false;
-bool negoPossible = false;
-bool inNego = false;
-bool bidAccepted = false;
-bool startingNego = false;
+bool wonEncounter = false;
 int currLevel = 1;
 
 #endif

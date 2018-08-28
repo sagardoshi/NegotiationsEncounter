@@ -12,17 +12,13 @@
 using namespace std;
 
 
-Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int l, int t) :
-                     level(l), turns(t), player(pc), opponent(opp) {
-
+Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int t, float kV) :
+                     turns(t), keyValue(kV), player(pc), opponent(opp) {
         offer = new Offer(); // Create empty offer
-        mapPlayerInventory(); // Give each inventory item a number
-        // Calculate open market value of inventory at start of encounter
-        startInvValue = player->getInvValue(&player->inventory);
+        setInventoryForEncounter(); // Order mapping + saving initial value
 }
 
 Encounter::~Encounter()             { delete offer;        }
-int Encounter::getLevel()           { return level;        }
 void Encounter::printOfferOnTable() { offer->printOffer(); }
 
 // Prints turns left
@@ -36,23 +32,13 @@ void Encounter::printTurns() {
     cout << turnsText << endl;
 }
 
-// Goes through every item player has in an encounter, and assigns a number
-void Encounter::mapPlayerInventory() {
-    map<string, int>::iterator it;
-    string item = "";
-    int itemOrder = 1;
-    int amount = 0;
+// New inventory order map for each encounter
+void Encounter::setInventoryForEncounter() {
+    player->invMap.clear(); // Re-map numbering for next encounter
+    player->mapPlayerInventory(); // Give each inventory item a number
 
-
-    for (it = player->inventory.begin(); it != player->inventory.end(); it++) {
-        item = it->first;
-        amount = it->second;
-
-        if (amount > 0) {
-            player->invMap[item] = itemOrder;
-            itemOrder++;
-        }
-    }
+    // Calculate open market value of inventory at start of encounter
+    startInvValue = player->getInvValue(&player->inventory);
 }
 
 // Verifies that string is a number by iterating through each char of string
@@ -107,11 +93,12 @@ void Encounter::saveStandardisedInput(string &keyword) {
     if (isNum(keyword)) remapKeyword(keyword);
 }
 
-void Encounter::buildValidOffer(map<string, float> econ, bool &didWin) {
+void Encounter::runEncounter(map<string, float> econ, bool &didWin) {
+
+    beginEncounter();
 
     string prop;
     bool forProposal = true;
-    bool negoOver = false;
 
     while (true) {
         prop = "";
@@ -129,8 +116,10 @@ void Encounter::buildValidOffer(map<string, float> econ, bool &didWin) {
             offerInvValue = player->getInvValue(&offer->offerInv);
 
             // Check if nego done, and break if so
-            checkEndEncounter(didWin, negoOver);
-            if (negoOver) return;
+            if (encounterIsOver(didWin)) {
+                handleEnd(didWin);
+                return;
+            }
         }
 
         // Must be a legit item, though the player might not have it
@@ -165,40 +154,34 @@ void Encounter::printEndEncounter(bool didWin) {
     transform(opp.begin(), opp.end(), opp.begin(), ::toupper);
 
     cout << "==========================================================\n";
-    cout << "YOU " << (didWin ? "PASSED" : "LOST") << " A ";
+    cout << "YOU " << (didWin ? "WON" : "LOST") << " A ";
     cout << "NEGOTIATION WITH " << opp << endl;
     cout << "==========================================================\n\n";
 }
 
-void Encounter::checkEndEncounter(bool &didWin, bool &negoOver) {
+// Set flags if encounter over; move to next proposal if not yet over
+bool Encounter::encounterIsOver(bool &didWin) {
     // Fill win with true or false, depending on acceptance
-    didWin = opponent->reactToOffer(offer);
+    didWin = opponent->reactToOffer(offer, keyValue);
 
     // In case over, remember inventory
     endInvValue = player->getInvValue(&player->inventory);
 
-    // If won
-    if (didWin) {
-        negoOver = true;
-        printEndEncounter(didWin);
-        player->score(startInvValue, offerInvValue, endInvValue);
-        opponent->acceptTerms();
+    // If won or if didn't win and no turns left
+    if (didWin || (!didWin && turns <= 1)) return true;
+    else { // but turns are left, must return items to inventory and continue
+        turns--; // Use one turn
+        player->clearTable(offer);
+        opponent->rejectTerms(turns);
+        return false;
     }
-    // If offer rejected
-    else {
-        // but no turns left
-        if (!turns) {
-            negoOver = true;
-            printEndEncounter(didWin);
-            player->score(startInvValue, offerInvValue, endInvValue);
-            opponent->walkAway();
-        }
-        // but turns are left, must return items to inventory first
-        else {
-            player->clearTable(offer);
-            turns--; // Use one turn
-            opponent->rejectTerms(turns);
+}
 
-        }
-    }
+// Print end title, score, and load correct scripts
+void Encounter::handleEnd(bool didWin) {
+    printEndEncounter(didWin);
+    player->score(startInvValue, offerInvValue, endInvValue);
+
+    if (didWin) opponent->acceptTerms();
+    else opponent->walkAway();
 }

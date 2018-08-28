@@ -10,14 +10,13 @@
 
 class PlayerCharacter: public Negotiator {
 
-private:
-    int levelReached;
-
 public:
     PlayerCharacter(string, float);
 
     map<string, int> inventory;
     map<string, int> invMap;
+
+    void mapPlayerInventory();
 
     void placeInvObjOnTable(string, Offer*);
     void clearTable(Offer*);

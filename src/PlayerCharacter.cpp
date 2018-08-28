@@ -9,20 +9,35 @@
 
 using namespace std;
 
-PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a),
-                                                      levelReached(0) {
+PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
 
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["sunflower seeds packet"] = 0;
-    inventory["bird spirit key"] = 0;
 }
 
 void PlayerCharacter::fillInventory() {
     inventory["burn relief ointment"] = 1;
     inventory["carved walking cane"] = 1;
     inventory["sunflower seeds packet"] = 1;
-    inventory["bird spirit key"] = 0;
+}
+
+// Goes through every item player has in an encounter, and assigns a number
+void PlayerCharacter::mapPlayerInventory() {
+    map<string, int>::iterator it;
+    string item = "";
+    int amount = 0;
+    int itemOrder = 1;
+
+    for (it = inventory.begin(); it != inventory.end(); it++) {
+        item = it->first;
+        amount = it->second;
+
+        if (amount > 0) {
+            invMap[item] = itemOrder;
+            itemOrder++;
+        }
+    }
 }
 
 
