@@ -14,10 +14,12 @@ Offer::Offer() {
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["packet of sunflower seeds"] = 0;
-    inventory["pulque bottle"] = 0;
-    inventory["paint jar"] = 0;
+    inventory["pulque flask"] = 0;
+    inventory["paint canister"] = 0;
     inventory["morning headache tonic"] = 0;
     inventory["long ear warmers"] = 0;
+    inventory["wood polish bottle"] = 0;
+    inventory["waterproof wax jar"] = 0;
 }
 
 void Offer::addObjToTable(string itemName) { inventory[itemName]++; }

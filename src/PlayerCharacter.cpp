@@ -19,10 +19,12 @@ void PlayerCharacter::initInventory() {
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["packet of sunflower seeds"] = 0;
-    inventory["pulque bottle"] = 0;
-    inventory["paint jar"] = 0;
+    inventory["pulque flask"] = 0;
+    inventory["paint canister"] = 0;
     inventory["morning headache tonic"] = 0;
     inventory["long ear warmers"] = 0;
+    inventory["wood polish bottle"] = 0;
+    inventory["waterproof wax jar"] = 0;
 }
 
 // How many of each item you carry
@@ -30,10 +32,12 @@ void PlayerCharacter::fillInventory() {
     inventory["burn relief ointment"] = 1;
     inventory["carved walking cane"] = 1;
     inventory["packet of sunflower seeds"] = 1;
-    inventory["pulque bottle"] = 2;
-    inventory["paint jar"] = 3;
+    inventory["pulque flask"] = 2;
+    inventory["paint canister"] = 3;
     inventory["morning headache tonic"] = 1;
     inventory["long ear warmers"] = 1;
+    inventory["wood polish bottle"] = 2;
+    inventory["waterproof wax jar"] = 2;
 }
 
 // Goes through every item player has in an encounter, and assigns a number

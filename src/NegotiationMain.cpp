@@ -32,19 +32,22 @@ void createEconomy() {
     economy["black trousers"] = 1.0;
     economy["black tunic"] = 1.0;
 
-    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- bird spirits
+    // 1) Mosta the Stork/Pepita the Pigeon -- spirits of inquisitiveness
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
     economy["packet of sunflower seeds"] = 5.0;
 
     // 2) Toto the #2 Rabbit of Centzon Totochtin -- spirit of drunkenness
-    economy["pulque bottle"] = 5.0;
-    economy["paint jar"] = 2.0;
+    economy["pulque flask"] = 5.0;
+    economy["paint canister"] = 2.0;
     economy["morning headache tonic"] = 10.0;
     economy["long ear warmers"] = 5.0;
 
 
-    // 3) night river beaver -- spirit of industriousness
+    // 3) Burro the night river beaver -- spirit of industriousness
+    economy["wood polish bottle"] = 6.0;
+    economy["waterproof wax jar"] = 8.0;
+
     // 4) lepha -- spirit of order
 
 }

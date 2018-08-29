@@ -72,19 +72,22 @@ void Negotiator::fillEconomy() {
     economy["black trousers"] = 1.0;
     economy["black tunic"] = 1.0;
 
-    // 1) Mosta the Maribou Stork & Pepita the Pigeon -- bird spirits
+    // 1) Mosta the Stork/Pepita the Pigeon -- spirits of inquisitiveness
     economy["burn relief ointment"] = 10.0;
     economy["carved walking cane"] = 15.0;
     economy["packet of sunflower seeds"] = 5.0;
 
     // 2) Toto the #2 Rabbit of Centzon Totochtin -- spirit of drunkenness
-    economy["pulque bottle"] = 5.0;
-    economy["paint jar"] = 2.0;
+    economy["pulque flask"] = 5.0;
+    economy["paint canister"] = 2.0;
     economy["morning headache tonic"] = 10.0;
     economy["long ear warmers"] = 5.0;
 
 
-    // 3) night river beaver -- spirit of industriousness
+    // 3) Burro the night river beaver -- spirit of industriousness
+    economy["wood polish bottle"] = 6.0;
+    economy["waterproof wax jar"] = 8.0;
+
     // 4) lepha -- spirit of order
 }
 
@@ -97,10 +100,12 @@ void Negotiator::fillPreferences() {
         prefs["burn relief ointment"] = 1.0;
         prefs["carved walking cane"] = 1.0;
         prefs["packet of sunflower seeds"] = 1.0;
-        prefs["pulque bottle"] = 1.0;
-        prefs["paint jar"] = 1.0;
+        prefs["pulque flask"] = 1.0;
+        prefs["paint canister"] = 1.0;
         prefs["morning headache tonic"] = 1.0;
         prefs["long ear warmers"] = 1.0;
+        prefs["wood polish bottle"] = 1.0;
+        prefs["waterproof wax jar"] = 1.0;
     }
     else if (name == "Mosta and Pepita") {
         prefs["black trousers"] = 0.1;
@@ -108,10 +113,12 @@ void Negotiator::fillPreferences() {
         prefs["burn relief ointment"] = 1.25;
         prefs["carved walking cane"] = 1.5;
         prefs["packet of sunflower seeds"] = 1.25;
-        prefs["pulque bottle"] = 0.2;
-        prefs["paint jar"] = 0.1;
+        prefs["pulque flask"] = 0.2;
+        prefs["paint canister"] = 0.1;
         prefs["morning headache tonic"] = 0.4;
         prefs["long ear warmers"] = 0.1;
+        prefs["wood polish bottle"] = 0.3;
+        prefs["waterproof wax jar"] = 0.4;
     }
     else if (name == "Toto") {
         prefs["black trousers"] = 0.1;
@@ -119,10 +126,25 @@ void Negotiator::fillPreferences() {
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 0.3;
         prefs["packet of sunflower seeds"] = 0.75;
-        prefs["pulque bottle"] = 1.5;
-        prefs["paint jar"] = 1.75;
+        prefs["pulque flask"] = 1.5;
+        prefs["paint canister"] = 1.75;
         prefs["morning headache tonic"] = 0.5;
         prefs["long ear warmers"] = 2.0;
+        prefs["wood polish bottle"] = 0.2;
+        prefs["waterproof wax jar"] = 0.3;
+    }
+    else if (name == "Burro") {
+        prefs["black trousers"] = 0.1;
+        prefs["black tunic"] = 0.1;
+        prefs["burn relief ointment"] = 0.2;
+        prefs["carved walking cane"] = 1.2;
+        prefs["packet of sunflower seeds"] = 1.0;
+        prefs["pulque flask"] = 1.5;
+        prefs["paint canister"] = 1.25;
+        prefs["morning headache tonic"] = 0.2;
+        prefs["long ear warmers"] = 0.1;
+        prefs["wood polish bottle"] = 1.8;
+        prefs["waterproof wax jar"] = 1.5;
     }
 }
 

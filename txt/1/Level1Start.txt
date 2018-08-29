@@ -7,91 +7,96 @@ The echoes of her footsteps fade. What will happen to you?
 
 ***
 
-Just then, you hear a bit of chittering.
+Some time passes, and you stay motionless. Then, you hear a bit of chittering.
 
-You dare to move, heart pounding. You peek over the edge of your
-container and see that the entire box has been deposited into a narrow,
-high-ceilinged room. You step out of the box and nervously pace the perimeter.
+You dare to move, heart pounding. You peek over the edge and see that you have
+been deposited into a narrow, high-ceilinged room. You step out and nervously
+pace the perimeter.
 
 ***
 
 The walls appear uniform, sealed, but there is a small, slight slit. A keyhole,
-perhaps? There is no doorknob, and of course no reaction when you push or try
-to pry at it.
+perhaps? There is no doorknob, and of course no reaction when you push or pry.
 
 ***
 
-And then you look up. There is a square opening in the wall. But it must be at
-least 20 meters up the wall! You run your fingers along the wall, but find no
-dents or ledges. You have no way of reaching it.
+Then you look up, remembering the window in the Pantry. There is a square
+opening high, high up, maybe 20 meters up the wall. No dents, no ledges, no way
+of reaching the window.
 
-You grit your teeth and clench your eyes shut. Is this the end?
-
-***
-
-Then you look up at the opening again, and you suck in your breath: standing on
-the edge of the opening, and peering down curiously at you are a pair of
-spirits.
+You grit your teeth and shut your eyes. Is this the end?
 
 ***
 
-After a moment, they drop down from the opening. But they're able to do so with
-relative grace: they are bird spirits.
-
-What you first notice are their gigantic proportions, with flames crackling on
-the edges of their wings and smoke curling from within their beaks. Even the
-smaller one is nearly your own height.
+Then you look up again, and you inhale sharply: standing on the edge of the
+opening, and peering down curiously at you, are a pair of spirits.
 
 ***
 
-The taller one is an imposing maribou stork, with a mottled pink head and a
-cracked, curving beak that seems to comprise the majority of its size. It has
-its silver wings with flaming tips folded back against its body, and a generous
-curve of the belly. It peers at you with a dignified air and shuffles back and
-forth with a noticeable limp.
+They drop down but are able to do so with relative grace: they are bird spirits.
+
+You first notice gigantic proportions, flames crackling on the edges of wings
+and smoke curling from within beaks. Even the smaller one is nearly your height.
 
 ***
 
-The other one is a... massive pigeon? Its body is rounded and even, mostly
-gray, but with lustrous neck feathers. It moves much more quickly than the
-stork, regularly fluttering off the ground. You notice an odd feature: it seems
-to have injured its head. It has a bald spot that looks singed and rubbed raw.
+The taller one is an imposing maribou stork. A mottled pink head a cracked,
+curving beak seem to comprise most of its heft. Its silver wings with flaming
+tips are folded back against the generous curve of its belly. It peers at you
+with a dignified air and shuffles back and forth with a noticeable limp.
 
 ***
 
-"What's this -- a human! Cute little human, whatever did you do wrong?" chirps
-the Pigeon Spirit. "Did you peck at Lepha's legs to clean them? It's been a
-while since we saw her drop things in the dungeon. And she was upset enough
-that she even left the room open for us."
+The other one is a... massive pigeon? Rounded, even body, mostly
+gray, but with brilliant lustrous neck feathers. It darts about at twice the
+stork's place, regularly fluttering off the ground.
 
-Mosta the Stork Spirit sighs and swings its scythe-like beak toward the Pigeon
-Spirit. "Eh. So much for Lepha leaving some food behind for us to scavenge. She
-may have left this room unlocked, but there's nothing good here. It's not like
-she'd ever let us into the Pantry. It's not worth it, Pepita. Humans don't know
-how to speak. Let's go."
+Oddly, the pigeon seems to have injured its head. It has a bald spot that looks
+singed and rubbed raw.
+
+***
+
+"What's this?" chirps the pigeon. "A human! Where did you come from, and what
+did you do wrong?" The pigeon spirit pecks at your belly, and you pull back.
+
+"Did you poop on Lepha's things? She doesn't like that. It's been a while since
+we saw her drop things in our cellar, right Mosta?"
+
+***
+
+Mosta the stork sighs and swings its scythe-like beak toward the pigeon. "Eh,"
+it says in a croak. "So much for Lepha leaving some food behind for us. We
+can't eat this human. At least," she ponders, "I don't think we can."
+
+You're speechless. Are you meant to be their dinner?
+
+**
+
+"Let's go, Pepita," continues Mosta. "There's nothing good from the Pantry
+here, and anyway, humans don't know how to speak."
 
 ***
 
 They're starting to turn away from you, but you clear your throat and stand
 tall. "I can speak, actually," you say, sounding more confident than you feel.
 You have never contradicted a spirit before, not even the spiritlings you had
-encountered out in the wastelands, before today.
+known out in the swamps.
 
 ***
 
-Feathers flutter in momentary confusion. Pepita the Pigeon Spirit flies up a
-little and flaps at you. "Well, isn't this interesting. A human who speaks! I
-thought you were all mindless like leeches, roaming about Outside."
+Feathers flutter in momentary confusion. Pepita the pigeon flies up a little
+and flaps at you. "Well, isn't this interesting. A human who speaks! I thought
+you just operated on instinct, roaming about Outside."
 
 ***
 
-Mosta, however, is getting ready to exit. "And so you do! However, as you are
-not edible... We should go. Come, Pepita."
+Mosta, however, is getting ready to exit. "Remarkable! You can speak! However,
+as you are not edible... We should go. Come, Pepita."
 
-Pepita hesitates for a moment, but then starts to move after the slow Mosta.
-You see them move to flap their wings.
+Pepita hesitates for a moment, but then starts to move after the plodding Mosta.
+You see them flap their wings.
 
-Hold on! They could be your only chance of escape!
+Wait! This could be your only chance of escape! Tell them to stop.
 
 ***stop***
 
@@ -99,10 +104,9 @@ Hold on! They could be your only chance of escape!
 
 ***
 
-"I need your help. I need to get out of here," you venture at the bird
-spirits. "I can't reach the opening. Perhaps -- perhaps you have another way
-out?" It sounds like madness even as you say it, but you don't know what else
-to do.
+"I need your help. I need to get out of here," you venture at the bird spirits.
+"I can't reach the opening. Perhaps -- perhaps you have another way out?" It's
+madness, you know, but what else can you do?
 
 They don't look impressed. "And why should we?" asks Mosta.
 
@@ -112,26 +116,37 @@ They don't look impressed. "And why should we?" asks Mosta.
 
 They glance at each other.
 
-"Human," says Mosta, "what could you possibly have that we would want? You come
-from the Outside. You seem to have acquired language, which I admit is
-astonishing. But your people, such as they are, can't have possibly produced
-something of real value."
+"Human," says Mosta, "what could you possibly have that we would want? I know
+they call us the spirits of inquisitiveness, and I do admit that the fact that
+you've acquired language is quite astonishing. But you come from Outside. Your
+people, such as they are, can't have possibly have anything of real value."
 
 ***
 
-You can't give up yet! "I -- I do have things," you sputter. "You mentioned the
-Pantry? I have some items from there."
+You can't give up yet! What was it they mentioned? Ah, the Pantry!
+
+***pantry***
+
+"I -- I do have things," you sputter. "You mentioned the Pantry? I have some of
+Lepha's things from there."
 
 It pains you to even say the words. But it occurs to you that as hard-earned as
-it is, your loot is useless if you die here. Will they take something from your
-bag in exchange for a favour?
+it is, your loot is useless if you die here.
 
 ***
 
-Here you see four bird eyes grow wide. Magpies eyeing a jewel.
+When you had to negotiate with Lepha, your bag had been left back in the crate.
+But now you have it with you, and you have more than the clothes on your back.
+Perhaps it could work this time.
 
-"The Pantry?" they whisper, nearly speaking over each other. "Lepha doesn't let
-us in there, or anyone. She says it would drive us mad."
+***
+
+Four bird eyes grow wide. Magpies eyeing a jewel.
+
+"The Pantry?" they whisper, speaking over each other. "Lepha doesn't let us in
+there, or anyone. She says its unsafe."
+
+***
 
 "How could a human possibly enter the room that is sealed to us?" asks Mosta.
 
@@ -139,17 +154,10 @@ us in there, or anyone. She says it would drive us mad."
 
 ***
 
-Even in the economic backwater that humans inhabit, there is barter. It's really
-very simple. Two parties who exchange something of value. One party must offer
-something that the other is willing to accept in trade. Nothing more or less
-than that.
-
-But these are bird spirits! You have a hunch that the things you value are not
-necessarily the same ones they will.
-
-They are so eager, though, you better not let them take your entire stash away.
-Else your whole adventure will have been for naught. You need to bring at least
-some loot back home.
+Do you have anything that these bird spirits might value? They are so eager,
+though, and you better not let them take your entire stash away, or else this
+whole adventure would have been useless. You must try to bring at least some
+loot back home.
 
 ***
 
@@ -157,17 +165,17 @@ Check your inventory one more time.
 
 ***inventory***
 
-Hmm, a random assortment of things, but perhaps you can find something of
-interest to Mosta and Pepita.
+Hmm, a random assortment of things, but there may be something there of
+interest to Mosta and Pepita. But you'll have to set it up as a bargain.
 
-"I may have some things for you," you say. "Can you get me out of here?"
+You muster your courage. "I can show you," you venture, "if you can get me out
+of here."
 
 ***
 
-Mosta limps back and forth, visibly stressed. "Hmm. I think we may be able to,
-but only for the right price." She looks to Pepita meaningfully, and then limps
-away to the corner before opening her enormous beak wide. It is a yawning gap,
-but you can only see the mottled underside.
+Mosta limps back and forth, visibly stressed. She looks to Pepita meaningfully,
+and then opens her enormous beak wide. It is a yawning gap, but you can only
+see the mottled underside.
 
 ***
 
@@ -176,20 +184,22 @@ before pirouetting and diving -- to your shock -- directly into Mosta's mouth!
 She dives with tremendous speed, but the moment she enters the beak, she seems
 to disappear.
 
-Mosta staggers when she accepts Pepita, but does not otherwise say a thing. Her
-beak stays open. You both wait half a minute.
+Mosta staggers when she accepts Pepita, but does not otherwise move. A minute
+passes.
 
 ***
 
-With the same speed with which she arrived, Pepita surges out of Mosta's beak,
-a new burn mark on her wing and clutching a gray, stone-like key in her claws.
-She is smoking lightly under her wings as she lands on the ground.
+Suddenly, Pepita surges out of Mosta's beak, a new burn mark on her wing and
+clutching a gray, stone-like key in her claws. She is smoking lightly under her
+wings as she lands on the ground.
 
-"Mosta! You need to get a handle on the heat in there!" She turns to you.
-"Here, human, is the key to get you out of that door. We can't guarantee what
-happens afterward, but this is the best we can offer. What can you offer?"
+"Mosta! It's getting dangerous in there!" Pepita waves her claw at you. "Here,
+human, is the key to get you out of that door. We can't guarantee what happens
+afterward, but this is the best we can offer. Now show us what you have."
 
 ***
 
 You can tell that you won't be able to hold their interest for long. It's now
 or never. Time to negotiate for your escape!
+
+***
