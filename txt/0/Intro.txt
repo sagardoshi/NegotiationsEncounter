@@ -1,6 +1,3 @@
-================================================================================
-Prologue: Caught
-================================================================================
 
 You heft your bag of loot. Did you get everything? Check your inventory.
 
@@ -16,21 +13,13 @@ of unguent, replace each pack of tools?
 
 ***
 
-You look around the enormous, dark chamber at your work. The wardrobes,
-closets, and dressers lay ransacked, each one tougher to reach than you had
-expected. The spirits must really be enormous. The cabinet doors, ornate and
-lacquered, swing ajar, their contents disheveled, spilling out.
-
 You suddenly feel weary. It's not worth it. They'll find out pretty quickly
 what happened. You should just go. But how?
 
 ***
 
 The moonlight sparkles in your face. You look up, and there rests your
-salvation: a simple window.
-
-Like everything else in the pantry of the spirits, the window is massive.
-Perfect! More than big enough, though it is quite high.
+salvation: a simple, though high, window.
 
 ***
 
@@ -38,13 +27,13 @@ No time to waste. Setting down your bag of loot, you spy some wooden crates
 nearby. These are spirit-sized, but better than nothing. You manoeuvre them
 under the window, silent as a snake.
 
-The trouble, you realise, is in stacking them. You try to push one by a corner
-onto another, and just then... you lose your balance and begin to tip.
+The trouble, you realise, is in stacking such behemoths. You try to push one by
+a corner onto another, and just then... you lose your balance and begin to tip.
 
 ***
 
-The crate falls and -- curses! -- it seems to be full of clanging brass. The
-crash and echo of ringing metal is loud Loud LOUD.
+The crate falls and -- curses! -- it's full of clanging brass. The crash and
+echo of ringing metal is loud Loud LOUD.
 
 ***
 

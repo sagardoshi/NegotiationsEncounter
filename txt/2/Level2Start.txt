@@ -1,6 +1,4 @@
-================================================================================
-Level 2: Toto
-================================================================================
+***
 
 ...and enter a party? There are lights directly in your eyes, and you're
 briefly blinded. But you can hear an undercurrent of guffaws, speech, hums,

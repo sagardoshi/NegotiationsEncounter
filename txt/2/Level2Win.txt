@@ -1,9 +1,5 @@
 ***
 
-================================================================================
-Level 2: Toto -- YOU WIN!
-================================================================================
-
 Mosta and Pepita tried to play it coyly. But Toto doesn't even pretend. He sees
 what you've placed on the table, and begins to purr. The rumble is warm, and
 it's loud, and it spreads through the courtyard.
@@ -89,5 +85,3 @@ the rabbits silences, and the door closes behind you.
 
 You walk along to the door at the end. You open this next door. This time, no
 light spills in. It looks just as dark beyond. You slip through...
-
-***

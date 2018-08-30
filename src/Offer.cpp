@@ -1,5 +1,5 @@
+#include "../inc/Negotiator.h"
 #include "../inc/Offer.h"
-#include "../inc/Issue.h"
 
 #include <iostream>
 #include <string>
@@ -8,21 +8,7 @@
 using namespace std;
 
 // Init required issue numbers to 0
-Offer::Offer() {
-    inventory["black trousers"] = 0;
-    inventory["black tunic"] = 0;
-    inventory["burn relief ointment"] = 0;
-    inventory["carved walking cane"] = 0;
-    inventory["packet of sunflower seeds"] = 0;
-    inventory["pulque flask"] = 0;
-    inventory["paint canister"] = 0;
-    inventory["morning headache tonic"] = 0;
-    inventory["long ear warmers"] = 0;
-    inventory["wood polish bottle"] = 0;
-    inventory["waterproof wax jar"] = 0;
-}
-
-void Offer::addObjToTable(string itemName) { inventory[itemName]++; }
+Offer::Offer(string n, float a) : Negotiator(n, a) {}
 
 int Offer::inventoryCount() {
     map<string, int>::iterator it;
@@ -33,39 +19,65 @@ int Offer::inventoryCount() {
     return totalItems;
 }
 
-
 void Offer::printOffer() {
-    string borderText = "***** THE TABLE *****\n";
+
+    string borderText = "----- THE TABLE -----\n";
     cout << borderText;
+
 
     // Local vars for iterator
     map<string, int>::iterator it;
+    const int MAX_ITEM_LEN = 22;
     int numItemsHeld = 0;
     string itemName = "";
-    string listItemText = "";
+    string itemText = "";
     int amount = 0;
+    int itemValue = 0;
 
     // For all items held with >0 quantity, print amount and name on table
     for (it = inventory.begin(); it != inventory.end(); it++) {
         itemName = it->first;
         amount = it->second;
+        itemValue = economy[itemName];
 
         if (amount > 0) {
             numItemsHeld += amount;
 
-            listItemText += to_string(amount) + " " + itemName;
-            listItemText += (amount > 1 ? "s\n" : "\n");
+            // First print name
+            itemText += "    " + itemName;
+            if (itemName.length() < MAX_ITEM_LEN) {
+                for (int i = 0; i < (MAX_ITEM_LEN - itemName.length()); i++) {
+                    itemText += " ";
+                }
+            }
 
-            cout << listItemText; // Flush out item and go on to the next one
+            itemText += " ... ";
+
+            // Then quantity on the table
+            itemText += " " + to_string(amount) + " given";
+
+            itemText += " ... ";
+
+            // Then market value per item
+            itemText += (itemValue < 10 ? " £" : "£");
+            itemText += to_string(itemValue) + " base market value per unit";
+
+            itemText += "\n";
+
+            cout << itemText; // Flush out item and go on to the next one
         }
-        listItemText = "";
+        itemText = "";
 
     }
 
-    // Prepend footer if necessary with zero inventory notice
-    if (!numItemsHeld) {
-        borderText = "You have placed nothing on the table.\n" + borderText;
-    }
-    cout << borderText << endl;
+
+    string total = "";
+    // Print totals or empty notice
+    if (numItemsHeld) {
+        total += "\nOffer Market Value: ";
+        total += "£" + toPreciseString(getInvValue()) + "\n";
+    } else borderText = "[Empty]\n" + borderText;
+
+    cout << total << borderText << endl;
 
 }

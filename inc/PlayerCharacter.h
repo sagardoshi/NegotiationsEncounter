@@ -2,13 +2,12 @@
 #define PLAYER_CHARACTER_H
 
 #include "Negotiator.h"
-#include "Offer.h"
 
 #include <string>
 #include <utility>
 #include <map>
 
-class PlayerCharacter: public Negotiator {
+class PlayerCharacter : public Negotiator {
 
 public:
     PlayerCharacter(string, float);
@@ -18,18 +17,19 @@ public:
 
     void mapPlayerInventory();
 
-    void placeInvObjOnTable(string, Offer*);
-    void clearTable(Offer*);
+    void placeInvObjOnTable(string, Negotiator*);
+    void takeBackOffer(Negotiator*);
 
     void initInventory();
     void fillInventory();
     void checkInventory();
-    void printInventory(bool = false);
+    float getInvValue();
 
+    void printInventory(bool = false, bool = false);
+    void printStrategy();
     void printHelp();
 
-
-
+    void score(float, float, float);
 };
 
 #endif

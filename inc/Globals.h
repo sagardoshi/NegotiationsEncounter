@@ -9,6 +9,7 @@
 using namespace std;
 
 // CONSTANTS
+const int WIDTH = 80;
 const float FRIENDLY = 0.8;
 const float GRUFF    = 0.2;
 const float MODERATE = 0.5;
@@ -46,7 +47,9 @@ Negotiator*      opponent4 = nullptr;
 
 // General globals
 string uInput = "", PROMPT_DIVIDER = "", INVALID_INPUT = "";
+string title0 = "", title1 = "", title2 = "", title3 = "", title4 = "";
 
+bool veryBeginning = true;
 bool doSkip = false;
 bool wonEncounter = false;
 int currLevel = 0;

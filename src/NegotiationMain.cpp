@@ -25,39 +25,80 @@ University: Imperial College London
 
 using namespace std;
 
+void printCurrentLevelTitle() {
+    // Usually to print title at top of new screen
+    switch (currLevel) {
+        case 0: cout << title0; break;
+        case 1: cout << title1; break;
+        case 2: cout << title2; break;
+        case 3: cout << title3; break;
+        case 4: cout << title4; break;
+    }
+}
 
-// Adds total items in economy... unfortunately duplicated in Negotiator.cpp
-void createEconomy() {
-    // 0) Tutorial Lepha
-    economy["black trousers"] = 1.0;
-    economy["black tunic"] = 1.0;
+// Somewhat pathetic helper function
+void clearScreen() {
+    const int BIG_NUMBER = 100;
+    string clear = "";
+    for (int i = 0; i < BIG_NUMBER; i++) {
+        clear += "\n";
+    }
 
-    // 1) Mosta the Stork/Pepita the Pigeon -- spirits of inquisitiveness
-    economy["burn relief ointment"] = 10.0;
-    economy["carved walking cane"] = 15.0;
-    economy["packet of sunflower seeds"] = 5.0;
-
-    // 2) Toto the #2 Rabbit of Centzon Totochtin -- spirit of drunkenness
-    economy["pulque flask"] = 5.0;
-    economy["paint canister"] = 2.0;
-    economy["morning headache tonic"] = 10.0;
-    economy["long ear warmers"] = 5.0;
+    cout << clear;
+    if (!veryBeginning) printCurrentLevelTitle();
+    else veryBeginning = false;
+}
 
 
-    // 3) Burro the night river beaver -- spirit of industriousness
-    economy["wood polish bottle"] = 6.0;
-    economy["waterproof wax jar"] = 8.0;
+// Adds a character 80 times, then a new line to a specified string
+void addCharXTimes(char input, int x, string &toChain) {
+    toChain += string(x, input) + "\n";
+}
 
-    // 4) lepha -- spirit of order
+// Center text, assuming 80 char wide
+void centerText(string title, string &toAdd) {
+    int len = title.length();
+    int gap = WIDTH - len;
 
+    if (len > WIDTH) return; // Not applicable in this case
+
+    if (gap % 2 == 0) { // If even
+        toAdd += string(gap/2, ' ') + title + string(gap/2, ' ') + "\n";
+    } else { // If odd, add a space after title, and use decremented gap
+        gap--;
+        toAdd += string(gap/2, ' ') + title + string(gap/2, ' ') + " \n";
+    }
+}
+
+// Packages previous two helper functions assuming full screen width
+void createTitle(char input, int x, string text,
+                 string &toAdd, bool print = true) {
+    addCharXTimes(input, WIDTH, toAdd);
+    centerText(text, toAdd);
+    addCharXTimes(input, WIDTH, toAdd);
+    toAdd += "\n";
+
+    if (print) cout << toAdd;
 }
 
 // Defines PROMPT_DIVIDER and INVALID_INPUT
 void createGlobalStrings() {
-    PROMPT_DIVIDER =  "----------------------------------------";
-    PROMPT_DIVIDER += "----------------------------------------\n";
+    addCharXTimes('-', WIDTH, PROMPT_DIVIDER);
 
-    INVALID_INPUT = "\n" + PROMPT_DIVIDER + "\nInvalid input. Try again.\n";
+    INVALID_INPUT = "\nInvalid input. Try again.\n";
+
+    bool doPrint = false;
+    string text0 = "Prologue: Caught";
+    string text1 = "Level 1 / 4: Mosta and Pepita";
+    string text2 = "Level 2 / 4: Toto";
+    string text3 = "Level 3 / 4: Burro";
+    string text4 = "Level 4 / 4: Lepha";
+
+    createTitle('=', WIDTH, text0, title0, doPrint);
+    createTitle('=', WIDTH, text1, title1, doPrint);
+    createTitle('=', WIDTH, text2, title2, doPrint);
+    createTitle('=', WIDTH, text3, title3, doPrint);
+    createTitle('=', WIDTH, text4, title4, doPrint);
 }
 
 // Creates player and all enemies
@@ -88,6 +129,7 @@ void removeWS(string &str) {
 
 // Packages lower() & removeWS() with a getline call, using global uInput
 void getCleanLine(istream &is, string &str) {
+    cout << ">>>> ";
     getline(cin, str);
     lower(str);
     removeWS(str);
@@ -95,28 +137,25 @@ void getCleanLine(istream &is, string &str) {
 
 // Pauses text for user to read and get a breather
 void checkpoint() {
-    string anyInputText  = "\n" + PROMPT_DIVIDER + "[Press return to continue ";
+    string toAdd = "\n";
+    string anyInputText  = "[Press return to continue ";
            anyInputText += "or type \"skip\" to jump to the next section.] ";
 
-    cout << anyInputText;
+    createTitle('-', WIDTH, anyInputText, toAdd);
     getCleanLine(cin, uInput);
 
     if (uInput == "skip" ) doSkip = true; // Set global flag for future
 
-    cout << PROMPT_DIVIDER << "\n";
+    clearScreen();
 }
 
 // Starts game and asks if player wants to jump to encounter
 void startScreen() {
-    string title  = "\n\n========================================";
-           title +=     "========================================\n";
-           title +=     "                             ";
-           title +=     "A DEAL WITH THE SPIRITS";
-           title +=     "                            \n";
-           title +=     "========================================";
-           title +=     "========================================\n\n";
+    clearScreen();
 
-    cout << title;
+    string text = "A DEAL WITH THE SPIRITS";
+    string fullTitle = "\n\n";
+    createTitle('|', WIDTH, text, fullTitle);
 
     checkpoint();
 }
@@ -124,35 +163,39 @@ void startScreen() {
 // Gets simple input to lowercase; callable with specific prompt/target
 void setUInput(string prompt = "", string targetInput = "") {
 
-    uInput = ""; // Clear uInput
-    string specificInputText = "\n" + PROMPT_DIVIDER + ">>>> ";
-
-    cout << prompt << specificInputText;
-    getCleanLine(cin, uInput);
-
+    // Simplify targetInput
     lower(targetInput);
     removeWS(targetInput);
+
+    string output = "";
+    createTitle('-', WIDTH, prompt, output);
+    getCleanLine(cin, uInput);
 
     // Only worry about invalidity if targetInput not empty
     if (targetInput != "") {
         // Then if wrong input, note invalidity, and re-print prompt
         while (uInput != targetInput) {
-            cout << INVALID_INPUT << prompt << specificInputText;
+            clearScreen();
+            cout << INVALID_INPUT << endl;
+            output = ""; // Reset output
+            createTitle('-', WIDTH, prompt, output);
             getCleanLine(cin, uInput);
+
         }
     }
-    cout << PROMPT_DIVIDER << "\n";
+    clearScreen();
 }
 
 // Require a specific input from user, as coded by text file
 void handleSpecificInput(string line, string &output) {
-    cout << output; // Flush output thus far
+    cout << output << endl; // Flush output thus far
 
     const int ASTERISKS_NEEDED = 3;
     int newLength = line.length() - ASTERISKS_NEEDED - ASTERISKS_NEEDED;
 
     string targetInput = line.substr(ASTERISKS_NEEDED, newLength);
-    string prompt = "\nType \"" + targetInput + "\"\n";
+    string prompt = "Type \"" + targetInput + "\"";
+
     setUInput(prompt, targetInput);
 
     // Once inventory typed, display it
@@ -208,22 +251,19 @@ void loadScript(string filename) {
 
 // Can be called any time -- ends game
 void quitGame() {
-    loadScript("Gen/QuitGame");
+    clearScreen();
+    doSkip = false; // In order to print this final section
+    loadScript("QuitGame");
     exit(0);
 }
-
-
 
 // After intros, these kick off each individual level
 void startCurrentLevel() {
     string outText  = to_string(currLevel) + "/Level";
            outText += to_string(currLevel) + "Start";
 
-    doSkip = false; // Allow scripts at beginning of level
+    // doSkip = false; // Allow scripts at beginning of level
     loadScript(outText);
-
-    // Extra instruction at the start
-    if (currLevel == 0) loadScript("Gen/NegotiationStrategy");
 }
 
 void levelEnd(bool wonEncounter) {
@@ -235,7 +275,7 @@ void levelEnd(bool wonEncounter) {
     loadScript(outText); // Text for victory or loss to be run first
 
     // If lost and not in tutorial
-    if (!wonEncounter && (currLevel > 0)) quitGame();
+    if (!wonEncounter && (currLevel > 0)) exit(0);
 
     currLevel++;
     return;
@@ -244,8 +284,12 @@ void levelEnd(bool wonEncounter) {
 // Runs text before level, runs encounter, and runs text after level
 void runNextLevel(Encounter* levelPointer) {
     startCurrentLevel(); // Intro text for level
-    levelPointer->runEncounter(economy, wonEncounter);
+
+    bool didNotQuit = levelPointer->runEncounter(wonEncounter);
+    if (!didNotQuit) quitGame();
+
     levelEnd(wonEncounter); // Ending text for level (plus ending if lost)
+    wonEncounter = false; // Reset, even though it will be filled later
 }
 
 // Loads intro scripts in turn
@@ -282,7 +326,6 @@ void playGame() {
 }
 
 void fillDictsAndCharacters() {
-    createEconomy();
     createGlobalStrings();
     createCharacters(); // including player BEFORE creating levels
 }

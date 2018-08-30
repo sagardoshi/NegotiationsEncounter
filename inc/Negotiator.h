@@ -1,7 +1,7 @@
 #ifndef NEGOTIATOR_H
 #define NEGOTIATOR_H
 
-#include "Offer.h"
+// #include "Offer.h"
 
 #include <string>
 #include <map>
@@ -17,32 +17,30 @@ private:
     float generosityOfOffer;
     float getRandWeight();
 
-    template <typename T>
-    string toPreciseString(const T, const int = 2);
-
-
 protected:
-    map<string, float> economy;
+    map<string, int> economy;
     map<string, float> prefs;
 
 public:
     Negotiator(string, float);
 
+    map<string, int> inventory;
+
+    string toPreciseString(float, const int = 2);
+
     string getName();
     float getAmiability();
-    void checkpoint();
 
     // Values and economics
     void fillPreferences();
-    void fillEconomy();
-    float getInvValue(map<string, int>*);
-    void score(float, float, float);
+    void initEconomy();
+    void initInventory();
+    float getInvValue();
 
     // Dealing with Offers
-    bool reactToOffer(Offer*, float);
+    bool reactToOffer(Negotiator*, float);
     void rejectTerms(int);
     void acceptTerms();
-    void walkAway();
 };
 
 #endif

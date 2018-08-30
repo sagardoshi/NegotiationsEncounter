@@ -4,9 +4,9 @@
 #include "Offer.h"
 #include "PlayerCharacter.h"
 #include "Negotiator.h"
-#include "Issue.h"
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <map>
 
@@ -28,13 +28,22 @@ private:
     float offerInvValue;
     float endInvValue;
 
+    void addCharXTimes(char, int, string&);
+    void centerText(string, string&);
+    void lower(string&);
+    void removeWS(string&);
+    void createTitle(char, int, string, string&);
+
 
 public:
     Encounter(PlayerCharacter*, Negotiator*, int, float);
     ~Encounter();
 
     int getLevel();
+    string getCapsName();
 
+
+    void clearScreen();
     void saveStandardisedInput(string&);
 
     bool isNum(string&);
@@ -42,13 +51,12 @@ public:
 
     void setInventoryForEncounter();
 
-    void runEncounter(map<string, float>, bool&);
+    bool runEncounter(bool&);
 
     void printTurns();
     void printOfferOnTable();
 
-    void beginEncounter();
-    void printEndEncounter(bool);
+    void printTitle(string, bool = false);
     bool encounterIsOver(bool&);
     void handleEnd(bool);
 
