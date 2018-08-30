@@ -26,7 +26,7 @@ public:
 
     map<string, int> inventory;
 
-    string toPreciseString(float, const int = 2);
+    string toPreciseString(float, int = 0);
 
     string getName();
     float getAmiability();

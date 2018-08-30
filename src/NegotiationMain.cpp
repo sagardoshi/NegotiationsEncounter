@@ -292,15 +292,15 @@ void runEnd() {
     string finalScore = player->toPreciseString(finalScoreFloat);
 
     // Modify to output sentence
-    finalScore  = "You finished with an inventory value of £" + finalScore;
-    finalScore += ".\n\n";
+    string scoreText = "You started with £100 in loot. You finished with £";
+           scoreText += finalScore + ".\n\n";
 
     doSkip = false; // In order to print the final goodbye
     currLevel = 5; // To get the THE END title
     clearScreen(); // To switch to the THE END screen
 
     // Printouts
-    cout << finalScore;
+    cout << scoreText;
     loadScript("Gen/End");
     cout << endl << endl;
 

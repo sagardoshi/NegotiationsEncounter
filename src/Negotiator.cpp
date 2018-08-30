@@ -32,13 +32,15 @@ float Negotiator::getRandWeight() {
     return distribution(generator) / 100.0;
 }
 
-string Negotiator::toPreciseString(float input, const int precision) {
+string Negotiator::toPreciseString(float input, int precision) {
     string asString = to_string(input);
 
     int decimalIndex = asString.find(".");
     int cutoff = decimalIndex + 1 + precision;
 
-    return asString.substr(0, cutoff);
+    // Don't include decimal if zero floats desired
+    if (precision == 0) return asString.substr(0, decimalIndex);
+    else return asString.substr(0, cutoff);
 }
 
 float Negotiator::getInvValue() {
@@ -58,32 +60,34 @@ float Negotiator::getInvValue() {
 }
 
 void Negotiator::initEconomy() {
-    // 0) Tutorial Lepha
-    economy["black trousers"] = 1;
-    economy["black tunic"] = 1;
 
     // 1) Mosta the Stork/Pepita the Pigeon -- spirits of inquisitiveness
-    economy["burn relief ointment"] = 10;
-    economy["carved walking cane"] = 15;
-    economy["sunflower seeds packet"] = 5;
+    economy["burn relief ointment"] = 7;
+    economy["carved walking cane"] = 10;
+    economy["sunflower seeds packet"] = 3;
 
     // 2) Toto the #2 Rabbit of Centzon Totochtin -- spirit of drunkenness
-    economy["pulque flask"] = 5;
+    economy["pulque flask"] = 4;
     economy["paint canister"] = 2;
-    economy["morning headache tonic"] = 10;
+    economy["morning headache tonic"] = 8;
     economy["long earmuffs"] = 5;
 
 
     // 3) Burro the night river beaver -- spirit of industriousness
-    economy["wood polish bottle"] = 6;
+    economy["wood varnish bottle"] = 6;
     economy["waterproof wax jar"] = 8;
 
-    // 4) lepha -- spirit of order
+    // 4) Lepha the Elephant -- pharmacologist to the spirits
+    economy["loose leaf sencha tea"] = 9;
+    economy["vinegar disinfectant"] = 3;
+
+    // 0) Tutorial Lepha
+    economy["black trousers"] = 2;
+    economy["black tunic"] = 1;
+
 }
 
 void Negotiator::initInventory() {
-    inventory["black trousers"] = 0;
-    inventory["black tunic"] = 0;
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["sunflower seeds packet"] = 0;
@@ -91,8 +95,12 @@ void Negotiator::initInventory() {
     inventory["paint canister"] = 0;
     inventory["morning headache tonic"] = 0;
     inventory["long earmuffs"] = 0;
-    inventory["wood polish bottle"] = 0;
+    inventory["wood varnish bottle"] = 0;
     inventory["waterproof wax jar"] = 0;
+    inventory["loose leaf sencha tea"] = 0;
+    inventory["vinegar disinfectant"] = 0;
+    inventory["black trousers"] = 0;
+    inventory["black tunic"] = 0;
 }
 
 
@@ -108,8 +116,10 @@ void Negotiator::fillPreferences() {
         prefs["paint canister"] = 1.0;
         prefs["morning headache tonic"] = 1.0;
         prefs["long earmuffs"] = 1.0;
-        prefs["wood polish bottle"] = 1.0;
+        prefs["wood varnish bottle"] = 1.0;
         prefs["waterproof wax jar"] = 1.0;
+        prefs["loose leaf sencha tea"] = 1.0;
+        prefs["vinegar disinfectant"] = 1.0;
     }
     else if (name == "Mosta and Pepita") {
         prefs["black trousers"] = 0.1;
@@ -117,12 +127,14 @@ void Negotiator::fillPreferences() {
         prefs["burn relief ointment"] = 1.25;
         prefs["carved walking cane"] = 1.5;
         prefs["sunflower seeds packet"] = 1.25;
-        prefs["pulque flask"] = 0.2;
+        prefs["pulque flask"] = 0.7;
         prefs["paint canister"] = 0.1;
         prefs["morning headache tonic"] = 0.4;
         prefs["long earmuffs"] = 0.1;
-        prefs["wood polish bottle"] = 0.3;
+        prefs["wood varnish bottle"] = 0.3;
         prefs["waterproof wax jar"] = 0.4;
+        prefs["loose leaf sencha tea"] = 1.0;
+        prefs["vinegar disinfectant"] = 0.5;
     }
     else if (name == "Toto") {
         prefs["black trousers"] = 0.1;
@@ -134,8 +146,10 @@ void Negotiator::fillPreferences() {
         prefs["paint canister"] = 1.75;
         prefs["morning headache tonic"] = 0.5;
         prefs["long earmuffs"] = 2.0;
-        prefs["wood polish bottle"] = 0.2;
+        prefs["wood varnish bottle"] = 0.2;
         prefs["waterproof wax jar"] = 0.3;
+        prefs["loose leaf sencha tea"] = 0.4;
+        prefs["vinegar disinfectant"] = 0.2;
     }
     else if (name == "Burro") {
         prefs["black trousers"] = 0.1;
@@ -147,21 +161,25 @@ void Negotiator::fillPreferences() {
         prefs["paint canister"] = 1.25;
         prefs["morning headache tonic"] = 0.2;
         prefs["long earmuffs"] = 0.1;
-        prefs["wood polish bottle"] = 1.8;
+        prefs["wood varnish bottle"] = 1.8;
         prefs["waterproof wax jar"] = 1.5;
+        prefs["loose leaf sencha tea"] = 0.7;
+        prefs["vinegar disinfectant"] = 0.6;
     }
     else if (name == "Lepha") {
         prefs["black trousers"] = 0.1;
         prefs["black tunic"] = 0.1;
-        prefs["burn relief ointment"] = 0.2;
+        prefs["burn relief ointment"] = 1.4;
         prefs["carved walking cane"] = 0.2;
         prefs["sunflower seeds packet"] = 0.5;
         prefs["pulque flask"] = 0.8;
         prefs["paint canister"] = 0.2;
-        prefs["morning headache tonic"] = 0.6;
+        prefs["morning headache tonic"] = 1.25;
         prefs["long earmuffs"] = 0.9;
-        prefs["wood polish bottle"] = 0.2;
+        prefs["wood varnish bottle"] = 1.2;
         prefs["waterproof wax jar"] = 0.2;
+        prefs["loose leaf sencha tea"] = 2.0;
+        prefs["vinegar disinfectant"] = 2.0;
     }
 }
 

@@ -15,8 +15,6 @@ PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
 }
 
 void PlayerCharacter::initInventory() {
-    inventory["black trousers"] = 1;
-    inventory["black tunic"] = 1;
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
     inventory["sunflower seeds packet"] = 0;
@@ -24,8 +22,12 @@ void PlayerCharacter::initInventory() {
     inventory["paint canister"] = 0;
     inventory["morning headache tonic"] = 0;
     inventory["long earmuffs"] = 0;
-    inventory["wood polish bottle"] = 0;
+    inventory["wood varnish bottle"] = 0;
     inventory["waterproof wax jar"] = 0;
+    inventory["loose leaf sencha tea"] = 0;
+    inventory["vinegar disinfectant"] = 0;
+    inventory["black trousers"] = 1;
+    inventory["black tunic"] = 1;
 }
 
 // How many of each item you carry
@@ -37,8 +39,12 @@ void PlayerCharacter::fillInventory() {
     inventory["paint canister"] = 3;
     inventory["morning headache tonic"] = 1;
     inventory["long earmuffs"] = 1;
-    inventory["wood polish bottle"] = 2;
-    inventory["waterproof wax jar"] = 2;
+    inventory["wood varnish bottle"] = 2;
+    inventory["waterproof wax jar"] = 1;
+    inventory["loose leaf sencha tea"] = 2;
+    inventory["vinegar disinfectant"] = 4;
+    inventory["black trousers"] = 1; // these were already added
+    inventory["black tunic"] = 1; // but just repeating to avoid mistakes
 }
 
 
