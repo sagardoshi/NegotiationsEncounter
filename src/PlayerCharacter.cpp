@@ -26,8 +26,8 @@ void PlayerCharacter::initInventory() {
     inventory["waterproof wax jar"] = 0;
     inventory["loose leaf sencha tea"] = 0;
     inventory["vinegar disinfectant"] = 0;
-    inventory["black trousers"] = 1;
-    inventory["black tunic"] = 1;
+    inventory["your black trousers"] = 1;
+    inventory["your black tunic"] = 1;
 }
 
 // How many of each item you carry
@@ -43,8 +43,8 @@ void PlayerCharacter::fillInventory() {
     inventory["waterproof wax jar"] = 1;
     inventory["loose leaf sencha tea"] = 2;
     inventory["vinegar disinfectant"] = 4;
-    inventory["black trousers"] = 1; // these were already added
-    inventory["black tunic"] = 1; // but just repeating to avoid mistakes
+    inventory["your black trousers"] = 1; // these were already added
+    inventory["your black tunic"] = 1; // but just repeating to avoid mistakes
 }
 
 
@@ -105,32 +105,29 @@ void PlayerCharacter::takeBackOffer(Negotiator* offer) {
 
 void PlayerCharacter::printStrategy() {
     string helpBorder = "***** STRATEGY HELP *****\n";
-    string helpText  = "The spirits are fickle.\n\n";
+    string helpText  = "The spirits are fickle. ";
+           helpText += "To win their favour, offer them a package of ";
+           helpText += "as many\n";
+           helpText += "or as few items as you wish.\n\n";
 
-           helpText += "To win their favour, you must offer them a package of ";
-           helpText += "objects (as few or as much\n";
-           helpText += "as you wish).\n\n";
+           helpText += "Be as efficient as possible. You can ";
+           helpText += "see the market value of ";
+           helpText += "your items, but\n";
+           helpText += "each spirit ";
+           helpText += "values each item uniquely, based on their needs ";
+           helpText += "and their\n";
+           helpText += "personality. Some spirits are just strict by nature. ";
+           helpText += "Others may be more willing\n";
+           helpText += "to accept ";
+           helpText += "weaker offers. It's up to you to predict what might ";
+           helpText += "appeal most to\n";
+           helpText += "your opponent, while ";
+           helpText += "keeping a watchful eye on your own stock.\n\n";
 
-           helpText += "Your goal is to be as efficient as possible. You can ";
-           helpText += "see the market value of\n";
-           helpText += "your items below, but each spirit ";
-           helpText += "will value each item differently than that.\n";
-           helpText += "It's up to you to predict what might appeal ";
-           helpText += "most to them specifically, while\n";
-           helpText += "keeping an eye on your stock.\n\n";
-
-           helpText += "Some spirits are also just gruff by nature, and ";
-           helpText += "others are more friendly.\n";
-           helpText += "Friendly spirits will be more willing to accept ";
-           helpText += "weaker offers from you, but it\n";
-           helpText += "is up to you to judge when and how to try.\n\n";
-
-           helpText += "You only have a few tries before they lose ";
-           helpText += "patience with you and only a finite\n";
-           helpText += "inventory to work with. If an offer doesn't work, ";
-           helpText += "try a more generous one if\n";
-           helpText += "you can afford it. The more you retain by the end, ";
-           helpText += "the better you will score.\n";
+           helpText += "Remember: you have only a few tries before they lose ";
+           helpText += "patience only a finite\n";
+           helpText += "inventory. The more you retain by the end, ";
+           helpText += "the better you will score. Good luck.\n";
            helpText  = helpBorder + helpText + helpBorder;
 
     cout << helpText << endl;
@@ -155,18 +152,20 @@ void PlayerCharacter::printHelp() {
     cout << optText << endl;
 }
 
-void PlayerCharacter::printInventory(bool forProposal, bool firstPrint) {
+void PlayerCharacter::printInventory(bool firstPrint, int level) {
 
     // Print appropriate header
     string border = "----- YOUR LOOT -----\n";
     string header = border;
     string footer = border;
 
-    if (forProposal && firstPrint) {
-        header += "Add items one by one to the table with their ";
-        header += "corresponding number on the left.\n";
-        header += "When your offer is ready, type \"propose\" ";
-        header += "to finalise it.\n\n";
+    string extraHelp  = "Add items to the table by the number on the left.\n";
+           extraHelp += "When ready, type \"propose\" to finalise your offer ";
+           extraHelp += "or \"cancel\" to undo it.\n\n";
+
+    // Always print at start of encounter and throughout for the tutorial
+    if (firstPrint || (level == 0)) {
+        header += extraHelp;
         firstPrint = false;
     }
 
@@ -208,10 +207,8 @@ void PlayerCharacter::printInventory(bool forProposal, bool firstPrint) {
             numItemsHeld += amount;
 
             // First add itemOrder, if appropriate, keeping aligned
-            if (forProposal) { // include itemOrder
-                if (itemOrder < 10) itemText += " " + itemOrderText + ": ";
-                else itemText += itemOrderText + ": ";
-            }
+            if (itemOrder < 10) itemText += " " + itemOrderText + ": ";
+            else itemText += itemOrderText + ": ";
 
             // Then add itemName with extra spaces at end for alignment
             itemText += itemName;

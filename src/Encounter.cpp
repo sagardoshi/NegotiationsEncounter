@@ -11,8 +11,10 @@
 using namespace std;
 
 
-Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int t, float kV) :
-                     turns(t), keyValue(kV), player(pc), opponent(opp) {
+Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp,
+                     int l, int t, float kV) :
+                     level(l), turns(t), keyValue(kV),
+                     player(pc), opponent(opp) {
 
         offer = new Offer("", 0.0); // Table has no name, no personality
         setInventoryForEncounter(); // Order mapping + saving initial value
@@ -166,16 +168,18 @@ bool Encounter::runEncounter(bool &didWin) {
 
     string title = "YOU ARE NEGOTIATING WITH " + getCapsName();
     string prop;
-    bool forProposal = true;
     bool firstTime = true;
+    bool isPrologue = (level == 0);
 
     while (true) {
         if (firstTime) {
             clearScreen(); // To remove incorrect title
             printTitle(title); // first need an immediate print
+            if (isPrologue) player->printStrategy();
         }
+
         offer->printOffer(); // Prints every time after title
-        player->printInventory(forProposal, firstTime);
+        player->printInventory(firstTime, level);
         firstTime = false;
 
         prop = "";

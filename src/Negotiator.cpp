@@ -82,8 +82,8 @@ void Negotiator::initEconomy() {
     economy["vinegar disinfectant"] = 3;
 
     // 0) Tutorial Lepha
-    economy["black trousers"] = 2;
-    economy["black tunic"] = 1;
+    economy["your black trousers"] = 2;
+    economy["your black tunic"] = 1;
 
 }
 
@@ -99,16 +99,16 @@ void Negotiator::initInventory() {
     inventory["waterproof wax jar"] = 0;
     inventory["loose leaf sencha tea"] = 0;
     inventory["vinegar disinfectant"] = 0;
-    inventory["black trousers"] = 0;
-    inventory["black tunic"] = 0;
+    inventory["your black trousers"] = 0;
+    inventory["your black tunic"] = 0;
 }
 
 
 void Negotiator::fillPreferences() {
     // Player will take base value
     if (name == "You") {
-        prefs["black trousers"] = 1.0;
-        prefs["black tunic"] = 1.0;
+        prefs["your black trousers"] = 1.0;
+        prefs["your black tunic"] = 1.0;
         prefs["burn relief ointment"] = 1.0;
         prefs["carved walking cane"] = 1.0;
         prefs["sunflower seeds packet"] = 1.0;
@@ -122,8 +122,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 1.0;
     }
     else if (name == "Mosta and Pepita") {
-        prefs["black trousers"] = 0.1;
-        prefs["black tunic"] = 0.1;
+        prefs["your black trousers"] = 0.1;
+        prefs["your black tunic"] = 0.1;
         prefs["burn relief ointment"] = 1.25;
         prefs["carved walking cane"] = 1.5;
         prefs["sunflower seeds packet"] = 1.25;
@@ -137,8 +137,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.5;
     }
     else if (name == "Toto") {
-        prefs["black trousers"] = 0.1;
-        prefs["black tunic"] = 0.1;
+        prefs["your black trousers"] = 0.1;
+        prefs["your black tunic"] = 0.1;
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 0.3;
         prefs["sunflower seeds packet"] = 0.75;
@@ -152,8 +152,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.2;
     }
     else if (name == "Burro") {
-        prefs["black trousers"] = 0.1;
-        prefs["black tunic"] = 0.1;
+        prefs["your black trousers"] = 0.1;
+        prefs["your black tunic"] = 0.1;
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 1.2;
         prefs["sunflower seeds packet"] = 1.0;
@@ -167,8 +167,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.6;
     }
     else if (name == "Lepha") {
-        prefs["black trousers"] = 0.1;
-        prefs["black tunic"] = 0.1;
+        prefs["your black trousers"] = 0.1;
+        prefs["your black tunic"] = 0.1;
         prefs["burn relief ointment"] = 1.4;
         prefs["carved walking cane"] = 0.2;
         prefs["sunflower seeds packet"] = 0.5;

@@ -36,10 +36,9 @@ private:
 
 
 public:
-    Encounter(PlayerCharacter*, Negotiator*, int, float);
+    Encounter(PlayerCharacter*, Negotiator*, int, int, float);
     ~Encounter();
 
-    int getLevel();
     string getCapsName();
     float getFinalInvValue();
 

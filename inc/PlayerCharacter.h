@@ -25,7 +25,7 @@ public:
     void checkInventory();
     float getInvValue();
 
-    void printInventory(bool = false, bool = false);
+    void printInventory(bool = false, int = 1); // Only special for level 0
     void printStrategy();
     void printHelp();
 

@@ -340,7 +340,7 @@ void runIntro() {
     loadScript("Gen/Intro"); // Early exposition until discovery by Lepha
 
     player->initInventory(); // Clear inventory before tutorial level
-    level0 = new Encounter(player, opponent0, L0_TURNS, L0_KEY);
+    level0 = new Encounter(player, opponent0, currLevel, L0_TURNS, L0_KEY);
     runNextLevel(level0);
 
     player->fillInventory(); // Refill inventory before Level 1
@@ -354,16 +354,17 @@ void playGame() {
     runIntro(); // Runs intro
 
     // Create levels immediately before running for freshest inventory mapping
-    level1 = new Encounter(player, opponent1, L1_TURNS, L1_KEY);
+    // and accurate current level
+    level1 = new Encounter(player, opponent1, currLevel, L1_TURNS, L1_KEY);
     runNextLevel(level1);
 
-    level2 = new Encounter(player, opponent2, L2_TURNS, L2_KEY);
+    level2 = new Encounter(player, opponent2, currLevel, L2_TURNS, L2_KEY);
     runNextLevel(level2);
 
-    level3 = new Encounter(player, opponent3, L3_TURNS, L3_KEY);
+    level3 = new Encounter(player, opponent3, currLevel, L3_TURNS, L3_KEY);
     runNextLevel(level3);
 
-    level4 = new Encounter(player, opponent4, L4_TURNS, L4_KEY);
+    level4 = new Encounter(player, opponent4, currLevel, L4_TURNS, L4_KEY);
     runNextLevel(level4);
 
     runEnd();
