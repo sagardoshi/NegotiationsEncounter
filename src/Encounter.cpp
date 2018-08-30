@@ -157,6 +157,7 @@ void Encounter::saveStandardisedInput(string &keyword) {
     if (isNum(keyword)) remapKeyword(keyword);
 }
 
+// Runs full encounter and only returns false if quit was selected
 bool Encounter::runEncounter(bool &didWin) {
 
     string title = "YOU ARE NEGOTIATING WITH " + getCapsName();
@@ -185,6 +186,12 @@ bool Encounter::runEncounter(bool &didWin) {
         else if (prop == "help") player->printHelp();
         else if (prop == "turns") printTurns();
         else if (prop == "") continue; // repeat on empty input
+        else if (prop == "cancel") player->takeBackOffer(offer);
+        else if (prop == "forfeit") {
+            didWin = false; // don't check for encounter end... assume loss
+            handleEnd(didWin);
+            return true;
+        }
         else if (prop == "propose" || prop == "proposal") {
 
             // Save current value, in case it's encounter-ending

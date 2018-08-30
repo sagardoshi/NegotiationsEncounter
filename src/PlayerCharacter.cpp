@@ -132,16 +132,18 @@ void PlayerCharacter::printStrategy() {
 
 void PlayerCharacter::printHelp() {
     string optBorder = "***** HELP *****\n";
-    string optText    = "Add items one by one to the table with their ";
-           optText   += "corresponding number on the left.\n";
-           optText   += "When your offer is ready, type \"propose\" ";
-           optText   += "to finalise it.\n\n";
+    string optText   = "Add items one by one to the table with their ";
+           optText  += "corresponding number on the left.\n";
+           optText  += "When your offer is ready, type \"propose\" ";
+           optText  += "to finalise it.\n\n";
 
-           optText  += "propose: type this to send your current offer\n";
-           optText  += "turns: see how many turns you have left\n";
+           optText  += "propose:  type this to send your current offer\n";
+           optText  += "cancel:   take your current offer off the table\n";
+           optText  += "turns:    see how many turns you have left\n";
            optText  += "strategy: see strategy hints\n";
-           optText  += "help: see this menu\n";
-           optText  += "quit: exit the game\n";
+           optText  += "help:     see this menu\n";
+           optText  += "forfeit:  admit defeat\n";
+           optText  += "quit:     immediately exit the game\n";
            optText   = optBorder + optText + optBorder;
 
     cout << optText << endl;
@@ -238,7 +240,7 @@ void PlayerCharacter::printInventory(bool forProposal, bool firstPrint) {
     string total = "";
     // Print totals or empty notice
     if (numItemsHeld) {
-        total += "\nLoot Market Value: ";
+        total += "\n Loot Market Value: ";
         total += "£" + toPreciseString(getInvValue()) + "\n";
     } else footer = "[Empty]\n" + footer;
 
