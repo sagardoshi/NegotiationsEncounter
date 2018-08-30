@@ -209,10 +209,9 @@ void PlayerCharacter::printInventory(bool forProposal, bool firstPrint) {
 
             // Then add itemName with extra spaces at end for alignment
             itemText += itemName;
-            if (itemName.length() < MAX_ITEM_LEN) {
-                for (int i = 0; i < (MAX_ITEM_LEN - itemName.length()); i++) {
-                    itemText += " ";
-                }
+            int gap = MAX_ITEM_LEN - itemName.length();
+            if (gap > 0) {
+                for (int i = 0; i < gap; i++) itemText += " ";
             }
 
             itemText += " ... ";
