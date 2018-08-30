@@ -46,7 +46,6 @@ void Offer::printOffer() {
             // First print name
             itemText += "    " + itemName;
             int gap = MAX_ITEM_LEN - itemName.length();
-            
             if (gap > 0) {
                 for (int i = 0; i < gap; i++) itemText += " ";
             }
