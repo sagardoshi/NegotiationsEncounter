@@ -47,7 +47,8 @@ Negotiator*      opponent4 = nullptr;
 
 // General globals
 string uInput = "", PROMPT_DIVIDER = "", INVALID_INPUT = "";
-string title0 = "", title1 = "", title2 = "", title3 = "", title4 = "";
+string title0 = "", title1 = "", title2 = "",
+       title3 = "", title4 = "", titleEnd = "";
 
 bool veryBeginning = true;
 bool doSkip = false;

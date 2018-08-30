@@ -20,6 +20,7 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp, int t, float kV) :
 
 Encounter::~Encounter()             { delete offer;        }
 void Encounter::printOfferOnTable() { offer->printOffer(); }
+float Encounter::getFinalInvValue() { return endInvValue;  }
 
 // Get opponent name in all caps
 string Encounter::getCapsName() {
@@ -101,9 +102,12 @@ void Encounter::printTurns() {
 void Encounter::setInventoryForEncounter() {
     player->invMap.clear(); // Re-map numbering for next encounter
     player->mapPlayerInventory(); // Give each inventory item a number
+    opponent->resetGenerosity(); // Ensure no offer at start of encounter
 
     // Calculate open market value of inventory at start of encounter
     startInvValue = player->getInvValue();
+    offerInvValue = 0.0; // init to zero
+    endInvValue = 0.0; // init to zero
 }
 
 // Verifies that string is a number by iterating through each char of string
@@ -187,6 +191,11 @@ bool Encounter::runEncounter(bool &didWin) {
         else if (prop == "turns") printTurns();
         else if (prop == "") continue; // repeat on empty input
         else if (prop == "cancel") player->takeBackOffer(offer);
+        else if (prop == "super") { // Superuser access, not shown in menu
+            didWin = true;
+            handleEnd(didWin);
+            return true;
+        }
         else if (prop == "forfeit") {
             didWin = false; // don't check for encounter end... assume loss
             handleEnd(didWin);

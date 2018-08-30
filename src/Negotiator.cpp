@@ -19,8 +19,9 @@ Negotiator::Negotiator(string n, float a) : name(n), amiability(a),
 
 }
 
-string Negotiator::getName()                { return name;        }
-float Negotiator::getAmiability()           { return amiability;  }
+string Negotiator::getName()       { return name;             }
+float Negotiator::getAmiability()  { return amiability;       }
+void Negotiator::resetGenerosity() { generosityOfOffer = 0.0; }
 
 // A trivial 0-1 random generator engine from time-based seed
 float Negotiator::getRandWeight() {
@@ -167,7 +168,6 @@ void Negotiator::fillPreferences() {
 
 bool Negotiator::reactToOffer(Negotiator* offer, float keyValue) {
     map<string, int>::iterator it;
-    generosityOfOffer = 0.0; // Reset if hadn't already been
     float sum = 0.0, response = 0.0;
 
     string item = "";
@@ -199,7 +199,11 @@ void Negotiator::acceptTerms() {
     string acceptance = "You think over the encounter you just had.\n\n";
 
     // Try to give somewhat customised feedback after each rejected offer
-    if (generosityOfOffer > 1.5) {
+    if (generosityOfOffer == 0.0) {
+        acceptance += "It's impossible to win offering nothing, so you must ";
+        acceptance += "be a superuser. All hail\n";
+        acceptance += "the superuser. Happy supering.\n";
+    } else if (generosityOfOffer > 1.5) {
         acceptance += "Your offer was far too generous! " + name + " ";
         acceptance += "would have accepted a much\n";
         acceptance += "lower offer, if you had a way to give it. ";

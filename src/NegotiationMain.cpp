@@ -25,14 +25,28 @@ University: Imperial College London
 
 using namespace std;
 
+// Usually to print title at top of new screen
 void printCurrentLevelTitle() {
-    // Usually to print title at top of new screen
     switch (currLevel) {
-        case 0: cout << title0; break;
-        case 1: cout << title1; break;
-        case 2: cout << title2; break;
-        case 3: cout << title3; break;
-        case 4: cout << title4; break;
+        case 0:  cout << title0;   break;
+        case 1:  cout << title1;   break;
+        case 2:  cout << title2;   break;
+        case 3:  cout << title3;   break;
+        case 4:  cout << title4;   break;
+        case 5:  cout << titleEnd; break;
+        default: cout << "";
+    }
+}
+
+Encounter* getCurrLevelPointer() {
+    switch (currLevel) {
+        case 0:  return level0;
+        case 1:  return level1;
+        case 2:  return level1;
+        case 3:  return level1;
+        case 4:  return level1;
+        case 5:  return level1;
+        default: return level0;
     }
 }
 
@@ -88,17 +102,19 @@ void createGlobalStrings() {
     INVALID_INPUT = "\nInvalid input. Try again.\n";
 
     bool doPrint = false;
-    string text0 = "Prologue: Caught";
-    string text1 = "Level 1 / 4: Mosta and Pepita";
-    string text2 = "Level 2 / 4: Toto";
-    string text3 = "Level 3 / 4: Burro";
-    string text4 = "Level 4 / 4: Lepha";
+    string text0 =   "Prologue: Caught";
+    string text1 =   "Level 1 / 4: Mosta and Pepita";
+    string text2 =   "Level 2 / 4: Toto";
+    string text3 =   "Level 3 / 4: Burro";
+    string text4 =   "Level 4 / 4: Lepha";
+    string textEnd = "The End";
 
     createTitle('=', WIDTH, text0, title0, doPrint);
     createTitle('=', WIDTH, text1, title1, doPrint);
     createTitle('=', WIDTH, text2, title2, doPrint);
     createTitle('=', WIDTH, text3, title3, doPrint);
     createTitle('=', WIDTH, text4, title4, doPrint);
+    createTitle('=', WIDTH, textEnd, titleEnd, doPrint);
 }
 
 // Creates player and all enemies
@@ -153,7 +169,7 @@ void checkpoint() {
 void startScreen() {
     clearScreen();
 
-    string text = "A DEAL WITH THE SPIRITS";
+    string text = "DEALING WITH THE SPIRITS";
     string fullTitle = "\n\n";
     createTitle('|', WIDTH, text, fullTitle);
 
@@ -253,7 +269,7 @@ void loadScript(string filename) {
 void quitGame() {
     clearScreen();
     doSkip = false; // In order to print this final section
-    loadScript("QuitGame");
+    loadScript("Gen/QuitGame");
     exit(0);
 }
 
@@ -266,6 +282,32 @@ void startCurrentLevel() {
     loadScript(outText);
 }
 
+
+// Loads final ending
+void runEnd() {
+    // Should give score at end of most recent level
+    float finalScoreFloat = getCurrLevelPointer()->getFinalInvValue();
+
+    // Convert to string with two floats
+    string finalScore = player->toPreciseString(finalScoreFloat);
+
+    // Modify to output sentence
+    finalScore  = "You finished with an inventory value of £" + finalScore;
+    finalScore += ".\n\n";
+
+    doSkip = false; // In order to print the final goodbye
+    currLevel = 5; // To get the THE END title
+    clearScreen(); // To switch to the THE END screen
+
+    // Printouts
+    cout << finalScore;
+    loadScript("Gen/End");
+    cout << endl << endl;
+
+    exit(0); // Prevent continuation to next level
+
+}
+
 void levelEnd(bool wonEncounter) {
     string outText  = to_string(currLevel) + "/Level" + to_string(currLevel);
     // Load the correct script
@@ -275,9 +317,8 @@ void levelEnd(bool wonEncounter) {
     loadScript(outText); // Text for victory or loss to be run first
 
     // If lost and not in tutorial
-    if (!wonEncounter && (currLevel > 0)) exit(0);
+    if (!wonEncounter && (currLevel > 0)) runEnd();
 
-    currLevel++;
     return;
 }
 
@@ -290,12 +331,13 @@ void runNextLevel(Encounter* levelPointer) {
 
     levelEnd(wonEncounter); // Ending text for level (plus ending if lost)
     wonEncounter = false; // Reset, even though it will be filled later
+    currLevel++; // Advance level after complete
 }
 
 // Loads intro scripts in turn
 void runIntro() {
     player->fillInventory(); // Give player an inventory before the intro
-    loadScript("0/Intro"); // Early exposition until discovery by Lepha
+    loadScript("Gen/Intro"); // Early exposition until discovery by Lepha
 
     player->initInventory(); // Clear inventory before tutorial level
     level0 = new Encounter(player, opponent0, L0_TURNS, L0_KEY);
@@ -303,6 +345,7 @@ void runIntro() {
 
     player->fillInventory(); // Refill inventory before Level 1
 }
+
 
 void playGame() {
 
@@ -322,6 +365,8 @@ void playGame() {
 
     level4 = new Encounter(player, opponent4, L4_TURNS, L4_KEY);
     runNextLevel(level4);
+
+    runEnd();
 
 }
 

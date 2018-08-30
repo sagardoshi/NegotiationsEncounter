@@ -1,9 +1,5 @@
 ***
 
-The echoes of her footsteps fade. What will happen to you?
-
-***
-
 Some time passes, and you stay motionless. Then, you hear a bit of chittering.
 
 You dare to move, heart pounding. You peek over the edge and see that you have
@@ -18,14 +14,21 @@ perhaps? There is no doorknob, and of course no reaction when you push or pry.
 ***
 
 Then you look up, remembering the window in the Pantry. You inhale sharply.
-There is indeed a square opening high, high up, maybe 20 meters up the wall.
-But on that ledge and peering down curiously at you, are a pair of bird spirits.
+Above you, jutting out of the wall are crisscrossing lines of branches. Large,
+metal branches, but ones that look like they are made of wood.
+
+They go as high as you can see. There are nests, walkways, and a whole lot of
+birds up there.
 
 ***
 
-They drop down, and you first notice gigantic proportions, flames crackling on
-the edges of wings and smoke curling from within beaks. Even the smaller one is
-nearly your height.
+On the lowest branch, and peering curiously at you, are a pair of bird spirits.
+
+***
+
+They drop down, and you first notice their gigantic proportions, flames
+crackling on the edges of wings and smoke curling from within beaks. Even the
+smaller one is nearly your height.
 
 ***
 
@@ -36,26 +39,26 @@ with a dignified air and shuffles back and forth with a noticeable limp.
 
 ***
 
-The other one is a... massive pigeon? Rounded, even body, mostly
-gray, but with brilliant lustrous neck feathers. It darts about at twice the
-stork's place, regularly fluttering off the ground.
+The other one is a... massive pigeon? Rounded, even body, mostly gray, but with
+brilliant lustrous neck feathers. It darts about at twice the stork's pace,
+regularly fluttering off the ground.
 
 Oddly, the pigeon seems to have injured its head. It has a bald spot that looks
 singed and rubbed raw.
 
 ***
 
-"What's this?" chirps the pigeon. "A human! Where did you come from, and what
-did you do wrong?" The pigeon spirit pecks at your belly, and you pull back.
+"What's this?" chirps the pigeon. "A human! What did you do wrong?" The pigeon
+spirit pecks at your belly, and you pull back.
 
 "Did you poop on Lepha's things? She doesn't like that. It's been a while since
-we saw her drop things in our cellar, right Mosta?"
+Lepha has left us a treat, right Mosta?"
 
 ***
 
 Mosta the stork sighs and swings its scythe-like beak toward the pigeon. "Eh,"
-it says in a croak. "So much for Lepha leaving some food behind for us. We
-can't eat this human. At least," she ponders, "I don't think we can."
+it says in a croak. "So much for that. We can't eat this human. At least," she
+ponders, "I don't think we can."
 
 You're speechless. Are you meant to be their dinner?
 
@@ -86,6 +89,8 @@ as you are not edible... We should go. Come, Pepita."
 
 Pepita hesitates for a moment, but then starts to move after the plodding Mosta.
 
+***
+
 Wait! This could be your only chance of escape! Tell them to stop.
 
 ***stop***
@@ -109,7 +114,7 @@ They glance at each other.
 "Human," says Mosta, "what could you possibly have that we would want? I know
 they call us the spirits of inquisitiveness, and I do admit that the fact that
 you've acquired language is quite astonishing. But you come from Outside. Your
-people, such as they are, can't have possibly have anything of real value."
+people, such as they are, can't have possibly have anything of value to us."
 
 ***
 
@@ -164,7 +169,8 @@ of here."
 ***
 
 Mosta limps back and forth, visibly stressed. "Even if you get past us, human,
-there are three more patient chambers before the exit. How can you do it?"
+there are three more patient chambers before the exit. And those insane rabbits
+are next door! How can you do it?"
 
 You shrug. "I can only try," you say.
 

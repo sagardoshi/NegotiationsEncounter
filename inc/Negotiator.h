@@ -30,6 +30,7 @@ public:
 
     string getName();
     float getAmiability();
+    void resetGenerosity();
 
     // Values and economics
     void fillPreferences();

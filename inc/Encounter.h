@@ -41,6 +41,7 @@ public:
 
     int getLevel();
     string getCapsName();
+    float getFinalInvValue();
 
 
     void clearScreen();
