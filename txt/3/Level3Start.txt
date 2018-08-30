@@ -15,7 +15,7 @@ maybe? -- gets louder.
 
 ***
 
-You emerge in front of a rushing creek. But before you... Is something
+You emerge in front of a rushing creek. But before you... is something
 beautiful, something extraordinary!
 
 ***
@@ -23,10 +23,10 @@ beautiful, something extraordinary!
 You see an elegant latticework of wood suspended from a high arched wooden
 bridge that spans the length of the creek.
 
-The structure is a sort of building. Carved and curved and cast into a a ball,
-it swoops up, down, and across. It is charged with a clear design, but looks
-natural and elegant. There are whorls, spirals, and exquisite patterns along
-every edge.
+The structure is a sort of building. More like a palace. Carved and curved and
+cast into a a ball, it swoops up, down, and across. It is charged with a clear
+design, but looks natural and elegant. There are whorls, spirals, and exquisite
+patterns along every edge.
 
 ***
 
@@ -45,7 +45,7 @@ movement. There, scrabbling away at a plank of wood, is a beaver spirit.
 
 ***
 
-Like the other spirits, it is of huge proportions, with a slicked back pelt and
+Like the other spirits, it is of huge proportions, with a slicked brown pelt and
 a wide flat tail twisting this way and that in the water. Now that you are
 close, you can hear it muttering to itself.
 
@@ -86,12 +86,12 @@ busybodies who have no respect for my art."
 ***
 
 "But I do love what you've done!" you try. But it just makes Burro angrier.
-"After what you've done? My schedule is ruined! I should just throw you down
-the river before you can harm anything more!"
+"My schedule is ruined! I should just throw you down the river before you can
+break anything else!"
 
 ***
 
-Uh oh. You know the routine -- trying mentioning the magic word.
+Uh oh. You know the routine -- try to mention the magic word.
 
 ***pantry***
 
@@ -103,10 +103,16 @@ your help in passing your home?" The formality has seemed to work so far.
 Burro stops muttering to herself. But she still looks livid. "I have everything
 I need right here, and I don't need you trying to get in my way."
 
-Then she looks back at the unfinished edge of her building and unclenches.
-"Years of work it has taken me," she says more softly, "and I'm still far from
-complete. I don't know why you're here to taunt me, human. But if you have
-something I can use, I suppose I ought to see if it's worthwhile."
+***
+
+And then she pauses, and her face clears. "The Pantry, you say?" suddenly
+interested, acquisitiveness showing in her face. She catches herself and looks
+away.
+
+She looks back at the unfinished edge of her building and unclenches. "Years of
+work it has taken me," she says more softly, "and I'm still far from complete.
+I don't know why you're here to taunt me, human. But if you have something I
+can use, I suppose I ought to see if it's worthwhile."
 
 ***
 
@@ -114,11 +120,11 @@ You pause, hoping. "Follow me," she says, and flips over. She steps through the
 creek, stepping on underwater stones until she is halfway. You carefully and
 more slowly follow. In the middle of the creek, she reaches up through a hole
 in her building and pulls out two beautifully carved chairs, and a refined
-table filled with small beaver faces carved into the top.
+table filled with small beaver faces etched into the surface.
 
 ***
 
-"Show me what you've got," says Burro, "and we'll see if you're worth all this
+"Let's see what you've got," says Burro, "and we'll see if you're worth all this
 time you're taking up."
 
 ***
