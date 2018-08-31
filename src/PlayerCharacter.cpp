@@ -207,8 +207,10 @@ void PlayerCharacter::printInventory(bool firstPrint, int level) {
             numItemsHeld += amount;
 
             // First add itemOrder, if appropriate, keeping aligned
-            if (itemOrder < 10) itemText += " " + itemOrderText + ": ";
-            else itemText += itemOrderText + ": ";
+            if (itemOrder) {
+                if (itemOrder < 10) itemText += " " + itemOrderText + ": ";
+                else itemText += itemOrderText + ": ";
+            }
 
             // Then add itemName with extra spaces at end for alignment
             itemText += itemName;
