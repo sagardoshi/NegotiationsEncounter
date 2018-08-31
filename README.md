@@ -1,8 +1,8 @@
-# A Deal with the Spirits
+# Dealing with the Spirits
 
 ## Description
 
-_A Deal with the Spirits_ is a text-based negotiations video game. In this world, powerful spirits dominate the world, and humans are considered barbaric, less than vermin. You are a desperate human thief trying to steal yourself a better life. Your plan is to steal whatever you can from the great spirit House of Healing.
+_Dealing with the Spirits_ is a text-based negotiations video game. In this world, powerful spirits dominate the world, and humans are considered barbaric, less than vermin. You are a desperate human thief trying to steal yourself a better life. Your plan is to steal whatever you can from the great spirit House of Healing.
 
 Unfortunately, when you're caught, you need to use your wits -- and whatever items you had been able to grab -- to negotiate your way past a series of spirits, each of which might help you escape... if you offer them just the right things.
 
