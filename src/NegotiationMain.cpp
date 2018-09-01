@@ -14,6 +14,7 @@ University: Imperial College London
 #include "../inc/Globals.h"
 
 #include <cstdlib>
+#include <csignal>
 #include <cctype>
 #include <iostream>
 #include <fstream>
@@ -25,7 +26,13 @@ University: Imperial College London
 
 using namespace std;
 
-// Usually to print title at top of new screen
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Beautify screen printouts for command line play
+////////////////////////////////////////////////////////////////////////////////
+
+// Typically to ensure that each dialogue nugget has level title at top
 void printCurrentLevelTitle() {
     switch (currLevel) {
         case 0:  cout << title0;   break;
@@ -38,19 +45,7 @@ void printCurrentLevelTitle() {
     }
 }
 
-Encounter* getCurrLevelPointer() {
-    switch (currLevel) {
-        case 0:  return level0;
-        case 1:  return level1;
-        case 2:  return level1;
-        case 3:  return level1;
-        case 4:  return level1;
-        case 5:  return level1;
-        default: return level0;
-    }
-}
-
-// Somewhat pathetic helper function
+// Pathetic, but functional screen clearer -- big improvement to readability
 void clearScreen() {
     const int BIG_NUMBER = 100;
     string clear = "";
@@ -63,13 +58,12 @@ void clearScreen() {
     else veryBeginning = false;
 }
 
-
-// Adds a character 80 times, then a new line to a specified string
+// Helper to print add a character 80 times to a string (usually for titles)
 void addCharXTimes(char input, int x, string &toChain) {
     toChain += string(x, input) + "\n";
 }
 
-// Center text, assuming 80 char wide
+// Assuming 80 char wide screen, centers a string automatically
 void centerText(string title, string &toAdd) {
     int len = title.length();
     int gap = WIDTH - len;
@@ -84,7 +78,7 @@ void centerText(string title, string &toAdd) {
     }
 }
 
-// Packages previous two helper functions assuming full screen width
+// Packages previous two helper functions assuming 80 char screen width
 void createTitle(char input, int x, string text,
                  string &toAdd, bool print = true) {
     addCharXTimes(input, WIDTH, toAdd);
@@ -95,39 +89,67 @@ void createTitle(char input, int x, string text,
     if (print) cout << toAdd;
 }
 
-// Defines PROMPT_DIVIDER and INVALID_INPUT
-void createGlobalStrings() {
-    addCharXTimes('-', WIDTH, PROMPT_DIVIDER);
 
-    INVALID_INPUT = "\nInvalid input. Try again.\n";
+////////////////////////////////////////////////////////////////////////////////
+// Handle game quits, whether natural or partway
+////////////////////////////////////////////////////////////////////////////////
 
-    bool doPrint = false;
-    string text0 =   "Prologue: Caught";
-    string text1 =   "Level 1 / 4: Mosta and Pepita";
-    string text2 =   "Level 2 / 4: Toto";
-    string text3 =   "Level 3 / 4: Burro";
-    string text4 =   "Level 4 / 4: Lepha";
-    string textEnd = "The End";
 
-    createTitle('=', WIDTH, text0, title0, doPrint);
-    createTitle('=', WIDTH, text1, title1, doPrint);
-    createTitle('=', WIDTH, text2, title2, doPrint);
-    createTitle('=', WIDTH, text3, title3, doPrint);
-    createTitle('=', WIDTH, text4, title4, doPrint);
-    createTitle('=', WIDTH, textEnd, titleEnd, doPrint);
+// Does so for levels, opponents, and player
+void releaseMemory() {
+    // Delete levels
+    delete level0;
+    delete level1;
+    delete level2;
+    delete level3;
+    delete level4;
+
+    // Delete characters
+    delete opponent0; // No need to delete opponent4, as it's a duplicate
+    delete opponent1;
+    delete opponent2;
+    delete opponent3;
+
+    delete player;
 }
 
-// Creates player and all enemies
-void createCharacters() {
-    player = new PlayerCharacter("You", MODERATE);
-
-    opponent0 = new Negotiator("Lepha", MODERATE);
-    opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
-    opponent2 = new Negotiator("Toto", MODERATE);
-    opponent3 = new Negotiator("Burro", GRUFF);
-    opponent4 = opponent0;
-
+// Re-set CTRL+D at end of game
+void resetCtrlD() {
+    system("stty eof '^d'"); // re-enable CTRL+D for user's sessions
 }
+
+// Helper to immediately end game if quit typed
+void quitGame(bool finishedGame = false) {
+    clearScreen();
+    releaseMemory();
+    resetCtrlD();
+
+    if (!finishedGame) {
+        string gaveUp  = "You can't handle this anymore. This house, these ";
+               gaveUp += "spirits, they are driving you\n";
+               gaveUp += "mad! You've gotten this far, and that feels like an ";
+               gaveUp += "achievement in itself.\n\n";
+               gaveUp += "Perhaps it's the only achievement left to you. Yes, ";
+               gaveUp += "perhaps it is.\n\n";
+               gaveUp += "You lay back, allow the failure to fill you up, and ";
+               gaveUp += "resign yourself to the coming punishment.\n\n";
+               gaveUp += "You have quit the game. Please come back and visit ";
+               gaveUp += "the spirits again whenever\n";
+               gaveUp += "you can! They'll be waiting...\n\n";
+
+        cout << gaveUp;
+        exit(0);
+    }
+}
+
+// Sends to quitGame to handle memory release
+void signalHandler(int signum) { quitGame(); }
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Handle user inputs and manage story mode
+////////////////////////////////////////////////////////////////////////////////
+
 
 // Converts a string fully to lowercase (in place)
 void lower(string &anyString) {
@@ -144,36 +166,14 @@ void removeWS(string &str) {
 }
 
 // Packages lower() & removeWS() with a getline call, using global uInput
-void getCleanLine(istream &is, string &str) {
+void getCleanUInput() {
     cout << ">>>> ";
-    getline(cin, str);
-    lower(str);
-    removeWS(str);
-}
+    getline(cin, uInput);
 
-// Pauses text for user to read and get a breather
-void checkpoint() {
-    string toAdd = "\n";
-    string anyInputText  = "[Press return to continue ";
-           anyInputText += "or type \"skip\" to jump to the next section.] ";
+    lower(uInput);
+    removeWS(uInput);
 
-    createTitle('-', WIDTH, anyInputText, toAdd);
-    getCleanLine(cin, uInput);
-
-    if (uInput == "skip" ) doSkip = true; // Set global flag for future
-
-    clearScreen();
-}
-
-// Starts game and asks if player wants to jump to encounter
-void startScreen() {
-    clearScreen();
-
-    string text = "DEALING WITH THE SPIRITS";
-    string fullTitle = "\n\n";
-    createTitle('|', WIDTH, text, fullTitle);
-
-    checkpoint();
+    if (uInput == "quit") quitGame(); // Anytime there's a new entry, allow quit
 }
 
 // Gets simple input to lowercase; callable with specific prompt/target
@@ -185,7 +185,7 @@ void setUInput(string prompt = "", string targetInput = "") {
 
     string output = "";
     createTitle('-', WIDTH, prompt, output);
-    getCleanLine(cin, uInput);
+    getCleanUInput();
 
     // Only worry about invalidity if targetInput not empty
     if (targetInput != "") {
@@ -195,8 +195,7 @@ void setUInput(string prompt = "", string targetInput = "") {
             cout << INVALID_INPUT << endl;
             output = ""; // Reset output
             createTitle('-', WIDTH, prompt, output);
-            getCleanLine(cin, uInput);
-
+            getCleanUInput();
         }
     }
     clearScreen();
@@ -235,6 +234,20 @@ bool isAsteriskEntry(string line) {
     return true;
 }
 
+// Pauses text for user to read and get a breather
+void checkpoint() {
+    string toAdd = "\n";
+    string anyInputText  = "[Press return to continue ";
+           anyInputText += "or type \"skip\" to jump to the next section.] ";
+
+    createTitle('-', WIDTH, anyInputText, toAdd);
+    getCleanUInput();
+
+    if (uInput == "skip" ) doSkip = true; // Set global flag for future
+
+    clearScreen();
+}
+
 // Prints txt script and replaces key symbols with frequent functions
 void loadScript(string filename) {
     if (doSkip) return; // Skip all text until encounter
@@ -265,30 +278,41 @@ void loadScript(string filename) {
     cout << output << endl << endl;
 }
 
-// Can be called any time -- ends game
-void quitGame() {
+
+////////////////////////////////////////////////////////////////////////////////
+// Actually run the levels and manage encounter mode
+////////////////////////////////////////////////////////////////////////////////
+
+// Helper to convert currLevel to an actual level pointer
+Encounter* getCurrLevelPointer() {
+    switch (currLevel) {
+        case 0:  return level0;
+        case 1:  return level1;
+        case 2:  return level1;
+        case 3:  return level1;
+        case 4:  return level1;
+        case 5:  return level1;
+        default: return level0;
+    }
+}
+
+// Starts game and asks if player wants to jump to encounter
+void startScreen() {
     clearScreen();
-    doSkip = false; // In order to print this final section
-    loadScript("Gen/QuitGame");
-    exit(0);
+
+    string text = "DEALING WITH THE SPIRITS";
+    string fullTitle = "\n\n";
+    createTitle('|', WIDTH, text, fullTitle);
+
+    checkpoint();
 }
 
-// After intros, these kick off each individual level
-void startCurrentLevel() {
-    string outText  = to_string(currLevel) + "/Level";
-           outText += to_string(currLevel) + "Start";
-
-    // doSkip = false; // Allow scripts at beginning of level
-    loadScript(outText);
-}
-
-
-// Loads final ending
-void runEnd() {
+// Loads final ending score + script, equivalent for loss or victory
+void runEnding() {
     // Should give score at end of most recent level
     float finalScoreFloat = getCurrLevelPointer()->getFinalInvValue();
 
-    // Convert to string with two floats
+    // Convert score to string for later use
     string finalScore = player->toPreciseString(finalScoreFloat);
 
     // Modify to output sentence
@@ -301,14 +325,22 @@ void runEnd() {
 
     // Printouts
     cout << scoreText;
-    loadScript("Gen/End");
+    loadScript("Gen/Ending"); // Generic text for victory or defeat
     cout << endl << endl;
-
-    exit(0); // Prevent continuation to next level
 
 }
 
-void levelEnd(bool wonEncounter) {
+// After intros, these kick off each individual level
+void startCurrentLevel() {
+    string outText  = to_string(currLevel) + "/Level";
+           outText += to_string(currLevel) + "Start";
+
+    // doSkip = false; // Allow scripts at beginning of level
+    loadScript(outText);
+}
+
+// Called at the end of EACH level, with title change and skips in place
+void endCurrentLevel(bool wonEncounter) {
     string outText  = to_string(currLevel) + "/Level" + to_string(currLevel);
     // Load the correct script
     (wonEncounter ? (outText += "Win") : (outText += "Lose"));
@@ -316,8 +348,8 @@ void levelEnd(bool wonEncounter) {
     doSkip = false; // Allow scripts after encounter
     loadScript(outText); // Text for victory or loss to be run first
 
-    // If lost and not in tutorial
-    if (!wonEncounter && (currLevel > 0)) runEnd();
+    // If lost encounter and not in tutorial, end game
+    if (!wonEncounter && (currLevel > 0)) runEnding();
 
     return;
 }
@@ -329,12 +361,12 @@ void runNextLevel(Encounter* levelPointer) {
     bool didNotQuit = levelPointer->runEncounter(wonEncounter);
     if (!didNotQuit) quitGame();
 
-    levelEnd(wonEncounter); // Ending text for level (plus ending if lost)
+    endCurrentLevel(wonEncounter); // Ending text for level (+ game over ending)
     wonEncounter = false; // Reset, even though it will be filled later
     currLevel++; // Advance level after complete
 }
 
-// Loads intro scripts in turn
+// Intro and prologue are unique (re:inventory), so handled separately
 void runIntro() {
     player->fillInventory(); // Give player an inventory before the intro
     loadScript("Gen/Intro"); // Early exposition until discovery by Lepha
@@ -347,7 +379,8 @@ void runIntro() {
 }
 
 
-void playGame() {
+// 9/9) Core game function
+void playGame(bool &finished) {
 
     startScreen(); // Ask to skip intro
 
@@ -367,39 +400,79 @@ void playGame() {
     level4 = new Encounter(player, opponent4, currLevel, L4_TURNS, L4_KEY);
     runNextLevel(level4);
 
-    runEnd();
+    runEnding();
+
+    finished = true;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Handle global variables and memory, and main function
+////////////////////////////////////////////////////////////////////////////////
+
+// Defines PROMPT_DIVIDER and INVALID_INPUT
+void createGlobalStrings() {
+    addCharXTimes('-', WIDTH, PROMPT_DIVIDER);
+
+    INVALID_INPUT = "\nInvalid input. Try again.\n";
+
+    bool doPrint = false;
+    string text0 =   "Prologue: Caught";
+    string text1 =   "Level 1 / 4: Mosta and Pepita";
+    string text2 =   "Level 2 / 4: Toto";
+    string text3 =   "Level 3 / 4: Burro";
+    string text4 =   "Level 4 / 4: Lepha";
+    string textEnd = "The End";
+
+    createTitle('=', WIDTH, text0, title0, doPrint);
+    createTitle('=', WIDTH, text1, title1, doPrint);
+    createTitle('=', WIDTH, text2, title2, doPrint);
+    createTitle('=', WIDTH, text3, title3, doPrint);
+    createTitle('=', WIDTH, text4, title4, doPrint);
+    createTitle('=', WIDTH, textEnd, titleEnd, doPrint);
+}
+
+// Creates player and all enemies
+void createCharacters() {
+    player = new PlayerCharacter("You", MODERATE);
+
+    opponent0 = new Negotiator("Lepha", MODERATE);
+    opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
+    opponent2 = new Negotiator("Toto", MODERATE);
+    opponent3 = new Negotiator("Burro", GRUFF);
+    opponent4 = opponent0;
 
 }
 
-void fillDictsAndCharacters() {
+// Register signals and signal handler
+void registerSignals() {
+    signal(SIGINT, signalHandler);
+    signal(SIGTSTP, signalHandler);
+    signal(SIGTERM, signalHandler);
+    signal(SIGQUIT, signalHandler);
+}
+
+// Re-direct CTRL+D during game
+void changeCtrlD() {
+    system("stty eof undef"); // disable CTRL+D
+    // system("stty intr '^d'"); // redirect to SIGINT
+}
+
+// Abstracts above three functions
+void setUpGame() {
+    changeCtrlD();
+    registerSignals();
     createGlobalStrings();
     createCharacters(); // including player BEFORE creating levels
 }
 
-void releaseMemory() {
-    // Delete levels
-    delete level0;
-    delete level1;
-    delete level2;
-    delete level3;
-    delete level4;
-
-    // Delete characters
-    delete opponent0; // No need to delete opponent4, as it's a duplicate
-    delete opponent1;
-    delete opponent2;
-    delete opponent3;
-
-    delete player;
-}
-
+// Main function handles memory allocation/deallocation and launches playGame()
 int main() {
+    bool finishedGame = false;
 
-    fillDictsAndCharacters();
-
-    playGame();
-
-    releaseMemory();
+    setUpGame();
+    playGame(finishedGame);
+    quitGame(finishedGame);
 
     return 0;
 }
