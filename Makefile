@@ -1,7 +1,10 @@
 # Compiler, Linker, and Target Executable
-
 CXX 		:= g++
 TARGET 		:= game
+MAKE		:= make
+CLEAN		:= clean
+EXECUTE		:= run
+GO			:= go
 
 # Directories
 SRCDIR		:= src
@@ -26,15 +29,21 @@ _OBJ 		:= Negotiator.o \
 
 OBJ			:= $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
+# Rules
 $(TARGETDIR)/$(TARGET): $(OBJ)
 	@$(CXX) $(OBJ) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
-run:
+$(GO):
+	@$(MAKE) $(CLEAN)
+	@$(MAKE)
+	@$(MAKE) $(EXECUTE)
+
+$(EXECUTE):
 	@$(TARGETDIR)/$(TARGET)
 
-.PHONY: clean
-clean:
+.PHONY: $(CLEAN)
+$(CLEAN):
 	@rm -f $(OBJDIR)/*.o *.gch $(TARGETDIR)/$(TARGET)
