@@ -142,8 +142,13 @@ void quitGame(bool finishedGame = false) {
     }
 }
 
-// Sends to quitGame to handle memory release
+// Sends to quitGame to handle memory release for ^C and ^backslash
 void signalHandler(int signum) { quitGame(); }
+
+// void tstpHandler (int sig) {
+//     signal(SIGTSTP, SIGINT);
+//
+// }
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -407,7 +412,7 @@ void playGame(bool &finished) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Handle global variables and memory, and main function
+// Handle global variables, signals, memory, and main function
 ////////////////////////////////////////////////////////////////////////////////
 
 // Defines PROMPT_DIVIDER and INVALID_INPUT
@@ -446,10 +451,17 @@ void createCharacters() {
 
 // Register signals and signal handler
 void registerSignals() {
-    signal(SIGINT, signalHandler);
-    signal(SIGTSTP, signalHandler);
-    signal(SIGTERM, signalHandler);
-    signal(SIGQUIT, signalHandler);
+    struct sigaction act;
+
+    act.sa_handler = signalHandler;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+
+    sigaction(SIGINT, &act, 0); // Ctrl-C
+    sigaction(SIGQUIT, &act, 0); // Ctrl-backslash
+    sigaction(SIGTSTP, &act, 0); // Ctrl-Z
+    sigaction(SIGTERM, &act, 0); // Like SIGINT
+
 }
 
 // Re-direct CTRL+D during game
