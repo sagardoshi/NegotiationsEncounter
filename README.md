@@ -23,9 +23,8 @@ I am still updating and tweaking this game. If you have any ideas or feedback, o
 ## Installation
 1. Clone this repository or download this package as a zip (extra help [here](https://help.github.com/articles/cloning-a-repository/)).
 1. Open up a Terminal window and navigate to where you saved the package. (extra help [here](https://www.macworld.com/article/2042378/master-the-command-line-navigating-files-and-folders.html)).
-1. When in the root directory, type `make` and hit return. The game should create itself here.
-1. I recommend making your terminal window full screen here, or at least 80 characters wide.
-1. Once the game is created, type `make run` to start.
+1. Make your terminal window full screen, or at least 80 characters wide.
+1. When in the root directory, type `make go` and hit return. The game should create and run itself here.
 1. If you ever run into any trouble, clear the game with `make clean`, and then try running `make` and then `make run` once more.
 
 ## Uninstallation
