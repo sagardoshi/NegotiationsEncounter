@@ -32,6 +32,7 @@ using namespace std;
 // Beautify screen printouts for command line play
 ////////////////////////////////////////////////////////////////////////////////
 
+
 // Typically to ensure that each dialogue nugget has level title at top
 void printCurrentLevelTitle() {
     switch (currLevel) {
@@ -118,8 +119,38 @@ void resetCtrlD() {
     system("stty eof '^d'"); // re-enable CTRL+D for user's sessions
 }
 
+// Saves player's current level for later loading
+void saveLevel() {
+    if (currLevel < 0) return; // Let level stay if quit typed on start screen
+    string level = to_string(currLevel);
+
+    ofstream out(LEVEL_FILEPATH);
+    out << level << endl; // Overwrite with the single integer-as-string
+    out.close();
+}
+
+// Saves current state of player's inventory for later loading
+void saveInventory() {
+    map<string, int>::iterator it;
+    string item = "";
+    string amountText = "";
+
+    ofstream out(INV_FILEPATH);
+
+    for (it = player->inventory.begin(); it != player->inventory.end(); it++) {
+        item = it->first;
+        amountText = to_string(it->second);
+        out << item << DIVIDER << amountText << endl; // Saves each line
+    }
+
+    out.close();
+}
+
 // Helper to immediately end game if quit typed
 void quitGame(bool finishedGame = false) {
+    saveLevel();
+    saveInventory();
+
     clearScreen();
     releaseMemory();
     resetCtrlD();
@@ -147,9 +178,20 @@ void signalHandler(int signum) { quitGame(); }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Handle user inputs and manage story mode
+// Handle user inputs and string manipulation, and manage story mode
 ////////////////////////////////////////////////////////////////////////////////
 
+
+// Utility to check if string is number
+bool isNum(string &input) {
+    string::const_iterator it = input.begin();
+
+    // Advance iterator as long as every character in string is a digit
+    while (it != input.end() && isdigit(*it)) ++it;
+
+    // Return true if not empty AND iterator has reached the end
+    return ( !input.empty() && (it == input.end()) );
+}
 
 // Converts a string fully to lowercase (in place)
 void lower(string &anyString) {
@@ -177,20 +219,26 @@ void getCleanUInput() {
 }
 
 // Gets simple input to lowercase; callable with specific prompt/target
-void setUInput(string prompt = "", string targetInput = "") {
+void setUInput(string prompt = "", string goal1 = "", string goal2 = "") {
 
-    // Simplify targetInput
-    lower(targetInput);
-    removeWS(targetInput);
+    // Simplify goals
+    lower(goal1);
+    lower(goal2);
+    removeWS(goal1);
+    removeWS(goal2);
 
     string output = "";
     createTitle('-', WIDTH, prompt, output);
     getCleanUInput();
 
-    // Only worry about invalidity if targetInput not empty
-    if (targetInput != "") {
+    // Only worry about invalidity if goals not empty
+    if (goal1 != "" || goal2 != "") {
+        // Must remove situation of XOR, or else empty inputs will be accepted
+        if (goal1 == "" && goal2 != "") goal1 = goal2;
+        if (goal1 != "" && goal2 == "") goal2 = goal1;
+
         // Then if wrong input, note invalidity, and re-print prompt
-        while (uInput != targetInput) {
+        while (uInput != goal1 && uInput != goal2) {
             clearScreen();
             cout << INVALID_INPUT << endl;
             output = ""; // Reset output
@@ -237,8 +285,7 @@ bool isAsteriskEntry(string line) {
 // Pauses text for user to read and get a breather
 void checkpoint() {
     string toAdd = "\n";
-    string anyInputText  = "<RETURN>: next line | ";
-           anyInputText += "\"skip\": next negotiation";
+    string anyInputText  = "<RETURN>: next line | \"skip\": next negotiation";
 
     createTitle('-', WIDTH, anyInputText, toAdd);
     getCleanUInput();
@@ -283,6 +330,7 @@ void loadScript(string filename) {
 // Actually run the levels and manage encounter mode
 ////////////////////////////////////////////////////////////////////////////////
 
+
 // Helper to convert currLevel to an actual level pointer
 Encounter* getCurrLevelPointer() {
     switch (currLevel) {
@@ -296,15 +344,67 @@ Encounter* getCurrLevelPointer() {
     }
 }
 
-// Starts game and asks if player wants to jump to encounter
+// Check level.txt for change
+int getStartingLevel() {
+    string line = "";
+
+    ifstream in(LEVEL_FILEPATH);               // Open file
+    getline(in, line);
+    in.close();                                // Close file
+    return stoi(line);                         // Convert to int
+}
+
+// Only to be called if existing save detected
+void loadPlayerSavedInventory() {
+    string line = "";
+    string invItem = "";
+    int invItemAmount = 0;
+    int dividerPos = 0;
+    int fromDividerToEnd = 0;
+
+    ifstream in(INV_FILEPATH);
+    while(getline(in, line)) {
+        dividerPos = line.find(DIVIDER);
+        fromDividerToEnd = line.length() - dividerPos;
+
+        invItem = line.substr(0, dividerPos);
+        invItemAmount = stoi(line.substr(dividerPos + 1, fromDividerToEnd));
+
+        player->inventory[invItem] = invItemAmount;
+    }
+    in.close();
+}
+
+// Announces start of game and asks player to load previous save
 void startScreen() {
     clearScreen();
 
-    string text = "DEALING WITH THE SPIRITS";
-    string fullTitle = "\n\n";
-    createTitle('|', WIDTH, text, fullTitle);
+    string loadSave    = "load";
+    string newGame     = "new";
+    string savePrompt  = "Previous save detected. Type \"" + loadSave + "\" ";
+           savePrompt += "to launch it or \"" + newGame + "\" to start fresh.";
 
-    checkpoint();
+
+    string titleText   = "DEALING WITH THE SPIRITS";
+    string fullTitle   = "\n\n";
+    createTitle('|', WIDTH, titleText, fullTitle);
+
+
+    // Handle save/load process
+    int requestedLevel = getStartingLevel();         // Based on separate file
+
+    if (requestedLevel > 0) {
+        setUInput(savePrompt, loadSave, newGame);
+        if (uInput == loadSave) {
+            currLevel = requestedLevel;              // Change level
+            loadPlayerSavedInventory();              // Adjusts player inv
+        } else if (uInput == newGame) currLevel = 0; // Start at beginning
+        printCurrentLevelTitle();                    // Need extra title now
+    } else {
+        currLevel = 0;
+        checkpoint();                                // Opportunity for skip
+    }
+
 }
 
 // Loads final ending score + script, equivalent for loss or victory
@@ -368,6 +468,7 @@ void runNextLevel(Encounter* levelPointer) {
 
 // Intro and prologue are unique (re:inventory), so handled separately
 void runIntro() {
+
     player->fillInventory(); // Give player an inventory before the intro
     loadScript("Gen/Intro"); // Early exposition until discovery by Lepha
 
@@ -378,29 +479,28 @@ void runIntro() {
     player->fillInventory(); // Refill inventory before Level 1
 }
 
-
-// 9/9) Core game function
+// Core game function
 void playGame(bool &finished) {
 
     startScreen(); // Ask to skip intro
 
-    runIntro(); // Runs intro
+    if (currLevel == 0) runIntro(); // Runs intro
 
     // Create levels immediately before running for freshest inventory mapping
     // and accurate current level
     level1 = new Encounter(player, opponent1, currLevel, L1_TURNS, L1_KEY);
-    runNextLevel(level1);
+    if (currLevel == 1) runNextLevel(level1);
 
     level2 = new Encounter(player, opponent2, currLevel, L2_TURNS, L2_KEY);
-    runNextLevel(level2);
+    if (currLevel == 2) runNextLevel(level2);
 
     level3 = new Encounter(player, opponent3, currLevel, L3_TURNS, L3_KEY);
-    runNextLevel(level3);
+    if (currLevel == 3) runNextLevel(level3);
 
     level4 = new Encounter(player, opponent4, currLevel, L4_TURNS, L4_KEY);
-    runNextLevel(level4);
+    if (currLevel == 4) runNextLevel(level4);
 
-    runEnding();
+    if (currLevel > 4) runEnding();
 
     finished = true;
 }
@@ -410,11 +510,15 @@ void playGame(bool &finished) {
 // Handle global variables, signals, memory, and main function
 ////////////////////////////////////////////////////////////////////////////////
 
+
 // Defines PROMPT_DIVIDER and INVALID_INPUT
 void createGlobalStrings() {
     addCharXTimes('-', WIDTH, PROMPT_DIVIDER);
 
     INVALID_INPUT = "\nInvalid input. Try again.\n";
+    LEVEL_FILEPATH = ".save/Level.txt";
+    INV_FILEPATH = ".save/Inventory.txt";
+    DIVIDER = "|";
 
     bool doPrint = false;
     string text0 =   "Prologue: Caught";

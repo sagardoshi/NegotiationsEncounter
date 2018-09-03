@@ -44,7 +44,7 @@ void PlayerCharacter::fillInventory() {
     inventory["loose leaf sencha tea"] = 2;
     inventory["vinegar disinfectant"] = 4;
     inventory["personal black trousers"] = 1; // these were already added
-    inventory["personal black tunic"] = 1; // but just repeating to avoid mistakes
+    inventory["personal black tunic"] = 1; // but repeating to avoid mistakes
 }
 
 
@@ -96,19 +96,8 @@ void PlayerCharacter::takeBackOffer(Negotiator* offer) {
 void PlayerCharacter::printInventory(map<string, int>* mapPtr) {
 
     // Print appropriate header
-    string border = "----- YOUR LOOT -----\n";
-    string header = border;
-    string footer = border;
-    //
-    // string extraHelp  = "Add items to the table by the number on the left.\n";
-    //        extraHelp += "When ready, type \"propose\" to finalise your offer ";
-    //        extraHelp += "or \"cancel\" to undo it.\n\n";
-    //
-    // // Always print at start of encounter and throughout for the tutorial
-    // if (firstPrint || isPrologue) {
-    //     header += extraHelp;
-    //     firstPrint = false;
-    // }
+    string header = "----- YOUR LOOT -----\n";
+    string footer = header;
 
     cout << header;
 

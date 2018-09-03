@@ -315,7 +315,10 @@ bool Encounter::runEncounter(bool &didWin) {
         ////////////////////////////////////////////////////////////////////////
 
         ///// IMMEDIATE QUIT
-        if      (entry == "quit") return false;
+        if      (entry == "quit") {
+            player->takeBackOffer(offer); // In case quit typed halfway through
+            return false;
+        }
 
         ///// FOR NEXT THREE, HIDE UI AND PRINT ACCORDINGLY
         else if (entry == "strategy") {
