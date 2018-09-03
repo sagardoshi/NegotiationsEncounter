@@ -14,122 +14,11 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp,
 }
 
 Encounter::~Encounter()             { delete table;        }
-float Encounter::getFinalInvValue() { return endInvValue;  }
-
-// Get opponent name in all caps
-string Encounter::getCapsName() {
-    string opp = opponent->getName();
-    transform(opp.begin(), opp.end(), opp.begin(), ::toupper);
-    return opp;
-}
 
 
-// Center text, assuming 80 char wide
-void Encounter::centerText(string title, string &toAdd) {
-    const int WIDTH = 80;
-    int len = title.length();
-    int gap = WIDTH - len;
-
-    if (len > WIDTH) return; // Not applicable in this case
-
-    if (gap % 2 == 0) { // If even
-        toAdd += string(gap/2, ' ') + title + string(gap/2, ' ') + "\n";
-    } else { // If odd, add a space after title, and use decremented gap
-        gap--;
-        toAdd += string(gap/2, ' ') + title + string(gap/2, ' ') + " \n";
-    }
-}
-
-// Prints centered, capitalised title (with opponent name))
-void Encounter::printTitle(string textToSay) {
-    const int WIDTH = 80;
-
-    string title  = "\n\n" + string(WIDTH, '=') + "\n";
-           centerText(textToSay, title);
-           title += string(WIDTH, '=') + "\n\n\n";
-
-    cout << title;
-}
-
-// Converts a string fully to lowercase (in place)
-void Encounter::lower(string &anyString) {
-    int i = 0;
-    while (anyString[i]) {
-        anyString[i] = tolower(anyString[i]);
-        i++;
-    }
-}
-
-// Removes whitespaces in string (in place)
-void Encounter::removeWS(string &str) {
-   str.erase(remove(str.begin(), str.end(), ' '), str.end());
-}
-
-// Somewhat pathetic helper function
-void Encounter::clearScreen() {
-    const int BIG_NUMBER = 100;
-    string clear = "";
-    for (int i = 0; i < BIG_NUMBER; i++) {
-        clear += "\n";
-    }
-    cout << clear;
-}
-
-void Encounter::printTurns() {
-    string turnsText  = "You have " + to_string(turns) + " turns left before ";
-           turnsText += opponent->getName() + "'s patience runs out.\n";
-
-    cout << turnsText;
-}
-
-void Encounter::printHelp() {
-    string optText  = "";
-           optText += "Add items one by one to the table with their ";
-           optText += "corresponding number on the left.\n";
-           optText += "When ready, type \"propose\" to finalise your offer ";
-           optText += "or \"cancel\" to undo it.\n\n";
-
-           optText += "propose:  type this to send your current offer\n";
-           optText += "cancel:   take your current offer off the table\n\n";
-
-           optText += "turns:    see how many turns you have left\n";
-           optText += "strategy: see strategy hints\n";
-           optText += "help:     see this menu\n";
-           optText += "<RETURN>: dismiss help / go to negotiating table\n\n";
-
-           optText += "forfeit:  admit defeat\n";
-           optText += "quit:     immediately exit the game\n";
-
-    cout << optText;
-}
-
-void Encounter::printStrategy() {
-    string helpText  = "The spirits are fickle. ";
-           helpText += "To win their favour, offer them a package of ";
-           helpText += "as many\n";
-           helpText += "or as few items as you wish.\n\n";
-
-           helpText += "Be as efficient as possible. You can ";
-           helpText += "see the market value of ";
-           helpText += "your items, but\n";
-           helpText += "each spirit ";
-           helpText += "values each item uniquely, based on their needs ";
-           helpText += "and their\n";
-           helpText += "personality. Some spirits are just strict by nature. ";
-           helpText += "Others may be more willing\n";
-           helpText += "to accept ";
-           helpText += "weaker offers. It's up to you to predict what might ";
-           helpText += "appeal most to\n";
-           helpText += "your opponent, while ";
-           helpText += "keeping a watchful eye on your own stock.\n\n";
-
-           helpText += "Remember: you have only a few tries before they lose ";
-           helpText += "patience only a finite\n";
-           helpText += "inventory. The more you retain by the end, ";
-           helpText += "the better you will score. Good luck.\n";
-
-    cout << helpText;
-}
+////////////////////////////////////////////////////////////////////////////////
+// Item order methods (and other setup)
+////////////////////////////////////////////////////////////////////////////////
 
 // Goes through every item player has in an encounter, and assigns a number
 void Encounter::mapPlayerInventory() {
@@ -161,6 +50,74 @@ void Encounter::setInventoryForEncounter() {
     endInvValue = 0.0; // init to zero
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// Header printout methods
+////////////////////////////////////////////////////////////////////////////////
+
+// Get opponent name in all caps
+string Encounter::getCapsName() {
+    string opp = opponent->getName();
+    transform(opp.begin(), opp.end(), opp.begin(), ::toupper);
+    return opp;
+}
+
+// Center text, assuming 80 char wide
+void Encounter::centerText(string title, string &toAdd) {
+    const int WIDTH = 80;
+    int len = title.length();
+    int gap = WIDTH - len;
+
+    if (len > WIDTH) return; // Not applicable in this case
+
+    if (gap % 2 == 0) { // If even
+        toAdd += string(gap/2, ' ') + title + string(gap/2, ' ') + "\n";
+    } else { // If odd, add a space after title, and use decremented gap
+        gap--;
+        toAdd += string(gap/2, ' ') + title + string(gap/2, ' ') + " \n";
+    }
+}
+
+// Somewhat pathetic helper function
+void Encounter::clearScreen() {
+    const int BIG_NUMBER = 100;
+    string clear = "";
+    for (int i = 0; i < BIG_NUMBER; i++) {
+        clear += "\n";
+    }
+    cout << clear;
+}
+
+// Prints centered, capitalised title (with opponent name))
+void Encounter::printTitle(string textToSay) {
+    const int WIDTH = 80;
+
+    string title  = "\n\n" + string(WIDTH, '=') + "\n";
+           centerText(textToSay, title);
+           title += string(WIDTH, '=') + "\n\n\n";
+
+    cout << title;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// User entry methods... repetitive to NegotiationsMain due to unique printouts
+////////////////////////////////////////////////////////////////////////////////
+
+// Converts a string fully to lowercase (in place)
+void Encounter::lower(string &anyString) {
+    int i = 0;
+    while (anyString[i]) {
+        anyString[i] = tolower(anyString[i]);
+        i++;
+    }
+}
+
+// Removes whitespaces in string (in place)
+void Encounter::removeWS(string &str) {
+   str.erase(remove(str.begin(), str.end(), ' '), str.end());
+}
+
 // Verifies that string is a number by iterating through each char of string
 bool Encounter::isNum(string &input) {
     string::const_iterator it = input.begin();
@@ -174,6 +131,8 @@ bool Encounter::isNum(string &input) {
 
 // Takes int input and resaves it as appropriate string mapping
 void Encounter::remapKeyword(string &keyword) {
+    if (!isNum(keyword)) return; // Only do this for number inputs
+
     // Keyword should come in as number
     int keyNumber = stoi(keyword);
 
@@ -188,13 +147,11 @@ void Encounter::remapKeyword(string &keyword) {
 
         // If the invMap leads to the player's entry, save that string mapping
         if (currentOrder == keyNumber) {
-            // cout << "Order: " << keyNumber << " | currentItem: " << currentItem << endl;
             keyword = currentItem;
             return;
         }
     }
 }
-
 
 // Gets simple, unverified user input and converts to lowercase
 void Encounter::userEntry(string &keyword, string &echo, string prompt) {
@@ -207,13 +164,71 @@ void Encounter::userEntry(string &keyword, string &echo, string prompt) {
 
     // Take in and process user entry
     cout << ">>>> ";
-    keyword = "";
     getline(cin, keyword);
     lower(keyword);
     removeWS(keyword);
-    // Non-action int input implies an inv item... replace int with string
-    if (isNum(keyword)) remapKeyword(keyword);
+    remapKeyword(keyword); // In case user put item num, switch to item string
+}
 
+
+////////////////////////////////////////////////////////////////////////////////
+// UI prints and menu prints
+////////////////////////////////////////////////////////////////////////////////
+
+void Encounter::printTurns() {
+    string turnsText  = "You have " + to_string(turns) + " turns left before ";
+           turnsText += opponent->getName() + "'s patience runs out.\n";
+
+    cout << turnsText;
+}
+
+void Encounter::printStrategy() {
+    string helpText  = "The spirits are fickle. ";
+           helpText += "To win their favour, offer them a package of ";
+           helpText += "as many\n";
+           helpText += "or as few items as you wish.\n\n";
+
+           helpText += "Be as efficient as possible. You can ";
+           helpText += "see the market value of ";
+           helpText += "your items, but\n";
+           helpText += "each spirit ";
+           helpText += "values each item uniquely, based on their needs ";
+           helpText += "and their\n";
+           helpText += "personality. Some spirits are just strict by nature. ";
+           helpText += "Others may be more willing\n";
+           helpText += "to accept ";
+           helpText += "weaker offers. It's up to you to predict what might ";
+           helpText += "appeal most to\n";
+           helpText += "your opponent, while ";
+           helpText += "keeping a watchful eye on your own stock.\n\n";
+
+           helpText += "Remember: you have only a few tries before they lose ";
+           helpText += "patience only a finite\n";
+           helpText += "inventory. The more you retain by the end, ";
+           helpText += "the better you will score. Good luck.\n";
+
+    cout << helpText;
+}
+
+void Encounter::printHelp() {
+    string optText  = "";
+           optText += "Add items one by one to the table with their ";
+           optText += "corresponding number on the left.\n";
+           optText += "When ready, type \"propose\" to finalise your offer ";
+           optText += "or \"cancel\" to undo it.\n\n";
+
+           optText += "propose:  type this to send your current offer\n";
+           optText += "cancel:   take your current offer off the table\n\n";
+
+           optText += "turns:    see how many turns you have left\n";
+           optText += "strategy: see strategy hints\n";
+           optText += "help:     see this menu\n";
+           optText += "<RETURN>: dismiss help / go to negotiating table\n\n";
+
+           optText += "forfeit:  admit defeat\n";
+           optText += "quit:     immediately exit the game\n";
+
+    cout << optText;
 }
 
 // Packages table and inventory printouts
@@ -222,13 +237,69 @@ void Encounter::printUI() {
     player->printInv(&invMap);
 }
 
-void Encounter::printExtraHelp() {
-    string extraHelp  = "Add items to the table by the number on the left.\n";
-           extraHelp += "When ready, type \"propose\" to finalise your offer ";
-           extraHelp += "or \"cancel\" to undo it.\n\n";
 
-    cout << extraHelp;
+////////////////////////////////////////////////////////////////////////////////
+// Handle end of encounter
+////////////////////////////////////////////////////////////////////////////////
+
+// Set flags if encounter over; move to next proposal if not yet over
+bool Encounter::encounterIsOver(bool &didWin) {
+    // Fill win with true or false, depending on acceptance
+    didWin = opponent->reactToOffer(table, keyValue);
+
+    // In case over, remember inventory
+    endInvValue = player->getInvValue();
+
+    // If won or if didn't win and no turns left
+    if (didWin || (!didWin && turns <= 1)) return true;
+    else { // but turns are left, must return items to inventory and continue
+        turns--; // Use one turn
+        player->takeBackOffer(table);
+        opponent->rejectTerms(turns);
+        return false;
+    }
 }
+
+void Encounter::printScore() {
+    string startedWith = player->toPreciseString(startInvValue);
+    string gaveAway = player->toPreciseString(offerInvValue);
+    string endedWith = player->toPreciseString(endInvValue);
+
+    string border = "***** ENCOUNTER SCORE *****\n";
+    string scoreText  = "You began with an inventory of market value: ";
+           scoreText += (startInvValue >= 10 ? "" : " ");
+           scoreText += "£" + startedWith + "\n";
+           scoreText += "You gave away a total market value of:       ";
+           scoreText += (offerInvValue >= 10 ? "" : " ");
+           scoreText += "£" + gaveAway + "\n";
+           scoreText += "You ended with an inventory of market value: ";
+           scoreText += (endInvValue >= 10 ? "" : " ");
+           scoreText += "£" + endedWith + "\n";
+
+    cout << border << scoreText << border << endl;
+}
+
+// Print end title, score, and load correct scripts
+void Encounter::handleEnd(bool didWin) {
+    clearScreen(); // To remove the "YOU ARE NEGOTIATING VS." title
+
+    string textToSay = "";
+    if (didWin) textToSay = "YOU WON AGAINST " + getCapsName();
+    else textToSay = "YOU LOST AGAINST " + getCapsName();
+
+    printTitle(textToSay);
+    if (didWin) {
+        printScore();
+        opponent->acceptTerms();
+    } else player->takeBackOffer(table); // Returns stuff to you if loss ≠ end
+}
+
+float Encounter::getFinalInvValue() { return endInvValue;  }
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Primary method of the class
+////////////////////////////////////////////////////////////////////////////////
 
 // Runs full encounter and only returns false if quit was requested
 bool Encounter::runEncounter(bool &didWin) {
@@ -348,56 +419,4 @@ bool Encounter::runEncounter(bool &didWin) {
         // Erroneous entry... there is no such thing in the economy
         else echo = "You have no such thing. Try again.\n\n";
     }
-}
-
-// Set flags if encounter over; move to next proposal if not yet over
-bool Encounter::encounterIsOver(bool &didWin) {
-    // Fill win with true or false, depending on acceptance
-    didWin = opponent->reactToOffer(table, keyValue);
-
-    // In case over, remember inventory
-    endInvValue = player->getInvValue();
-
-    // If won or if didn't win and no turns left
-    if (didWin || (!didWin && turns <= 1)) return true;
-    else { // but turns are left, must return items to inventory and continue
-        turns--; // Use one turn
-        player->takeBackOffer(table);
-        opponent->rejectTerms(turns);
-        return false;
-    }
-}
-
-void Encounter::printScore() {
-    string startedWith = player->toPreciseString(startInvValue);
-    string gaveAway = player->toPreciseString(offerInvValue);
-    string endedWith = player->toPreciseString(endInvValue);
-
-    string border = "***** ENCOUNTER SCORE *****\n";
-    string scoreText  = "You began with an inventory of market value: ";
-           scoreText += (startInvValue >= 10 ? "" : " ");
-           scoreText += "£" + startedWith + "\n";
-           scoreText += "You gave away a total market value of:       ";
-           scoreText += (offerInvValue >= 10 ? "" : " ");
-           scoreText += "£" + gaveAway + "\n";
-           scoreText += "You ended with an inventory of market value: ";
-           scoreText += (endInvValue >= 10 ? "" : " ");
-           scoreText += "£" + endedWith + "\n";
-
-    cout << border << scoreText << border << endl;
-}
-
-// Print end title, score, and load correct scripts
-void Encounter::handleEnd(bool didWin) {
-    clearScreen(); // To remove the "YOU ARE NEGOTIATING VS." title
-
-    string textToSay = "";
-    if (didWin) textToSay = "YOU WON AGAINST " + getCapsName();
-    else textToSay = "YOU LOST AGAINST " + getCapsName();
-
-    printTitle(textToSay);
-    if (didWin) {
-        printScore();
-        opponent->acceptTerms();
-    } else player->takeBackOffer(table); // Returns stuff to you if loss ≠ end
 }

@@ -354,7 +354,6 @@ void startScreen() {
     string savePrompt  = "Previous save detected. Type \"" + loadSave + "\" ";
            savePrompt += "to launch it or \"" + newGame + "\" to start fresh.";
 
-
     string titleText   = "DEALING WITH THE SPIRITS";
     string fullTitle   = "";
     createTitle('|', WIDTH, titleText, fullTitle);
