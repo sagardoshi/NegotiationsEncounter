@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 class Inventory {
 public:
     Inventory();

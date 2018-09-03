@@ -2,10 +2,7 @@
 #define GLOBALS_H
 
 #include <iostream>
-// #include <string>
-// #include <map>
 
-// using namespace std;
 
 // CONSTANTS
 const int   WIDTH = 80;

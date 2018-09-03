@@ -7,26 +7,12 @@ Course: MSc Computing Science
 University: Imperial College London
 */
 
-// #include "../inc/Inventory.h"
-// #include "../inc/Negotiator.h"
 #include "../inc/PlayerCharacter.h"
 #include "../inc/Encounter.h"
-
 #include "../inc/Globals.h"
 
-// #include <cstdlib>
 #include <csignal>
-// #include <cctype>
-// #include <iostream>
 #include <fstream>
-// #include <sstream>
-// #include <chrono>
-// #include <string>
-// #include <vector>
-// #include <algorithm>
-
-// using namespace std;
-
 
 
 ////////////////////////////////////////////////////////////////////////////////

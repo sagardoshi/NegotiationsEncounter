@@ -3,8 +3,6 @@
 
 #include "Inventory.h"
 
-// #include <string>
-// #include <map>
 
 class Negotiator : public Inventory {
 

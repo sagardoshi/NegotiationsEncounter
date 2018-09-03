@@ -1,17 +1,6 @@
 #ifndef ENCOUNTER_H
 #define ENCOUNTER_H
 
-// #include "Offer.h"
-// #include "PlayerCharacter.h"
-// #include "Negotiator.h"
-// #include "Inventory.h"
-
-// #include <string>
-// #include <sstream>
-// #include <vector>
-// #include <map>
-
-using namespace std;
 
 class Encounter {
 

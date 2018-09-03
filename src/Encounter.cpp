@@ -1,16 +1,7 @@
 #include "../inc/PlayerCharacter.h"
-// #include "../inc/Negotiator.h"
-// #include "../inc/Inventory.h"
 #include "../inc/Encounter.h"
 
 #include <iostream>
-// #include <string>
-// #include <map>
-// #include <algorithm>
-
-
-
-using namespace std;
 
 
 Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp,

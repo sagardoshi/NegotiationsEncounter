@@ -1,17 +1,5 @@
 #include "../inc/PlayerCharacter.h"
-// #include "../inc/Negotiator.h"
 
-// #include <string>
-// #include <map>
-
-// #include <iostream>
-// #include <sstream>
-//
-// #include <iomanip>
-// #include <utility>
-
-
-// using namespace std;
 
 PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
     initInventory();

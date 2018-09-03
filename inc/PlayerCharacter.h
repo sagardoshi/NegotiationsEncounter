@@ -3,9 +3,6 @@
 
 #include "Negotiator.h"
 
-// #include <string>
-// #include <utility>
-// #include <map>
 
 class PlayerCharacter : public Negotiator {
 

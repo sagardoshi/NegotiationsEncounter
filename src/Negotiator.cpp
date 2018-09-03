@@ -1,18 +1,7 @@
-// #include "../inc/Inventory.h"
 #include "../inc/Negotiator.h"
-//
-// #include <string>
-// #include <map>
 
 #include <iostream>
-// #include <fstream>
-// #include <sstream>
-
-// #include <iomanip>
-// #include <chrono>
 #include <random>
-
-// using namespace std;
 
 
 Negotiator::Negotiator(string n, float a) : name(n), amiability(a),
@@ -175,7 +164,7 @@ void Negotiator::acceptTerms() {
         acceptance += "the superuser. Happy supering.\n";
     }
 
-    cout << acceptance << endl;
+    std::cout << acceptance << endl;
 
 }
 
@@ -220,7 +209,7 @@ void Negotiator::rejectTerms(int turnsLeft) {
     rejection += "before " + name + "'s patience runs out.\n\n";
 
     // Flush out string
-    cout << rejection;
+    std::cout << rejection;
 }
 
 

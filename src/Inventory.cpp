@@ -1,16 +1,8 @@
 #include "../inc/Inventory.h"
 
-#include <string>
-// #include <map>
-
 #include <iostream>
 
-// using namespace std;
-
-Inventory::Inventory() {
-    initEconomy();
-}
-
+Inventory::Inventory() { initEconomy();}
 
 string Inventory::toPreciseString(float input, int precision) {
     string asString = to_string(input);
