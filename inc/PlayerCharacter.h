@@ -3,24 +3,21 @@
 
 #include "Negotiator.h"
 
-#include <string>
-#include <utility>
-#include <map>
+// #include <string>
+// #include <utility>
+// #include <map>
 
 class PlayerCharacter : public Negotiator {
 
 public:
     PlayerCharacter(string, float);
 
-    // map<string, int> inventory;  // Same economy, but distinct inv for player
     void initInventory();        // Polymorphism to keep clothes!
-    void fillInventory();        // IMPT: sets inv total at beg of game
+    void fillInventory();        // IMPT: sets player inv total at beg of game
 
     // Moves items between player's own inventory and the offer on the table
-    bool knowsOfItem(string item); // Item in overall economy
-    bool hasItem(string item);     // Checks if player has item
-    void placeItemOnTable(string, Negotiator*);
-    void takeBackOffer(Negotiator*);
+    void placeItemOnTable(string, Inventory*);
+    void takeBackOffer(Inventory*);
 
 };
 

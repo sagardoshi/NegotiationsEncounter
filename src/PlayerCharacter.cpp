@@ -1,14 +1,17 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <iomanip>
-#include <utility>
-#include <map>
-
 #include "../inc/PlayerCharacter.h"
-#include "../inc/Negotiator.h"
+// #include "../inc/Negotiator.h"
 
-using namespace std;
+// #include <string>
+// #include <map>
+
+// #include <iostream>
+// #include <sstream>
+//
+// #include <iomanip>
+// #include <utility>
+
+
+// using namespace std;
 
 PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
     initInventory();
@@ -30,7 +33,7 @@ void PlayerCharacter::initInventory() {
     inventory["personal black tunic"] = 1;
 }
 
-// How many of each item you carry
+// How many of each item player gets at start
 void PlayerCharacter::fillInventory() {
     inventory["burn relief ointment"] = 1;
     inventory["carved walking cane"] = 1;
@@ -47,31 +50,23 @@ void PlayerCharacter::fillInventory() {
     inventory["personal black tunic"] = 1; // but repeating to avoid mistakes
 }
 
-
-bool PlayerCharacter::knowsOfItem(string item) {
-    return ((economy.count(item) > 0) ? true : false); // If item exists
+void PlayerCharacter::placeItemOnTable(string itemName, Inventory* table) {
+    inventory[itemName]--;        // Take item out of bag
+    table->inventory[itemName]++; // Place it on table
 }
 
-bool PlayerCharacter::hasItem(string item) {
-    return ((inventory[item] > 0) ? true : false); // Player has at least one
-}
-
-void PlayerCharacter::placeItemOnTable(string itemName, Negotiator* offer) {
-    inventory[itemName]--; // Take item out of bag
-    offer->inventory[itemName]++; // Place it on table
-}
-
-void PlayerCharacter::takeBackOffer(Negotiator* offer) {
+void PlayerCharacter::takeBackOffer(Inventory* table) {
     map<string, int>::iterator it;
     string item = "";
     int amount = 0;
 
-    for (it = offer->inventory.begin(); it != offer->inventory.end(); it++) {
+    for (it = table->inventory.begin(); it != table->inventory.end(); it++) {
         item = it->first;
         amount = it->second;
         if (amount > 0) {
-            inventory[item] += amount;
-            offer->inventory[item] = 0;
+            table->inventory[item] = 0; // Take item(s) off table
+            inventory[item] += amount;  // Put item(s) back into bag
+
         }
     }
 }

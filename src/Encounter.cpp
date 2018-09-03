@@ -1,12 +1,14 @@
-#include <iostream>
-#include <string>
-#include <map>
-#include <algorithm>
-
 #include "../inc/PlayerCharacter.h"
-#include "../inc/Negotiator.h"
+// #include "../inc/Negotiator.h"
+// #include "../inc/Inventory.h"
 #include "../inc/Encounter.h"
-#include "../inc/Offer.h"
+
+#include <iostream>
+// #include <string>
+// #include <map>
+// #include <algorithm>
+
+
 
 using namespace std;
 
@@ -16,17 +18,12 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp,
                      isPrologue(l == 0), turns(t), keyValue(kV),
                      player(pc), opponent(opp) {
 
-        offer = new Offer("", 0.0); // Table has no name, no personality
+        table = new Inventory(); // Table has no name, no personality
         setInventoryForEncounter(); // Order mapping + saving initial value
 }
 
-Encounter::~Encounter()             { delete offer;        }
+Encounter::~Encounter()             { delete table;        }
 float Encounter::getFinalInvValue() { return endInvValue;  }
-
-// Convenience method to verify table for printouts in run loop
-bool Encounter::tableIsEmpty() {
-    return (!offer->getInvCount() ? true : false);
-}
 
 // Get opponent name in all caps
 string Encounter::getCapsName() {
@@ -251,7 +248,7 @@ void Encounter::userEntry(string &keyword, string &echo, string prompt) {
 
 // Packages table and inventory printouts
 void Encounter::printUI() {
-    offer->printInv(); // Prints every time after title
+    table->printInv(); // Prints every time after title
     player->printInv(&invMap);
 }
 
@@ -320,7 +317,7 @@ bool Encounter::runEncounter(bool &didWin) {
 
         ///// IMMEDIATE QUIT
         if      (entry == "quit") {
-            player->takeBackOffer(offer); // In case quit typed halfway through
+            player->takeBackOffer(table); // In case quit typed halfway through
             return false;
         }
 
@@ -354,7 +351,7 @@ bool Encounter::runEncounter(bool &didWin) {
         }
         else if (entry == "propose" || entry == "proposal") {
             // Save current value, in case it's encounter-ending
-            offerInvValue = offer->getInvValue();
+            offerInvValue = table->getInvValue();
 
             // Check if nego done, and break if so
             if (encounterIsOver(didWin)) {
@@ -365,16 +362,16 @@ bool Encounter::runEncounter(bool &didWin) {
 
         ///// NEXT THREE HANDLE PLACING AND TAKING ITEMS FROM THE TABLE
         else if (entry == "cancel") {
-            if (tableIsEmpty()) {
+            if (table->isEmpty()) {
                 echo = "There's nothing on the table for you to take back.\n\n";
             } else echo = "You take your offer back from the table.\n\n";
-            player->takeBackOffer(offer);
+            player->takeBackOffer(table);
         }
         else if (player->knowsOfItem(entry)) {
             // Finally! Item exists, and player has it
             if (player->hasItem(entry)) {
                 echo = "You place your " + entry + " on the table.\n\n";
-                player->placeItemOnTable(entry, offer);
+                player->placeItemOnTable(entry, table);
             // Item exists, but player doesn't currently have it in inventory
             } else echo = "You have no " + entry + " to give.\n\n";
         }
@@ -386,7 +383,7 @@ bool Encounter::runEncounter(bool &didWin) {
 // Set flags if encounter over; move to next proposal if not yet over
 bool Encounter::encounterIsOver(bool &didWin) {
     // Fill win with true or false, depending on acceptance
-    didWin = opponent->reactToOffer(offer, keyValue);
+    didWin = opponent->reactToOffer(table, keyValue);
 
     // In case over, remember inventory
     endInvValue = player->getInvValue();
@@ -395,7 +392,7 @@ bool Encounter::encounterIsOver(bool &didWin) {
     if (didWin || (!didWin && turns <= 1)) return true;
     else { // but turns are left, must return items to inventory and continue
         turns--; // Use one turn
-        player->takeBackOffer(offer);
+        player->takeBackOffer(table);
         opponent->rejectTerms(turns);
         return false;
     }
@@ -433,5 +430,5 @@ void Encounter::handleEnd(bool didWin) {
     if (didWin) {
         printScore();
         opponent->acceptTerms();
-    } else player->takeBackOffer(offer); // Returns stuff to you if loss ≠ end
+    } else player->takeBackOffer(table); // Returns stuff to you if loss ≠ end
 }

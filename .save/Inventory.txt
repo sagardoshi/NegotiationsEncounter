@@ -1,5 +1,5 @@
 burn relief ointment|1
-carved walking cane|1
+carved walking cane|0
 long earmuffs|1
 loose leaf sencha tea|2
 morning headache tonic|1

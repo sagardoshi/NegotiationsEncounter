@@ -1,14 +1,15 @@
 #ifndef ENCOUNTER_H
 #define ENCOUNTER_H
 
-#include "Offer.h"
-#include "PlayerCharacter.h"
-#include "Negotiator.h"
+// #include "Offer.h"
+// #include "PlayerCharacter.h"
+// #include "Negotiator.h"
+// #include "Inventory.h"
 
-#include <string>
-#include <sstream>
-#include <vector>
-#include <map>
+// #include <string>
+// #include <sstream>
+// #include <vector>
+// #include <map>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ private:
 
     PlayerCharacter* player;
     Negotiator* opponent;
-    Offer* offer;
+    Inventory* table;
 
     float startInvValue;
     float offerInvValue;
@@ -46,7 +47,6 @@ public:
 
     string getCapsName();
     float getFinalInvValue(); // Returns inv value at end of encounter
-    bool tableIsEmpty(); // Convenience method for printouts in run loop
 
 
     void clearScreen();

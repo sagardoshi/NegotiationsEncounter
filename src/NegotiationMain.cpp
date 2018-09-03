@@ -1,30 +1,31 @@
-
 /*
 METADATA
 Name: Sagar Doshi
-Date: 24 July 2018
+Date: 3 September 2018
 Title: Negotiations Video Game
 Course: MSc Computing Science
 University: Imperial College London
 */
 
-#include "../inc/Negotiator.h"
-#include "../inc/Encounter.h"
+// #include "../inc/Inventory.h"
+// #include "../inc/Negotiator.h"
 #include "../inc/PlayerCharacter.h"
+#include "../inc/Encounter.h"
+
 #include "../inc/Globals.h"
 
-#include <cstdlib>
+// #include <cstdlib>
 #include <csignal>
-#include <cctype>
-#include <iostream>
+// #include <cctype>
+// #include <iostream>
 #include <fstream>
-#include <sstream>
-#include <chrono>
-#include <string>
-#include <vector>
-#include <algorithm>
+// #include <sstream>
+// #include <chrono>
+// #include <string>
+// #include <vector>
+// #include <algorithm>
 
-using namespace std;
+// using namespace std;
 
 
 
@@ -539,7 +540,7 @@ void createGlobalStrings() {
 // Creates player and all enemies
 void createCharacters() {
     player = new PlayerCharacter("You", MODERATE);
-    
+
     opponent0 = new Negotiator("Lepha", MODERATE);
     opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
     opponent2 = new Negotiator("Toto", MODERATE);

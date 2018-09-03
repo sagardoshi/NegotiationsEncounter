@@ -2,10 +2,10 @@
 #define GLOBALS_H
 
 #include <iostream>
-#include <string>
-#include <map>
+// #include <string>
+// #include <map>
 
-using namespace std;
+// using namespace std;
 
 // CONSTANTS
 const int   WIDTH = 80;
@@ -25,9 +25,6 @@ const float L2_KEY = 30.0;
 const float L3_KEY = 40.0;
 const float L4_KEY = L0_KEY;
 
-
-// Inventory
-map<string, float> economy;
 
 // Key pointers used across functions
 Encounter*       level0 = nullptr;

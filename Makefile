@@ -21,11 +21,11 @@ OBJEXT		:= o
 CXXFLAGS 	:= -Wall -g -std=c++11
 
 # Objects
-_OBJ 		:= Negotiator.o \
-	  		   PlayerCharacter.o \
+_OBJ 		:= NegotiationMain.o \
 			   Encounter.o \
-			   Offer.o \
-			   NegotiationMain.o \
+			   Inventory.o \
+			   Negotiator.o \
+			   PlayerCharacter.o \
 
 OBJ			:= $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 

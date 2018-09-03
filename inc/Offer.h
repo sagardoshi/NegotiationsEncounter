@@ -1,15 +1,12 @@
-#ifndef OFFER_H
-#define OFFER_H
+#ifndef INVENTORY_H
+#define INVENTORY_H
 
-#include "Negotiator.h"
-
-#include <vector>
 #include <string>
 #include <map>
 
 using namespace std;
 
-class Offer : public Negotiator {
+class Inventory {
 public:
     Offer(string, float);
 
