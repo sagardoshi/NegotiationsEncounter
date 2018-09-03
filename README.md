@@ -44,7 +44,7 @@ Because this is a command line-heavy game, it relies on `make` and `g++`. These 
 
 The commands you get with Command Line Tools are quite useful more generally. However, it can be a heavy installation to get that going, because Apple bundles their big Xcode application with it. To install Command Line Tools much more quickly, without Xcode, follow these instructions (also listed on [this website](https://www.maketecheasier.com/install-command-line-tools-without-xcode/)):
 1. Open up a Terminal window. If you're not sure how, click on the Spotlight (magnifying glass icon) search on the top right of your screen. Type ``terminal``, and hit return when the black icon with the ">\_" symbols show up.
-1. In your terminal, type `xcode-select --install`. If you already have Command Line Tools, it will say `xcode-select: error: command line tools are already installed, use "Software Update" to install updates`, and that means you're good to go!
-1. If you don't already have it, you will get a prompt asking you to install command line developer tools. Tap the install button on the right.
-1. Agree to the license agreement, and wait for the download to complete.
+1. In your terminal, type `xcode-select --install`.
+1. If you already have Command Line Tools, it will say `xcode-select: error: command line tools are already installed, use "Software Update" to install updates`, and that means you're good to go!
+1. If you don't already have it, you will get a prompt asking you to install command line developer tools. Tap the install button on the right. Agree to the license agreement, and wait for the download to complete.
 1. Now you're good to go to play my game (and do a whole bunch of other things with Unix commands, if you wish!).
