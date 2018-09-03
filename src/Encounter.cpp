@@ -24,11 +24,6 @@ string Encounter::getCapsName() {
 }
 
 
-// Adds a character 80 times, then a new line to a specified string
-void Encounter::addCharXTimes(char input, int x, string &toChain) {
-    toChain += string(x, input) + "\n";
-}
-
 // Center text, assuming 80 char wide
 void Encounter::centerText(string title, string &toAdd) {
     const int WIDTH = 80;
@@ -45,26 +40,13 @@ void Encounter::centerText(string title, string &toAdd) {
     }
 }
 
-// Packages previous two helper functions assuming full screen width
-void Encounter::createTitle(char input, int x, string text, string &toAdd) {
-    const int WIDTH = 80;
-    addCharXTimes(input, WIDTH, toAdd);
-    centerText(text, toAdd);
-    addCharXTimes(input, WIDTH, toAdd);
-    toAdd += "\n";
-
-    cout << toAdd;
-}
-
-
 // Prints centered, capitalised title (with opponent name))
-void Encounter::printTitle(string textToSay, bool isEnd) {
-    string title = "\n";
+void Encounter::printTitle(string textToSay) {
+    const int WIDTH = 80;
 
-    addCharXTimes('=', 80, title);
-    centerText(textToSay, title);
-    addCharXTimes('=', 80, title);
-    title += "\n\n";
+    string title  = "\n\n" + string(WIDTH, '=') + "\n";
+           centerText(textToSay, title);
+           title += string(WIDTH, '=') + "\n\n\n";
 
     cout << title;
 }
@@ -118,7 +100,7 @@ void Encounter::printHelp() {
            optText += "forfeit:  admit defeat\n";
            optText += "quit:     immediately exit the game\n";
 
-    cout << optText << endl;
+    cout << optText;
 }
 
 void Encounter::printStrategy() {
@@ -146,7 +128,7 @@ void Encounter::printStrategy() {
            helpText += "inventory. The more you retain by the end, ";
            helpText += "the better you will score. Good luck.\n";
 
-    cout << helpText << endl;
+    cout << helpText;
 }
 
 // Goes through every item player has in an encounter, and assigns a number
@@ -216,11 +198,8 @@ void Encounter::remapKeyword(string &keyword) {
 
 // Gets simple, unverified user input and converts to lowercase
 void Encounter::userEntry(string &keyword, string &echo, string prompt) {
-    const int WIDTH = 80;
-    string output = "\n\n";
-
     // This creates the user prompt
-    createTitle('-', WIDTH, prompt, output);
+    printTitle(prompt);
 
     // Print echo below prompt but above entry area
     if (echo != "") cout << echo;
@@ -413,11 +392,10 @@ void Encounter::handleEnd(bool didWin) {
     clearScreen(); // To remove the "YOU ARE NEGOTIATING VS." title
 
     string textToSay = "";
-    bool isEnd = true;
     if (didWin) textToSay = "YOU WON AGAINST " + getCapsName();
     else textToSay = "YOU LOST AGAINST " + getCapsName();
 
-    printTitle(textToSay, isEnd);
+    printTitle(textToSay);
     if (didWin) {
         printScore();
         opponent->acceptTerms();

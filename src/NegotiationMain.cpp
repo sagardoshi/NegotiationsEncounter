@@ -22,6 +22,7 @@ University: Imperial College London
 
 // Typically to ensure that each dialogue nugget has level title at top
 void printCurrentLevelTitle() {
+    cout << endl;
     switch (currLevel) {
         case 0:  cout << title0;   break;
         case 1:  cout << title1;   break;
@@ -42,13 +43,8 @@ void clearScreen() {
     }
 
     cout << clear;
-    if (!veryBeginning) printCurrentLevelTitle();
-    else veryBeginning = false;
-}
 
-// Helper to print add a character 80 times to a string (usually for titles)
-void addCharXTimes(char input, int x, string &toChain) {
-    toChain += string(x, input) + "\n";
+    printCurrentLevelTitle();
 }
 
 // Assuming 80 char wide screen, centers a string automatically
@@ -67,12 +63,12 @@ void centerText(string title, string &toAdd) {
 }
 
 // Packages previous two helper functions assuming 80 char screen width
-void createTitle(char input, int x, string text,
+void createTitle(char ch, int x, string text,
                  string &toAdd, bool print = true) {
-    addCharXTimes(input, WIDTH, toAdd);
+
+    toAdd += string(WIDTH, ch) + "\n";
     centerText(text, toAdd);
-    addCharXTimes(input, WIDTH, toAdd);
-    toAdd += "\n";
+    toAdd += string(WIDTH, ch) + "\n\n";
 
     if (print) cout << toAdd;
 }
@@ -168,18 +164,6 @@ void signalHandler(int signum) { quitGame(); }
 // Handle user inputs and string manipulation, and manage story mode
 ////////////////////////////////////////////////////////////////////////////////
 
-
-// Utility to check if string is number
-bool isNum(string &input) {
-    string::const_iterator it = input.begin();
-
-    // Advance iterator as long as every character in string is a digit
-    while (it != input.end() && isdigit(*it)) ++it;
-
-    // Return true if not empty AND iterator has reached the end
-    return ( !input.empty() && (it == input.end()) );
-}
-
 // Converts a string fully to lowercase (in place)
 void lower(string &anyString) {
     int i = 0;
@@ -214,8 +198,8 @@ void setUInput(string prompt = "", string goal1 = "", string goal2 = "") {
     removeWS(goal1);
     removeWS(goal2);
 
-    string output = "";
-    createTitle('-', WIDTH, prompt, output);
+    string output = "\n";
+    createTitle('=', WIDTH, prompt, output);
     getCleanUInput();
 
     // Only worry about invalidity if goals not empty
@@ -227,9 +211,9 @@ void setUInput(string prompt = "", string goal1 = "", string goal2 = "") {
         // Then if wrong input, note invalidity, and re-print prompt
         while (uInput != goal1 && uInput != goal2) {
             clearScreen();
-            cout << INVALID_INPUT << endl;
+            cout << INVALID_INPUT;
             output = ""; // Reset output
-            createTitle('-', WIDTH, prompt, output);
+            createTitle('=', WIDTH, prompt, output);
             getCleanUInput();
         }
     }
@@ -238,7 +222,7 @@ void setUInput(string prompt = "", string goal1 = "", string goal2 = "") {
 
 // Require a specific input from user, as coded by text file
 void handleSpecificInput(string line, string &output) {
-    cout << output << endl; // Flush output thus far
+    cout << output << endl << endl; // Flush output thus far
 
     const int ASTERISKS_NEEDED = 3;
     int newLength = line.length() - ASTERISKS_NEEDED - ASTERISKS_NEEDED;
@@ -271,10 +255,10 @@ bool isAsteriskEntry(string line) {
 
 // Pauses text for user to read and get a breather
 void checkpoint() {
-    string toAdd = "\n";
+    string toAdd = "\n\n";
     string anyInputText  = "<RETURN>: next line | \"skip\": next negotiation";
 
-    createTitle('-', WIDTH, anyInputText, toAdd);
+    createTitle('=', WIDTH, anyInputText, toAdd);
     getCleanUInput();
 
     if (uInput == "skip" ) doSkip = true; // Set global flag for future
@@ -289,12 +273,11 @@ void loadScript(string filename) {
     string filepath = "txt/" + filename + ".txt";
     string line = "", output = "";
 
-	ifstream in;
-	in.open(filepath);
+	ifstream in(filepath);
 
 	while (getline(in, line)) {
         if (line == "***") {
-            cout << output;
+            cout << output << endl;
             checkpoint();
             output = "";
 
@@ -373,7 +356,7 @@ void startScreen() {
 
 
     string titleText   = "DEALING WITH THE SPIRITS";
-    string fullTitle   = "\n\n";
+    string fullTitle   = "";
     createTitle('|', WIDTH, titleText, fullTitle);
 
 
@@ -387,6 +370,7 @@ void startScreen() {
             loadPlayerSavedInventory();              // Adjusts player inv
         } else if (uInput == newGame) currLevel = 0; // Start at beginning
         printCurrentLevelTitle();                    // Need extra title now
+        cout << endl;
     } else {
         currLevel = 0;
         checkpoint();                                // Opportunity for skip
@@ -498,11 +482,9 @@ void playGame(bool &finished) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-// Defines PROMPT_DIVIDER and INVALID_INPUT
+// Defines a variety of useful strings
 void createGlobalStrings() {
-    addCharXTimes('-', WIDTH, PROMPT_DIVIDER);
-
-    INVALID_INPUT = "\nInvalid input. Try again.\n";
+    INVALID_INPUT = "\nInvalid input. Try again.\n\n\n";
     LEVEL_FILEPATH = ".save/Level.txt";
     INV_FILEPATH = ".save/Inventory.txt";
     DIVIDER = "|";
@@ -515,11 +497,11 @@ void createGlobalStrings() {
     string text4 =   "Level 4 / 4: Lepha";
     string textEnd = "The End";
 
-    createTitle('=', WIDTH, text0, title0, doPrint);
-    createTitle('=', WIDTH, text1, title1, doPrint);
-    createTitle('=', WIDTH, text2, title2, doPrint);
-    createTitle('=', WIDTH, text3, title3, doPrint);
-    createTitle('=', WIDTH, text4, title4, doPrint);
+    createTitle('=', WIDTH, text0,   title0,   doPrint);
+    createTitle('=', WIDTH, text1,   title1,   doPrint);
+    createTitle('=', WIDTH, text2,   title2,   doPrint);
+    createTitle('=', WIDTH, text3,   title3,   doPrint);
+    createTitle('=', WIDTH, text4,   title4,   doPrint);
     createTitle('=', WIDTH, textEnd, titleEnd, doPrint);
 }
 
@@ -567,8 +549,8 @@ void setUpGame() {
 // Main function handles memory allocation/deallocation and launches playGame()
 int main() {
     bool finishedGame = false;
-    setUpGame();
 
+    setUpGame();
     playGame(finishedGame);
     quitGame(finishedGame);
 

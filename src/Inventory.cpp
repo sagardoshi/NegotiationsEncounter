@@ -2,7 +2,12 @@
 
 #include <iostream>
 
+
 Inventory::Inventory() { initEconomy();}
+
+////////////////////////////////////////////////////////////////////////////////
+// Economy Methods
+////////////////////////////////////////////////////////////////////////////////
 
 string Inventory::toPreciseString(float input, int precision) {
     string asString = to_string(input);
@@ -43,6 +48,15 @@ void Inventory::initEconomy() {
 
 }
 
+bool Inventory::knowsOfItem(string item) {
+    return ((economy.count(item) > 0) ? true : false); // If item exists
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Inventory Methods
+////////////////////////////////////////////////////////////////////////////////
+
 void Inventory::initInventory() {
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
@@ -59,14 +73,22 @@ void Inventory::initInventory() {
     inventory["personal black tunic"] = 0;
 }
 
-
-bool Inventory::knowsOfItem(string item) {
-    return ((economy.count(item) > 0) ? true : false); // If item exists
+bool Inventory::isEmpty() {
+    return (getInvCount() ? false : true);
 }
-
 
 bool Inventory::hasItem(string item) {
     return ((inventory[item] > 0) ? true : false); // At least one
+}
+
+int Inventory::getInvCount() {
+    map<string, int>::iterator it;
+    int total = 0, amount = 0;
+    for (it = inventory.begin(); it != inventory.end(); it++) {
+        amount = it->second;
+        total += amount;
+    }
+    return total;
 }
 
 float Inventory::getInvValue() {
@@ -83,20 +105,6 @@ float Inventory::getInvValue() {
         totalValue += (baseValue * quantity);
     }
     return totalValue;
-}
-
-int Inventory::getInvCount() {
-    map<string, int>::iterator it;
-    int total = 0, amount = 0;
-    for (it = inventory.begin(); it != inventory.end(); it++) {
-        amount = it->second;
-        total += amount;
-    }
-    return total;
-}
-
-bool Inventory::isEmpty() {
-    return (getInvCount() ? false : true);
 }
 
 void Inventory::printInv(map<string, int>* mapPtr) {

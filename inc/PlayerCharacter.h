@@ -5,6 +5,8 @@
 
 
 class PlayerCharacter : public Negotiator {
+private:
+    void fillPreferences();
 
 public:
     PlayerCharacter(string, float);
@@ -15,7 +17,6 @@ public:
     // Moves items between player's own inventory and the offer on the table
     void placeItemOnTable(string, Inventory*);
     void takeBackOffer(Inventory*);
-
 };
 
 #endif

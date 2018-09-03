@@ -22,11 +22,9 @@ private:
 
     void mapPlayerInventory();   // Unique order based on player's inv at start
 
-    void addCharXTimes(char, int, string&);
     void centerText(string, string&);
     void lower(string&);
     void removeWS(string&);
-    void createTitle(char, int, string, string&);
 
 
 public:
@@ -55,7 +53,7 @@ public:
     void printStrategy();
     void printUI();
 
-    void printTitle(string, bool = false);
+    void printTitle(string);
     bool encounterIsOver(bool&);
     void printScore();
     void handleEnd(bool);

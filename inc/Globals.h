@@ -38,12 +38,11 @@ Negotiator*      opponent3 = nullptr;
 Negotiator*      opponent4 = nullptr;
 
 // General globals
-string uInput = "", PROMPT_DIVIDER = "", INVALID_INPUT = "";
+string uInput = "", INVALID_INPUT = "";
 string title0 = "", title1 = "", title2 = "",
        title3 = "", title4 = "", titleEnd = "";
 string LEVEL_FILEPATH = "", INV_FILEPATH = "", DIVIDER = "";
 
-bool veryBeginning = true;
 bool doSkip =        false;
 bool wonEncounter =  false;
 int currLevel =      -1;

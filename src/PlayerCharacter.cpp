@@ -5,6 +5,26 @@ PlayerCharacter::PlayerCharacter(string n, float a) : Negotiator(n, a) {
     initInventory();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Inventory Methods
+////////////////////////////////////////////////////////////////////////////////
+
+void PlayerCharacter::fillPreferences() {
+    prefs["personal black trousers"] = 1.0;
+    prefs["personal black tunic"] = 1.0;
+    prefs["burn relief ointment"] = 1.0;
+    prefs["carved walking cane"] = 1.0;
+    prefs["sunflower seeds packet"] = 1.0;
+    prefs["pulque flask"] = 1.0;
+    prefs["paint canister"] = 1.0;
+    prefs["morning headache tonic"] = 1.0;
+    prefs["long earmuffs"] = 1.0;
+    prefs["wood varnish bottle"] = 1.0;
+    prefs["waterproof wax jar"] = 1.0;
+    prefs["loose leaf sencha tea"] = 1.0;
+    prefs["vinegar disinfectant"] = 1.0;
+}
+
 void PlayerCharacter::initInventory() {
     inventory["burn relief ointment"] = 0;
     inventory["carved walking cane"] = 0;
@@ -37,6 +57,11 @@ void PlayerCharacter::fillInventory() {
     inventory["personal black trousers"] = 1; // these were already added
     inventory["personal black tunic"] = 1; // but repeating to avoid mistakes
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Trading between inventory and table
+////////////////////////////////////////////////////////////////////////////////
 
 void PlayerCharacter::placeItemOnTable(string itemName, Inventory* table) {
     inventory[itemName]--;        // Take item out of bag

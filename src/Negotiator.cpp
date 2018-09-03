@@ -9,10 +9,13 @@ Negotiator::Negotiator(string n, float a) : name(n), amiability(a),
     fillPreferences();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Getter/Setter/Utility Methods
+////////////////////////////////////////////////////////////////////////////////
 string Negotiator::getName()       { return name;             }
+
 void Negotiator::resetGenerosity() { generosityOfOffer = 0.0; }
 
-// A trivial 0-1 random generator engine from time-based seed
 float Negotiator::getRandWeight() {
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();
     default_random_engine generator (seed);
@@ -20,24 +23,12 @@ float Negotiator::getRandWeight() {
     return distribution(generator) / 100.0;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// Methods determining how negotiator reacts to offer
+////////////////////////////////////////////////////////////////////////////////
 void Negotiator::fillPreferences() {
-    // Player will take base value
-    if (name == "You") {
-        prefs["personal black trousers"] = 1.0;
-        prefs["personal black tunic"] = 1.0;
-        prefs["burn relief ointment"] = 1.0;
-        prefs["carved walking cane"] = 1.0;
-        prefs["sunflower seeds packet"] = 1.0;
-        prefs["pulque flask"] = 1.0;
-        prefs["paint canister"] = 1.0;
-        prefs["morning headache tonic"] = 1.0;
-        prefs["long earmuffs"] = 1.0;
-        prefs["wood varnish bottle"] = 1.0;
-        prefs["waterproof wax jar"] = 1.0;
-        prefs["loose leaf sencha tea"] = 1.0;
-        prefs["vinegar disinfectant"] = 1.0;
-    }
-    else if (name == "Mosta and Pepita") {
+    if (name == "Mosta and Pepita") {
         prefs["personal black trousers"] = 0.1;
         prefs["personal black tunic"] = 0.1;
         prefs["burn relief ointment"] = 1.25;
@@ -53,8 +44,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.5;
     }
     else if (name == "Toto") {
-        prefs["personal black trousers"] = 0.1;
-        prefs["personal black tunic"] = 0.1;
+        prefs["personal black trousers"] = 0.7;
+        prefs["personal black tunic"] = 0.7;
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 0.3;
         prefs["sunflower seeds packet"] = 0.75;
@@ -106,17 +97,23 @@ bool Negotiator::reactToOffer(Inventory* table, float keyValue) {
     string item = "";
     int amount = 0;
 
+    // Iterate through items on the table
     for (it = table->inventory.begin(); it != table->inventory.end(); it++) {
         item = it->first;
         amount = it->second;
 
+        // Get negotiator's preferences * base market value * quantity
         if (amount > 0) sum += prefs[item] * economy[item] * amount;
     }
 
+    // Turn that sum into a ratio of the value of free passage for this level
     generosityOfOffer = sum / keyValue;
 
+    // If player offers more than the key's value, automatic acceptance
     if (generosityOfOffer >= 1) return true;
+    // If player offers less than half the key's value, automatic rejection
     else if (generosityOfOffer <= 0.5) return false;
+    // Offers 50%-100% apply randomness and negotiator's personality
     else {
         // See asterisked comment at bottom of file for method
         response = (amiability * getRandWeight()) + generosityOfOffer;

@@ -11,10 +11,9 @@ private:
     float amiability;         // Personality affects offer evaluations
     float generosityOfOffer;  // Remembered for offer evaluation/player feedback
 
+    // Methods exclusively used by Negotiator
     float getRandWeight();    // Helper for reactToOffer()
-
     void fillPreferences();   // Identifies preferences for this negotiator
-
 
 protected:
     map<string, float> prefs;
