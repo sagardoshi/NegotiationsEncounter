@@ -21,7 +21,6 @@ Negotiator::Negotiator(string n, float a) : name(n), amiability(a),
 }
 
 string Negotiator::getName()       { return name;             }
-float Negotiator::getAmiability()  { return amiability;       }
 void Negotiator::resetGenerosity() { generosityOfOffer = 0.0; }
 
 // A trivial 0-1 random generator engine from time-based seed
@@ -82,8 +81,8 @@ void Negotiator::initEconomy() {
     economy["vinegar disinfectant"] = 3;
 
     // 0) Tutorial Lepha
-    economy["your black trousers"] = 2;
-    economy["your black tunic"] = 1;
+    economy["personal black trousers"] = 2;
+    economy["personal black tunic"] = 1;
 
 }
 
@@ -99,16 +98,15 @@ void Negotiator::initInventory() {
     inventory["waterproof wax jar"] = 0;
     inventory["loose leaf sencha tea"] = 0;
     inventory["vinegar disinfectant"] = 0;
-    inventory["your black trousers"] = 0;
-    inventory["your black tunic"] = 0;
+    inventory["personal black trousers"] = 0;
+    inventory["personal black tunic"] = 0;
 }
-
 
 void Negotiator::fillPreferences() {
     // Player will take base value
     if (name == "You") {
-        prefs["your black trousers"] = 1.0;
-        prefs["your black tunic"] = 1.0;
+        prefs["personal black trousers"] = 1.0;
+        prefs["personal black tunic"] = 1.0;
         prefs["burn relief ointment"] = 1.0;
         prefs["carved walking cane"] = 1.0;
         prefs["sunflower seeds packet"] = 1.0;
@@ -122,8 +120,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 1.0;
     }
     else if (name == "Mosta and Pepita") {
-        prefs["your black trousers"] = 0.1;
-        prefs["your black tunic"] = 0.1;
+        prefs["personal black trousers"] = 0.1;
+        prefs["personal black tunic"] = 0.1;
         prefs["burn relief ointment"] = 1.25;
         prefs["carved walking cane"] = 1.5;
         prefs["sunflower seeds packet"] = 1.25;
@@ -137,8 +135,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.5;
     }
     else if (name == "Toto") {
-        prefs["your black trousers"] = 0.1;
-        prefs["your black tunic"] = 0.1;
+        prefs["personal black trousers"] = 0.1;
+        prefs["personal black tunic"] = 0.1;
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 0.3;
         prefs["sunflower seeds packet"] = 0.75;
@@ -152,8 +150,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.2;
     }
     else if (name == "Burro") {
-        prefs["your black trousers"] = 0.1;
-        prefs["your black tunic"] = 0.1;
+        prefs["personal black trousers"] = 0.1;
+        prefs["personal black tunic"] = 0.1;
         prefs["burn relief ointment"] = 0.2;
         prefs["carved walking cane"] = 1.2;
         prefs["sunflower seeds packet"] = 1.0;
@@ -167,8 +165,8 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 0.6;
     }
     else if (name == "Lepha") {
-        prefs["your black trousers"] = 0.1;
-        prefs["your black tunic"] = 0.1;
+        prefs["personal black trousers"] = 0.1;
+        prefs["personal black tunic"] = 0.1;
         prefs["burn relief ointment"] = 1.4;
         prefs["carved walking cane"] = 0.2;
         prefs["sunflower seeds packet"] = 0.5;
@@ -182,8 +180,6 @@ void Negotiator::fillPreferences() {
         prefs["vinegar disinfectant"] = 2.0;
     }
 }
-
-
 
 bool Negotiator::reactToOffer(Negotiator* offer, float keyValue) {
     map<string, int>::iterator it;
@@ -218,11 +214,7 @@ void Negotiator::acceptTerms() {
     string acceptance = "You think over the encounter you just had.\n\n";
 
     // Try to give somewhat customised feedback after each rejected offer
-    if (generosityOfOffer == 0.0) {
-        acceptance += "It's impossible to win offering nothing, so you must ";
-        acceptance += "be a superuser. All hail\n";
-        acceptance += "the superuser. Happy supering.\n";
-    } else if (generosityOfOffer > 1.5) {
+    if (generosityOfOffer > 1.5) {
         acceptance += "Your offer was far too generous! " + name + " ";
         acceptance += "would have accepted a much\n";
         acceptance += "lower offer, if you had a way to give it. ";
@@ -248,6 +240,10 @@ void Negotiator::acceptTerms() {
         acceptance += "You made a solid offer and won the day. ";
         acceptance += "It's up to you now to continue to manage\nyour stock ";
         acceptance += "efficiently and get out of here safely. Well done!\n";
+    } else {
+        acceptance += "It's impossible to win the way you did, so you must ";
+        acceptance += "be a superuser. All hail\n";
+        acceptance += "the superuser. Happy supering.\n";
     }
 
     cout << acceptance << endl;
@@ -301,7 +297,7 @@ void Negotiator::rejectTerms(int turnsLeft) {
 
 /*
 
-** Explanation of acceptance determination from reactToOffer(Offer*)
+** Explanation of acceptance determination from reactToOffer()
 
 ---- 22 OFFERED FOR KEY OF 30 VALUE... POOR OFFER ----
 

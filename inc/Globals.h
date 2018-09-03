@@ -8,7 +8,7 @@
 using namespace std;
 
 // CONSTANTS
-const int WIDTH = 80;
+const int   WIDTH = 80;
 const float FRIENDLY = 0.8;
 const float GRUFF    = 0.2;
 const float MODERATE = 0.5;
@@ -37,7 +37,6 @@ Encounter*       level3 = nullptr;
 Encounter*       level4 = nullptr;
 
 PlayerCharacter* player = nullptr;
-
 Negotiator*      opponent0 = nullptr;
 Negotiator*      opponent1 = nullptr;
 Negotiator*      opponent2 = nullptr;
@@ -50,8 +49,8 @@ string title0 = "", title1 = "", title2 = "",
        title3 = "", title4 = "", titleEnd = "";
 
 bool veryBeginning = true;
-bool doSkip = false;
-bool wonEncounter = false;
-int currLevel = 0;
+bool doSkip =        false;
+bool wonEncounter =  false;
+int currLevel =      0;
 
 #endif

@@ -1,8 +1,6 @@
 #ifndef NEGOTIATOR_H
 #define NEGOTIATOR_H
 
-// #include "Offer.h"
-
 #include <string>
 #include <map>
 
@@ -12,10 +10,15 @@ using namespace std;
 class Negotiator {
 
 private:
-    string name;
-    float amiability;
-    float generosityOfOffer;
-    float getRandWeight();
+    string name;              // Used to establish preferences and dialogue
+    float amiability;         // Personality affects offer evaluations
+    float generosityOfOffer;  // Remembered for offer evaluation/player feedback
+
+    float getRandWeight();    // Helper for reactToOffer()
+
+    void initEconomy();       // Base market values for reference
+    void fillPreferences();   // Identifies preferences for this negotiator
+
 
 protected:
     map<string, int> economy;
@@ -24,21 +27,18 @@ protected:
 public:
     Negotiator(string, float);
 
-    map<string, int> inventory;
+    string getName();          // Simple getter used for title printout
+    void resetGenerosity();    // Resets attribute to 0.0
 
+    // Helper function used throughout so negotiators can print out scores
     string toPreciseString(float, int = 0);
 
-    string getName();
-    float getAmiability();
-    void resetGenerosity();
+    // Inventory methods
+    map<string, int> inventory;    // Must be public to move items around
+    void initInventory();          // Used to set or reset inventory to 0s
+    float getInvValue();           // Gets value of negotiator's own inventory
 
-    // Values and economics
-    void fillPreferences();
-    void initEconomy();
-    void initInventory();
-    float getInvValue();
-
-    // Dealing with Offers
+    // Major offer evaluation and outcome handling... all requested by Encounter
     bool reactToOffer(Negotiator*, float);
     void rejectTerms(int);
     void acceptTerms();

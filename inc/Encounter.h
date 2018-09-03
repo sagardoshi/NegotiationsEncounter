@@ -15,8 +15,7 @@ using namespace std;
 class Encounter {
 
 private:
-    string topic;
-    int level;
+    bool isPrologue;
     int turns;
     float keyValue;
 
@@ -27,6 +26,11 @@ private:
     float startInvValue;
     float offerInvValue;
     float endInvValue;
+
+
+    map<string, int> invMap;     // Used for numbering in encounters
+
+    void mapPlayerInventory();   // Unique order based on player's inv at start
 
     void addCharXTimes(char, int, string&);
     void centerText(string, string&);
@@ -39,12 +43,13 @@ public:
     Encounter(PlayerCharacter*, Negotiator*, int, int, float);
     ~Encounter();
 
+
     string getCapsName();
     float getFinalInvValue();
 
 
     void clearScreen();
-    void saveStandardisedInput(string&);
+    void userEntry(string&, string&, string);
 
     bool isNum(string&);
     void remapKeyword(string&);
@@ -53,11 +58,17 @@ public:
 
     bool runEncounter(bool&);
 
+    void printExtraHelp();
+
     void printTurns();
+    void printHelp();
+    void printStrategy();
     void printOfferOnTable();
+    void printUI();
 
     void printTitle(string, bool = false);
     bool encounterIsOver(bool&);
+    void printScore();
     void handleEnd(bool);
 
 };

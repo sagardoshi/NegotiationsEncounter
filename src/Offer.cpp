@@ -27,7 +27,7 @@ void Offer::printOffer() {
 
     // Local vars for iterator
     map<string, int>::iterator it;
-    const int MAX_ITEM_LEN = 22;
+    const int MAX_ITEM_LEN = 23;
     int numItemsHeld = 0;
     string itemName = "";
     string itemText = "";

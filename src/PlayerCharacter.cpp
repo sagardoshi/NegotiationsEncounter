@@ -26,8 +26,8 @@ void PlayerCharacter::initInventory() {
     inventory["waterproof wax jar"] = 0;
     inventory["loose leaf sencha tea"] = 0;
     inventory["vinegar disinfectant"] = 0;
-    inventory["your black trousers"] = 1;
-    inventory["your black tunic"] = 1;
+    inventory["personal black trousers"] = 1;
+    inventory["personal black tunic"] = 1;
 }
 
 // How many of each item you carry
@@ -43,8 +43,8 @@ void PlayerCharacter::fillInventory() {
     inventory["waterproof wax jar"] = 1;
     inventory["loose leaf sencha tea"] = 2;
     inventory["vinegar disinfectant"] = 4;
-    inventory["your black trousers"] = 1; // these were already added
-    inventory["your black tunic"] = 1; // but just repeating to avoid mistakes
+    inventory["personal black trousers"] = 1; // these were already added
+    inventory["personal black tunic"] = 1; // but just repeating to avoid mistakes
 }
 
 
@@ -64,26 +64,16 @@ float PlayerCharacter::getInvValue() {
     return totalValue;
 }
 
-// Goes through every item player has in an encounter, and assigns a number
-void PlayerCharacter::mapPlayerInventory() {
-    map<string, int>::iterator it;
-    string item = "";
-    int amount = 0;
-    int itemOrder = 1;
 
-    for (it = inventory.begin(); it != inventory.end(); it++) {
-        item = it->first;
-        amount = it->second;
-
-        if (amount > 0) {
-            invMap[item] = itemOrder;
-            itemOrder++;
-        }
-    }
+bool PlayerCharacter::knowsOfItem(string item) {
+    return ((economy.count(item) > 0) ? true : false); // If item exists
 }
 
+bool PlayerCharacter::hasItem(string item) {
+    return ((inventory[item] > 0) ? true : false); // Player has at least one
+}
 
-void PlayerCharacter::placeInvObjOnTable(string itemName, Negotiator* offer) {
+void PlayerCharacter::placeItemOnTable(string itemName, Negotiator* offer) {
     inventory[itemName]--; // Take item out of bag
     offer->inventory[itemName]++; // Place it on table
 }
@@ -103,78 +93,29 @@ void PlayerCharacter::takeBackOffer(Negotiator* offer) {
     }
 }
 
-void PlayerCharacter::printStrategy() {
-    string helpBorder = "***** STRATEGY HELP *****\n";
-    string helpText  = "The spirits are fickle. ";
-           helpText += "To win their favour, offer them a package of ";
-           helpText += "as many\n";
-           helpText += "or as few items as you wish.\n\n";
-
-           helpText += "Be as efficient as possible. You can ";
-           helpText += "see the market value of ";
-           helpText += "your items, but\n";
-           helpText += "each spirit ";
-           helpText += "values each item uniquely, based on their needs ";
-           helpText += "and their\n";
-           helpText += "personality. Some spirits are just strict by nature. ";
-           helpText += "Others may be more willing\n";
-           helpText += "to accept ";
-           helpText += "weaker offers. It's up to you to predict what might ";
-           helpText += "appeal most to\n";
-           helpText += "your opponent, while ";
-           helpText += "keeping a watchful eye on your own stock.\n\n";
-
-           helpText += "Remember: you have only a few tries before they lose ";
-           helpText += "patience only a finite\n";
-           helpText += "inventory. The more you retain by the end, ";
-           helpText += "the better you will score. Good luck.\n";
-           helpText  = helpBorder + helpText + helpBorder;
-
-    cout << helpText << endl;
-}
-
-void PlayerCharacter::printHelp() {
-    string optBorder = "***** HELP *****\n";
-    string optText   = "Add items one by one to the table with their ";
-           optText  += "corresponding number on the left.\n";
-           optText  += "When your offer is ready, type \"propose\" ";
-           optText  += "to finalise it.\n\n";
-
-           optText  += "propose:  type this to send your current offer\n";
-           optText  += "cancel:   take your current offer off the table\n";
-           optText  += "turns:    see how many turns you have left\n";
-           optText  += "strategy: see strategy hints\n";
-           optText  += "help:     see this menu\n";
-           optText  += "forfeit:  admit defeat\n";
-           optText  += "quit:     immediately exit the game\n";
-           optText   = optBorder + optText + optBorder;
-
-    cout << optText << endl;
-}
-
-void PlayerCharacter::printInventory(bool firstPrint, int level) {
+void PlayerCharacter::printInventory(map<string, int>* mapPtr) {
 
     // Print appropriate header
     string border = "----- YOUR LOOT -----\n";
     string header = border;
     string footer = border;
-
-    string extraHelp  = "Add items to the table by the number on the left.\n";
-           extraHelp += "When ready, type \"propose\" to finalise your offer ";
-           extraHelp += "or \"cancel\" to undo it.\n\n";
-
-    // Always print at start of encounter and throughout for the tutorial
-    if (firstPrint || (level == 0)) {
-        header += extraHelp;
-        firstPrint = false;
-    }
+    //
+    // string extraHelp  = "Add items to the table by the number on the left.\n";
+    //        extraHelp += "When ready, type \"propose\" to finalise your offer ";
+    //        extraHelp += "or \"cancel\" to undo it.\n\n";
+    //
+    // // Always print at start of encounter and throughout for the tutorial
+    // if (firstPrint || isPrologue) {
+    //     header += extraHelp;
+    //     firstPrint = false;
+    // }
 
     cout << header;
 
     // Local vars for iterator
     map<string, int>::iterator it;
 
-    const int MAX_ITEM_LEN = 22;
+    const int MAX_ITEM_LEN = 23;
     string itemName = "";
     string itemText = "";
 
@@ -189,15 +130,13 @@ void PlayerCharacter::printInventory(bool firstPrint, int level) {
     string itemValueText = "";
 
 
-
-
     // Depending on whether within proposal, print list of items one by one
     // Skip items with <= 0 inventory
     for (it = inventory.begin(); it != inventory.end(); it++) {
         itemName = it->first;
         amount = it->second;
         amountText = to_string(amount);
-        itemOrder = invMap[itemName];
+        itemOrder = ((mapPtr == NULL) ? 0 : (*mapPtr)[itemName]);
         itemOrderText = to_string(itemOrder);
         itemValue = economy[itemName];
         itemValueText = to_string(itemValue);
@@ -248,21 +187,5 @@ void PlayerCharacter::printInventory(bool firstPrint, int level) {
         total += "£" + toPreciseString(getInvValue()) + "\n";
     } else footer = "[Empty]\n" + footer;
 
-    cout << total << footer << endl;
-}
-
-void PlayerCharacter::score(float startVal, float offerVal, float endVal) {
-
-    string border = "***** ENCOUNTER SCORE *****\n";
-    string scoreText  = "You began with an inventory of market value: ";
-           scoreText += (startVal >= 10 ? "" : " ");
-           scoreText += "£" + toPreciseString(startVal) + "\n";
-           scoreText += "You gave away a total market value of:       ";
-           scoreText += (offerVal >= 10 ? "" : " ");
-           scoreText += "£" + toPreciseString(offerVal) + "\n";
-           scoreText += "You ended with an inventory of market value: ";
-           scoreText += (endVal >= 10 ? "" : " ");
-           scoreText += "£" + toPreciseString(endVal) + "\n";
-
-    cout << border << scoreText << border << endl;
+    cout << total << footer;
 }

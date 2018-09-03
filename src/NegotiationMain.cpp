@@ -132,7 +132,7 @@ void quitGame(bool finishedGame = false) {
                gaveUp += "Perhaps it's the only achievement left to you. Yes, ";
                gaveUp += "perhaps it is.\n\n";
                gaveUp += "You lay back, allow the failure to fill you up, and ";
-               gaveUp += "resign yourself to the coming punishment.\n\n";
+               gaveUp += "resign yourself to the\ncoming punishment.\n\n";
                gaveUp += "You have quit the game. Please come back and visit ";
                gaveUp += "the spirits again whenever\n";
                gaveUp += "you can! They'll be waiting...\n\n";
@@ -144,11 +144,6 @@ void quitGame(bool finishedGame = false) {
 
 // Sends to quitGame to handle memory release for ^C and ^backslash
 void signalHandler(int signum) { quitGame(); }
-
-// void tstpHandler (int sig) {
-//     signal(SIGTSTP, SIGINT);
-//
-// }
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -242,8 +237,8 @@ bool isAsteriskEntry(string line) {
 // Pauses text for user to read and get a breather
 void checkpoint() {
     string toAdd = "\n";
-    string anyInputText  = "[Press return to continue ";
-           anyInputText += "or type \"skip\" to jump to the next section.] ";
+    string anyInputText  = "<RETURN>: next line | ";
+           anyInputText += "\"skip\": next negotiation";
 
     createTitle('-', WIDTH, anyInputText, toAdd);
     getCleanUInput();
