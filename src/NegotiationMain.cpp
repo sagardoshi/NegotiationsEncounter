@@ -262,7 +262,7 @@ void handleSpecificInput(string line, string &output) {
     setUInput(prompt, targetInput);
 
     // Once inventory typed, display it
-    if (targetInput == "inventory") player->printInventory();
+    if (targetInput == "inventory") player->printInv();
 
     output = ""; // Reset output
 }
@@ -539,7 +539,7 @@ void createGlobalStrings() {
 // Creates player and all enemies
 void createCharacters() {
     player = new PlayerCharacter("You", MODERATE);
-
+    
     opponent0 = new Negotiator("Lepha", MODERATE);
     opponent1 = new Negotiator("Mosta and Pepita", FRIENDLY);
     opponent2 = new Negotiator("Toto", MODERATE);
@@ -580,8 +580,8 @@ void setUpGame() {
 // Main function handles memory allocation/deallocation and launches playGame()
 int main() {
     bool finishedGame = false;
-
     setUpGame();
+
     playGame(finishedGame);
     quitGame(finishedGame);
 

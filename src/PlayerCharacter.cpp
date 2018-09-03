@@ -48,23 +48,6 @@ void PlayerCharacter::fillInventory() {
 }
 
 
-float PlayerCharacter::getInvValue() {
-    map<string, int>::iterator it;
-    string itemName = "";
-    float baseValue = 0.0, totalValue = 0.0;
-    int quantity = 0;
-
-    // Multiply each inventory item's base value by amount held and sum up
-    for (it = inventory.begin(); it != inventory.end(); it++) {
-        itemName = it->first;
-        quantity = it->second;
-        baseValue = economy[itemName];
-        totalValue += (baseValue * quantity);
-    }
-    return totalValue;
-}
-
-
 bool PlayerCharacter::knowsOfItem(string item) {
     return ((economy.count(item) > 0) ? true : false); // If item exists
 }
@@ -91,90 +74,4 @@ void PlayerCharacter::takeBackOffer(Negotiator* offer) {
             offer->inventory[item] = 0;
         }
     }
-}
-
-void PlayerCharacter::printInventory(map<string, int>* mapPtr) {
-
-    // Print appropriate header
-    string header = "----- YOUR LOOT -----\n";
-    string footer = header;
-
-    cout << header;
-
-    // Local vars for iterator
-    map<string, int>::iterator it;
-
-    const int MAX_ITEM_LEN = 23;
-    string itemName = "";
-    string itemText = "";
-
-    int numItemsHeld = 0;
-    int amount = 0;
-    string amountText = "";
-
-    int itemOrder = 0;
-    string itemOrderText = "";
-
-    int itemValue = 0;
-    string itemValueText = "";
-
-
-    // Depending on whether within proposal, print list of items one by one
-    // Skip items with <= 0 inventory
-    for (it = inventory.begin(); it != inventory.end(); it++) {
-        itemName = it->first;
-        amount = it->second;
-        amountText = to_string(amount);
-        itemOrder = ((mapPtr == NULL) ? 0 : (*mapPtr)[itemName]);
-        itemOrderText = to_string(itemOrder);
-        itemValue = economy[itemName];
-        itemValueText = to_string(itemValue);
-
-
-        if (amount > 0) {
-            numItemsHeld += amount;
-
-            // First add itemOrder, if appropriate, keeping aligned
-            if (itemOrder) {
-                if (itemOrder < 10) itemText += " " + itemOrderText + ": ";
-                else itemText += itemOrderText + ": ";
-            }
-
-            // Then add itemName with extra spaces at end for alignment
-            itemText += itemName;
-            int gap = MAX_ITEM_LEN - itemName.length();
-            if (gap > 0) {
-                for (int i = 0; i < gap; i++) itemText += " ";
-            }
-
-            itemText += " ... ";
-
-            // Next add amount, with extra spaces for alignment
-            if (amount < 10) itemText += " " + amountText + " owned";
-            else itemText += amountText + " owned";
-
-            itemText += " ... ";
-
-            // Finally add itemValue, again with spaces for alignment
-            if (itemValue < 10) itemText += " £" + itemValueText;
-            else itemText += "£" + itemValueText;
-            itemText += " base market value per unit";
-
-            itemText += "\n";
-
-            // At last, flush out itemText, empty it, and go on to next
-            cout << itemText;
-            itemText = "";
-        }
-
-    }
-
-    string total = "";
-    // Print totals or empty notice
-    if (numItemsHeld) {
-        total += "\n Loot Market Value: ";
-        total += "£" + toPreciseString(getInvValue()) + "\n";
-    } else footer = "[Empty]\n" + footer;
-
-    cout << total << footer;
 }

@@ -45,7 +45,8 @@ public:
 
 
     string getCapsName();
-    float getFinalInvValue();
+    float getFinalInvValue(); // Returns inv value at end of encounter
+    bool tableIsEmpty(); // Convenience method for printouts in run loop
 
 
     void clearScreen();
@@ -63,7 +64,6 @@ public:
     void printTurns();
     void printHelp();
     void printStrategy();
-    void printOfferOnTable();
     void printUI();
 
     void printTitle(string, bool = false);

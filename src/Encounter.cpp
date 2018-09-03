@@ -21,8 +21,12 @@ Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp,
 }
 
 Encounter::~Encounter()             { delete offer;        }
-void Encounter::printOfferOnTable() { offer->printOffer(); }
 float Encounter::getFinalInvValue() { return endInvValue;  }
+
+// Convenience method to verify table for printouts in run loop
+bool Encounter::tableIsEmpty() {
+    return (!offer->getInvCount() ? true : false);
+}
 
 // Get opponent name in all caps
 string Encounter::getCapsName() {
@@ -247,8 +251,8 @@ void Encounter::userEntry(string &keyword, string &echo, string prompt) {
 
 // Packages table and inventory printouts
 void Encounter::printUI() {
-    offer->printOffer(); // Prints every time after title
-    player->printInventory(&invMap);
+    offer->printInv(); // Prints every time after title
+    player->printInv(&invMap);
 }
 
 void Encounter::printExtraHelp() {
@@ -361,7 +365,7 @@ bool Encounter::runEncounter(bool &didWin) {
 
         ///// NEXT THREE HANDLE PLACING AND TAKING ITEMS FROM THE TABLE
         else if (entry == "cancel") {
-            if (offer->inventoryCount() == 0) {
+            if (tableIsEmpty()) {
                 echo = "There's nothing on the table for you to take back.\n\n";
             } else echo = "You take your offer back from the table.\n\n";
             player->takeBackOffer(offer);

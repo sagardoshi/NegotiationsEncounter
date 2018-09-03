@@ -1,5 +1,4 @@
 #include "../inc/Negotiator.h"
-// #include "../inc/Offer.h"
 
 #include <iostream>
 #include <string>
@@ -57,6 +56,99 @@ float Negotiator::getInvValue() {
     }
     return totalValue;
 }
+
+int Negotiator::getInvCount() {
+    map<string, int>::iterator it;
+    int total = 0;
+    for (it = inventory.begin(); it != inventory.end(); it++) {
+        total += it->second;
+    }
+    return total;
+}
+
+void Negotiator::printInv(map<string, int>* mapPtr) {
+
+    // Local vars for iterator
+    map<string, int>::iterator it;
+
+    const int MAX_ITEM_LEN = 23;
+    string itemName = "";
+    string itemText = "";
+
+    int numItemsHeld = 0;
+    int amount = 0;
+    string amountText = "";
+
+    int itemOrder = 0;
+    bool printingTable = (mapPtr == NULL); // == if invMap passed
+    string itemOrderText = "";
+
+    int itemValue = 0;
+    string itemValueText = "";
+
+    // Print appropriate header
+
+    string header  = "----- ";
+           header += (printingTable ? "YOUR LOOT" : "THE TABLE");
+           header += " -----\n";
+    string footer = header;
+
+    // cout << header;
+
+
+    // Depending on whether within proposal, print list of items one by one
+    // Skip items with <= 0 inventory
+    for (it = inventory.begin(); it != inventory.end(); it++) {
+        itemName = it->first;
+        amount = it->second;
+        amountText = to_string(amount);
+        itemOrder = ((mapPtr == NULL) ? 0 : (*mapPtr)[itemName]);
+        itemOrderText = to_string(itemOrder);
+        itemValue = economy[itemName];
+        itemValueText = to_string(itemValue);
+
+
+        if (amount > 0) {
+            numItemsHeld += amount;
+
+            // First add itemOrder, if appropriate, keeping aligned
+            if (!printingTable) {
+                if (itemOrder < 10) itemText += " " + itemOrderText + ": ";
+                else itemText += itemOrderText + ": ";
+            } else itemText += "    "; // This only prints for table, not inv
+
+            // Then add itemName with extra spaces at end for alignment
+            itemText += itemName;
+            int gap = MAX_ITEM_LEN - itemName.length();
+            if (gap > 0) {
+                for (int i = 0; i < gap; i++) itemText += " ";
+            }
+
+            itemText += " ... ";
+
+            // Next add amount, with extra spaces for alignment
+            itemText += (amount < 10 ? " " + amountText : amountText);
+            itemText += (printingTable ? " given" : " owned");
+
+            itemText += " ... ";
+
+            // Finally add itemValue, again with spaces for alignment
+            itemText += (itemValue < 10 ? " " : "");
+            itemText += "£" + itemValueText + " base market value per unit\n";
+        }
+        // Now loop
+    }
+
+    string total = "\n";
+    // Print totals or empty notice
+    if (numItemsHeld) {
+        total += (printingTable ? " Loot" : "Table");
+        total += " Market Value: £" + toPreciseString(getInvValue()) + "\n";
+    } else total = "\n[Empty]\n\n";
+
+    cout << header << itemText << total << footer;
+}
+
 
 void Negotiator::initEconomy() {
 

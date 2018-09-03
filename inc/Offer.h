@@ -13,10 +13,6 @@ class Offer : public Negotiator {
 public:
     Offer(string, float);
 
-    int inventoryCount();
-    int issueCount();
-    void printOffer();
-
 };
 
 #endif

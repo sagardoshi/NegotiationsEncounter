@@ -37,6 +37,9 @@ public:
     map<string, int> inventory;    // Must be public to move items around
     void initInventory();          // Used to set or reset inventory to 0s
     float getInvValue();           // Gets value of negotiator's own inventory
+    int getInvCount();             // How many items in inventory
+    // Special inv print method for UI... used for printing table & player inv
+    void printInv(map<string, int>* = NULL);
 
     // Major offer evaluation and outcome handling... all requested by Encounter
     bool reactToOffer(Negotiator*, float);
