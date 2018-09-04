@@ -1,13 +1,13 @@
-burn relief ointment|1
-carved walking cane|1
-long earmuffs|1
-loose leaf sencha tea|2
-morning headache tonic|1
-paint canister|3
+burn relief ointment|0
+carved walking cane|0
+long earmuffs|0
+loose leaf sencha tea|0
+morning headache tonic|0
+paint canister|0
 personal black trousers|1
 personal black tunic|1
-pulque flask|2
-sunflower seeds packet|1
-vinegar disinfectant|4
-waterproof wax jar|1
-wood varnish bottle|2
+pulque flask|0
+sunflower seeds packet|0
+vinegar disinfectant|0
+waterproof wax jar|0
+wood varnish bottle|0

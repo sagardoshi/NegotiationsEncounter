@@ -1,6 +1,7 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
+#include <iostream>
 #include <string>
 #include <map>
 
@@ -9,6 +10,7 @@ using namespace std;
 
 class Inventory {
 private:
+    float latestInvValue;           // Updated by getInvValue()
     void initEconomy();             // Base market values for reference
 
 protected:
@@ -18,7 +20,6 @@ public:
     Inventory();
 
     string toPreciseString(float, int = 0); // Helper method for printing
-
     bool knowsOfItem(string);       // Is an ownable item
 
     // Inventory methods

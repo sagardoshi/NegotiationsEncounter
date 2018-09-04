@@ -26,7 +26,8 @@ public:
 
     // Major offer evaluation and outcome handling... all requested by Encounter
     bool reactToOffer(Inventory*, float);
-    void rejectTerms(int);
+    void handlePrologueRejection(int, string&);
+    void rejectTerms(int, bool);
     void acceptTerms();
 };
 

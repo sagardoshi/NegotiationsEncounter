@@ -1,12 +1,9 @@
-#include "../inc/PlayerCharacter.h"
 #include "../inc/Encounter.h"
-
-#include <iostream>
 
 
 Encounter::Encounter(PlayerCharacter* pc, Negotiator* opp,
-                     int l, int t, float kV) :
-                     isPrologue(l == 0), turns(t), keyValue(kV),
+                     int t, float kV, bool prol) :
+                     isPrologue(prol), turns(t), keyValue(kV),
                      player(pc), opponent(opp) {
 
         table = new Inventory(); // Table has no name, no personality
@@ -225,7 +222,7 @@ void Encounter::printHelp() {
            optText += "help:     see this menu\n";
            optText += "<RETURN>: dismiss help / go to negotiating table\n\n";
 
-           optText += "forfeit:  admit defeat\n";
+           optText += "forfeit:  admit defeat in this encounter\n";
            optText += "quit:     immediately exit the game\n";
 
     cout << optText;
@@ -247,7 +244,7 @@ bool Encounter::encounterIsOver(bool &didWin) {
     // Fill win with true or false, depending on acceptance
     didWin = opponent->reactToOffer(table, keyValue);
 
-    // In case over, remember inventory
+    // In case over, save last value into encounter history
     endInvValue = player->getInvValue();
 
     // If won or if didn't win and no turns left
@@ -255,7 +252,7 @@ bool Encounter::encounterIsOver(bool &didWin) {
     else { // but turns are left, must return items to inventory and continue
         turns--; // Use one turn
         player->takeBackOffer(table);
-        opponent->rejectTerms(turns);
+        opponent->rejectTerms(turns, isPrologue);
         return false;
     }
 }
@@ -293,8 +290,6 @@ void Encounter::handleEnd(bool didWin) {
         opponent->acceptTerms();
     } else player->takeBackOffer(table); // Returns stuff to you if loss ≠ end
 }
-
-float Encounter::getFinalInvValue() { return endInvValue;  }
 
 
 ////////////////////////////////////////////////////////////////////////////////

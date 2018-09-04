@@ -1,6 +1,8 @@
 #ifndef ENCOUNTER_H
 #define ENCOUNTER_H
 
+#include "PlayerCharacter.h"
+
 
 class Encounter {
 
@@ -51,10 +53,9 @@ private:
     void handleEnd(bool);
 
 public:
-    Encounter(PlayerCharacter*, Negotiator*, int, int, float);
+    Encounter(PlayerCharacter*, Negotiator*, int, float, bool = false);
     ~Encounter();
 
-    float getFinalInvValue(); // Returns inv value at end of encounter
     bool runEncounter(bool&); // Primary function of class
 };
 

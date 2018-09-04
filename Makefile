@@ -21,7 +21,8 @@ OBJEXT		:= o
 CXXFLAGS 	:= -Wall -g -std=c++11
 
 # Objects
-_OBJ 		:= NegotiationMain.o \
+_OBJ 		:= main.o \
+			   GameMaster.o \
 			   Encounter.o \
 			   Inventory.o \
 			   Negotiator.o \

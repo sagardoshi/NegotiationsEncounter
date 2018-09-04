@@ -1,9 +1,9 @@
 #include "../inc/Inventory.h"
 
-#include <iostream>
 
-
-Inventory::Inventory() { initEconomy();}
+Inventory::Inventory() : latestInvValue(0.0) {
+    initEconomy();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Economy Methods
@@ -104,8 +104,12 @@ float Inventory::getInvValue() {
         baseValue = economy[itemName];
         totalValue += (baseValue * quantity);
     }
-    return totalValue;
+
+    latestInvValue = totalValue; // Update latestInvValue;
+
+    return latestInvValue;
 }
+
 
 void Inventory::printInv(map<string, int>* mapPtr) {
 

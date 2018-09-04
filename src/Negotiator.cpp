@@ -1,6 +1,5 @@
 #include "../inc/Negotiator.h"
 
-#include <iostream>
 #include <random>
 
 
@@ -165,7 +164,33 @@ void Negotiator::acceptTerms() {
 
 }
 
-void Negotiator::rejectTerms(int turnsLeft) {
+void Negotiator::handlePrologueRejection(int turnsLeft, string &rejection) {
+    switch (turnsLeft) {
+        case 2:
+            rejection += "Unfortunately, this seems inevitable. Of course she ";
+            rejection += "won't accept your clothes\nfor a deal! What were ";
+            rejection += "you thinking? But all you can do is keep trying.\n\n";
+            rejection += "Two more attempts left to go before she runs out of ";
+            rejection += "patience. You can sense it.\n\n";
+            break;
+        case 1:
+            rejection += "You put your clothes back on, humiliated by this ";
+            rejection += "ordeal. Is she amused by you?\nDisgusted? You can't ";
+            rejection += "tell. There's nothing for it. One more doomed ";
+            rejection += "offer to go.\n\nHopefully she won't just ";
+            rejection += "squash you where you stand. The odds don't exactly ";
+            rejection += "seem\ngood...\n\n";
+            break;
+        default:
+            break;
+    }
+
+    cout << rejection;
+}
+
+void Negotiator::rejectTerms(int turnsLeft, bool isPrologue) {
+
+
     string rejection = "";
     bool plural = (name == "Mosta and Pepita" ? true : false);
 
@@ -175,12 +200,18 @@ void Negotiator::rejectTerms(int turnsLeft) {
     if (generosityOfOffer > 0) rejection += " You take it back.";
     rejection += "\n\n";
 
+    // So people aren't confused on their first level
+    if (isPrologue) {
+        handlePrologueRejection(turnsLeft, rejection);
+        return;
+    }
+
     // Try to give somewhat customised feedback after each rejected offer
     if (generosityOfOffer == 0) {
         rejection += "You offered nothing! Do you really expect that " + name;
         rejection += " would consider that?";
-    } else if (generosityOfOffer <= 0.5) {
-        rejection += "It was far from acceptable to the spirit";
+    } else if (generosityOfOffer > 0 && generosityOfOffer <= 0.5) {
+        rejection += "It was far from acceptable to " + name;
         rejection += (plural ? "s. " : ". ");
         rejection += "Try looking for items that might\n";
         rejection += "be more valuable to " + name + " in particular.";
