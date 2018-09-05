@@ -196,15 +196,13 @@ void GameMaster::loadPlayerSavedInventory() {
 
 // Announces start of game and asks player to load previous save
 void GameMaster::startScreen() {
-    clearScreen();
-
     string loadSave    = "load";
     string newGame     = "new";
     string savePrompt  = "Previous save detected. Type \"" + loadSave + "\" ";
            savePrompt += "to launch it or \"" + newGame + "\" to start fresh.";
 
     ///////////// First print game title /////////////
-    // printCurrentLevelTitle(); // As currLevel == -1, prints game title
+    clearScreen();
 
 
     int requestedLevel = getStartingLevel();         // Based on separate file
@@ -221,7 +219,6 @@ void GameMaster::startScreen() {
         }
         // Previous save detected, but ignored
         else if (uInput == newGame) currLevel = 0;   // Start at beginning
-        // printCurrentLevelTitle();                    // Need extra title now
         cout << endl;
     }
     ///////////// Or continue as normal if no save detected /////////////
@@ -253,7 +250,7 @@ void GameMaster::removeWS(string &str) {
 }
 
 // Packages lower() & removeWS() with a getline call, using global uInput
-void GameMaster::getCleanUInput() {
+void GameMaster::fillCleanUInput() {
     cout << ">>>> ";
     getline(cin, uInput);
 
@@ -272,7 +269,7 @@ void GameMaster::setUInput(string prompt, string goal1, string goal2) {
 
     string output = "\n";
     createTitle('=', WIDTH, prompt, output);
-    getCleanUInput();
+    fillCleanUInput();
     if (uInput == "quit") return; // For every new entry, check for quit
 
     // Only worry about invalidity if goals not empty
@@ -287,7 +284,7 @@ void GameMaster::setUInput(string prompt, string goal1, string goal2) {
             cout << "\nInvalid input. Try again.\n\n\n";
             output = ""; // Reset output
             createTitle('=', WIDTH, prompt, output);
-            getCleanUInput();
+            fillCleanUInput();
             if (uInput == "quit") return; // For every new entry, check for quit
         }
     }
@@ -334,7 +331,7 @@ void GameMaster::checkpoint() {
     string anyInputText  = "<RETURN>: next line | \"skip\": next negotiation";
 
     createTitle('=', WIDTH, anyInputText, toAdd);
-    getCleanUInput();
+    fillCleanUInput();
 
     if (uInput == "quit") return; // For every new entry, check for quit
     if (uInput == "skip" ) doSkip = true; // Set global flag for future

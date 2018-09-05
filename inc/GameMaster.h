@@ -51,9 +51,9 @@ private:
     void startScreen();
 
     // The crux of story mode and interpreting user inputs
-    void lower(string &anyString);
-    void removeWS(string &str);
-    void getCleanUInput();
+    void lower(string&);
+    void removeWS(string&);
+    void fillCleanUInput();
     void setUInput(string = "", string = "", string = "");
     void handleSpecificInput(string, string&);
     bool isAsteriskEntry(string);

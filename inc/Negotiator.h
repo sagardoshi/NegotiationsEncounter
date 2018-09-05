@@ -15,6 +15,8 @@ private:
     float getRandWeight();    // Helper for reactToOffer()
     void fillPreferences();   // Identifies preferences for this negotiator
 
+    void handlePrologueRejection(int, string&);
+
 protected:
     map<string, float> prefs;
 
@@ -26,7 +28,6 @@ public:
 
     // Major offer evaluation and outcome handling... all requested by Encounter
     bool reactToOffer(Inventory*, float);
-    void handlePrologueRejection(int, string&);
     void rejectTerms(int, bool);
     void acceptTerms();
 };
