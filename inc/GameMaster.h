@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 
 class GameMaster {
