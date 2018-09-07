@@ -3,6 +3,8 @@
 
 #include "PlayerCharacter.h"
 
+#include <algorithm>
+
 
 class Encounter {
 
