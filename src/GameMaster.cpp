@@ -459,8 +459,8 @@ void GameMaster::endCurrentLevel() {
     doSkip = false; // Allow scripts after encounter
     loadScript(outText); // Text for victory or loss to be run first
 
-    // If lost encounter and not in tutorial, end game
-    if (!wonLevel && (currLevel > 0)) runEnding();
+    // If lost encounter and not in tutorial, send to end of game
+    if (!wonLevel && (currLevel > 0)) currLevel = 5; // Head straight to ending
 
     return;
 }
